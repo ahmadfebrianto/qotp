@@ -33,7 +33,14 @@ class MainWindow(QMainWindow):
         widget.setLayout(vlayout)
 
     def open_add_account_window(self):
-        pass
+        from view.add_account import AddAccountWindow
+
+        self.add_account_window = AddAccountWindow()
+        self.add_account_window.data_ready.connect(self.add_account)
+        self.add_account_window.show()
+
+    def add_account(self, data):
+        self.list_widget.addItem(data)
 
 
 class App(QApplication):
