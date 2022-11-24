@@ -104,7 +104,7 @@ class AddAccountWindow(QMainWindow):
             return
 
         self.data_ready.emit(data[0].data.decode("utf-8"))
-        # app = QApplication.instance()
-        # app.clipboard().setText(data[0].data.decode("utf-8"))
+        app = QApplication.instance()
+        app.clipboard().setText(data[0].data.decode("utf-8"))
 
         self.close()

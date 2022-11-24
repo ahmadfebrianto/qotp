@@ -1,10 +1,13 @@
 import sys
 
+import pyotp
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
     QApplication,
     QListWidget,
     QMainWindow,
     QPushButton,
+    QSystemTrayIcon,
     QVBoxLayout,
     QWidget,
 )
@@ -16,6 +19,8 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Authenticator")
         self.setMinimumSize(600, 400)
         self.setup_ui()
+
+        self.accounts = {}
 
     def setup_ui(self):
         widget = QWidget()
@@ -40,7 +45,30 @@ class MainWindow(QMainWindow):
         self.add_account_window.show()
 
     def add_account(self, data):
-        self.list_widget.addItem(data)
+        parsed_uri = self.parse_uri(data)
+        display_name = parsed_uri.issuer + " - " + parsed_uri.name
+        self.list_widget.addItem(display_name)
+        self.accounts[display_name] = parsed_uri
+
+        # On double click, show the OTP code
+        self.list_widget.itemDoubleClicked.connect(self.copy_otp_code)
+
+    def parse_uri(self, data):
+        parsed_uri = pyotp.parse_uri(data)
+        return parsed_uri
+
+    def copy_otp_code(self, item):
+        parsed_uri = self.accounts[item.text()]
+        otp_code = parsed_uri.now()
+        QApplication.clipboard().setText(otp_code)
+        self.show_notification("OTP code copied to clipboard")
+
+    def show_notification(self, message):
+        self.tray_icon = QSystemTrayIcon(self)
+        self.tray_icon.setVisible(True)
+        self.tray_icon.showMessage(
+            "Authenticator", message, icon=QSystemTrayIcon.Information, msecs=1500
+        )
 
 
 class App(QApplication):
