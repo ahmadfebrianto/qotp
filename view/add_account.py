@@ -48,6 +48,8 @@ class AddAccountWindow(QMainWindow):
         # Vertical layout for Image label and the buttons
         vlayout = QVBoxLayout()
         vlayout.addWidget(self.image_label)
+        # Center the image label
+        vlayout.setAlignment(self.image_label, QtCore.Qt.AlignCenter)
         vlayout.addLayout(hlayout)
         vlayout.addWidget(btn_read_qr_code)
 
