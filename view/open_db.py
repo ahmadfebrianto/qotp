@@ -22,26 +22,26 @@ class OpenDBWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Open an existing database")
         self.setMinimumSize(600, 150)
-        self.setup_ui()
+        self.__setup_ui()
         self.__read_config()
 
-    def setup_ui(self):
+    def __setup_ui(self):
         label_max_width = 200
         widget = QWidget()
         self.setCentralWidget(widget)
 
-        self.db_location = QLabel("Database location")
-        self.db_location.setFixedWidth(label_max_width)
-        self.db_location_input = QLineEdit()
-        self.db_location_input.setReadOnly(True)
-        self.db_location_input.setPlaceholderText("Select a location")
-        self.db_location_dialog = QPushButton("...")
-        self.db_location_dialog.clicked.connect(self.__open_db_location_dialog)
+        self.db_path = QLabel("Database path")
+        self.db_path.setFixedWidth(label_max_width)
+        self.db_path_input = QLineEdit()
+        self.db_path_input.setReadOnly(True)
+        self.db_path_input.setPlaceholderText("Select a location")
+        self.db_path_dialog = QPushButton("...")
+        self.db_path_dialog.clicked.connect(self.__open_db_location_dialog)
 
-        hlayout_db_location = QHBoxLayout()
-        hlayout_db_location.addWidget(self.db_location)
-        hlayout_db_location.addWidget(self.db_location_input)
-        hlayout_db_location.addWidget(self.db_location_dialog)
+        hlayout_db_path = QHBoxLayout()
+        hlayout_db_path.addWidget(self.db_path)
+        hlayout_db_path.addWidget(self.db_path_input)
+        hlayout_db_path.addWidget(self.db_path_dialog)
 
         self.db_password_label = QLabel("Database password")
         self.db_password_label.setFixedWidth(label_max_width)
@@ -60,7 +60,7 @@ class OpenDBWindow(QMainWindow):
 
         # Create a vertical layout and add the horizontal layouts
         vlayout = QVBoxLayout()
-        vlayout.addLayout(hlayout_db_location)
+        vlayout.addLayout(hlayout_db_path)
         vlayout.addLayout(hlayout_db_password)
         vlayout.addWidget(self.open_db_btn)
         vlayout.setAlignment(self.open_db_btn, QtCore.Qt.AlignCenter)
@@ -68,13 +68,13 @@ class OpenDBWindow(QMainWindow):
         widget.setLayout(vlayout)
 
     def __open_db_location_dialog(self):
-        db_location = QFileDialog.getExistingDirectory(
-            self, "Select a location", self.config["db_path"] or "."
+        db = QFileDialog.getOpenFileName(
+            self, "Open database", "", "KeePass database (*.kdbx)"
         )
-        self.db_location_input.setText(db_location)
+        self.db_path_input.setText(db[0])
 
     def __open_db(self):
-        db_path = self.db_location_input.text()
+        db_path = self.db_path_input.text()
         db_password = self.db_password_input.text()
         db.open_db(db_path, db_password)
         self.data_ready.emit(db_path)
@@ -82,9 +82,8 @@ class OpenDBWindow(QMainWindow):
 
     def __read_config(self):
         self.config = config.read_config()
-        self.db_location_input.setText(self.config["db_path"])
+        self.db_path_input.setText(self.config["db_path"])
 
     def show(self) -> None:
         super().show()
         self.db_password_input.setFocus()
-
