@@ -32,6 +32,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
 
         self.list_widget = QListWidget()
+        self.list_widget.itemDoubleClicked.connect(self.copy_otp_code)
 
         btn_add_account = QPushButton("Add Account")
         btn_add_account.clicked.connect(self.open_add_account_window)
@@ -58,22 +59,20 @@ class MainWindow(QMainWindow):
 
         from model import db
 
-        entry = db.instance.add_entry(
+        db.instance.add_entry(
             db.instance.root_group, title, username, password, url=url
         )
         db.instance.save()
 
         self.update_accounts()
 
-        # On double click, show the OTP code
-        self.list_widget.itemDoubleClicked.connect(self.copy_otp_code)
-
     def parse_uri(self, data):
         parsed_uri = pyotp.parse_uri(data)
         return parsed_uri
 
     def copy_otp_code(self, item):
-        parsed_uri = self.accounts[item.text()]
+        clicked_account = self.accounts[item.text()]
+        parsed_uri = pyotp.parse_uri(clicked_account.url)
         otp_code = parsed_uri.now()
         QApplication.clipboard().setText(otp_code)
         self.show_notification("OTP code copied to clipboard")
