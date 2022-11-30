@@ -104,7 +104,7 @@ class CreateDBWindow(QMainWindow):
             f"{self.db_location_input.text()}/{self.db_name_input.text()}.kdbx"
         )
 
-        db = db.create_db(
+        db.create_db(
             self.db_path,
             self.db_password_input.text(),
         )

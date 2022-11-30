@@ -49,6 +49,17 @@ class MainWindow(QMainWindow):
 
     def add_account(self, data):
         parsed_uri = self.parse_uri(data)
+        title = parsed_uri.issuer
+        username = parsed_uri.name
+        password = parsed_uri.secret
+        url = parsed_uri.provisioning_uri
+
+        from model import db
+
+        entry = db.instance.add_entry(db.instance.root_group, title, username, password, url=url)
+        db.instance.save()
+
+        print(entry)
         display_name = parsed_uri.issuer + " - " + parsed_uri.name
         self.list_widget.addItem(display_name)
         self.accounts[display_name] = parsed_uri
