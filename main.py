@@ -1,17 +1,19 @@
 import sys
 
 import pyotp
-from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
     QApplication,
     QListWidget,
+    QListWidgetItem,
     QMainWindow,
     QPushButton,
     QSystemTrayIcon,
     QVBoxLayout,
     QWidget,
+
 )
 
+from PySide6 import QtCore
 from model import db
 from utils import config
 from view.create_db import CreateDBWindow
@@ -32,6 +34,10 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
 
         self.list_widget = QListWidget()
+        # Set padding for the list widget
+        self.list_widget.setStyleSheet("QListWidget::item { padding: 10px; }")
+
+        # Copy on double click
         self.list_widget.itemDoubleClicked.connect(self.copy_otp_code)
 
         btn_add_account = QPushButton("Add Account")
@@ -87,8 +93,9 @@ class MainWindow(QMainWindow):
     def load_accounts(self):
         entries = db.instance.entries
         for entry in entries:
-            display_name = entry.title + " - " + entry.username
-            self.list_widget.addItem(display_name)
+            display_name = f"{entry.title} ({entry.username})"
+            widget_item = QListWidgetItem(display_name)
+            self.list_widget.addItem(widget_item)
             self.accounts[display_name] = entry
 
     def update_accounts(self):
