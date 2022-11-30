@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from model import db
 from utils import config
 from view.create_db import CreateDBWindow
 from view.open_db import OpenDBWindow
@@ -23,8 +24,8 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("OTPY")
         self.setMinimumSize(600, 400)
         self.setup_ui()
-
         self.accounts = {}
+        self.load_accounts()
 
     def setup_ui(self):
         widget = QWidget()
@@ -62,10 +63,7 @@ class MainWindow(QMainWindow):
         )
         db.instance.save()
 
-        print(entry)
-        display_name = parsed_uri.issuer + " - " + parsed_uri.name
-        self.list_widget.addItem(display_name)
-        self.accounts[display_name] = parsed_uri
+        self.update_accounts()
 
         # On double click, show the OTP code
         self.list_widget.itemDoubleClicked.connect(self.copy_otp_code)
@@ -86,6 +84,18 @@ class MainWindow(QMainWindow):
         self.tray_icon.showMessage(
             "Authenticator", message, icon=QSystemTrayIcon.Information, msecs=1500
         )
+
+    def load_accounts(self):
+        entries = db.instance.entries
+        for entry in entries:
+            display_name = entry.title + " - " + entry.username
+            self.list_widget.addItem(display_name)
+            self.accounts[display_name] = entry
+
+    def update_accounts(self):
+        self.list_widget.clear()
+        self.accounts = {}
+        self.load_accounts()
 
 
 class App(QApplication):
