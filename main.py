@@ -103,6 +103,11 @@ class MainWindow(QMainWindow):
         self.accounts = {}
         self.load_accounts()
 
+    
+    def keyPressEvent(self, event):
+        if event.key() == QtCore.Qt.Key_Return:
+            self.copy_otp_code(self.list_widget.currentItem())
+
 
 class App(QApplication):
     def __init__(self, argv):
