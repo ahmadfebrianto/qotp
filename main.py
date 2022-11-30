@@ -12,11 +12,14 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from utils import config
+from view.create_db import CreateDBWindow
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Authenticator")
+        self.setWindowTitle("OTPY")
         self.setMinimumSize(600, 400)
         self.setup_ui()
 
@@ -75,10 +78,16 @@ class App(QApplication):
     def __init__(self, argv):
         super().__init__(argv)
 
-        self.account = None
+        if not config.is_present:
+            self.create_db_window = CreateDBWindow()
+            self.create_db_window.data_ready.connect(self.open_main_window)
+            self.create_db_window.show()
+        else:
+            self.open_main_window()
 
-        self.window = MainWindow()
-        self.window.show()
+    def open_main_window(self):
+        self.main_window = MainWindow()
+        self.main_window.show()
 
 
 if __name__ == "__main__":
