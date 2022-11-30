@@ -1,6 +1,4 @@
 from PySide6 import QtCore
-from PySide6.QtCore import QBuffer
-from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtWidgets import (
     QApplication,
     QFileDialog,

@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
 
 from utils import config
 from view.create_db import CreateDBWindow
+from view.open_db import OpenDBWindow
 
 
 class MainWindow(QMainWindow):
@@ -56,7 +57,9 @@ class MainWindow(QMainWindow):
 
         from model import db
 
-        entry = db.instance.add_entry(db.instance.root_group, title, username, password, url=url)
+        entry = db.instance.add_entry(
+            db.instance.root_group, title, username, password, url=url
+        )
         db.instance.save()
 
         print(entry)
@@ -94,7 +97,9 @@ class App(QApplication):
             self.create_db_window.data_ready.connect(self.open_main_window)
             self.create_db_window.show()
         else:
-            self.open_main_window()
+            self.open_db_window = OpenDBWindow()
+            self.open_db_window.data_ready.connect(self.open_main_window)
+            self.open_db_window.show()
 
     def open_main_window(self):
         self.main_window = MainWindow()

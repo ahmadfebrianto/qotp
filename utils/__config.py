@@ -19,4 +19,9 @@ class Config:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with open(self.path, "w") as f:
             json.dump(config, f)
+
+    def read_config(self):
+        with open(self.path, "r") as f:
+            config = json.load(f)
+        return config
         
