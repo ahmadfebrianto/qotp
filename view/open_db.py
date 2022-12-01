@@ -47,6 +47,8 @@ class OpenDBWindow(QMainWindow):
         self.db_password_label.setFixedWidth(label_max_width)
         self.db_password_input = QLineEdit()
         self.db_password_input.setEchoMode(QLineEdit.Password)
+        self.db_password_input.returnPressed.connect(self.__open_db)
+        
         # Auto focus cursor on password input
         self.db_password_input.setFocus()
 
