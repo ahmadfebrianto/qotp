@@ -1,19 +1,19 @@
 import sys
 
 import pyotp
+from PySide6 import QtCore
 from PySide6.QtWidgets import (
     QApplication,
     QListWidget,
     QListWidgetItem,
     QMainWindow,
+    QMessageBox,
     QPushButton,
     QSystemTrayIcon,
     QVBoxLayout,
     QWidget,
-
 )
 
-from PySide6 import QtCore
 from model import db
 from utils import config
 from view.create_db import CreateDBWindow
@@ -84,11 +84,16 @@ class MainWindow(QMainWindow):
         self.show_notification("OTP code copied to clipboard")
 
     def show_notification(self, message):
-        self.tray_icon = QSystemTrayIcon(self)
-        self.tray_icon.setVisible(True)
-        self.tray_icon.showMessage(
-            "Authenticator", message, icon=QSystemTrayIcon.Information, msecs=1500
+        from plyer import notification
+
+        notification.notify(
+            title="OTPY",
+            message=message,
+            app_name="OTPY",
+            # app_icon="assets/icon.png",
+            timeout=3,
         )
+
 
     def load_accounts(self):
         entries = db.instance.entries
@@ -103,7 +108,6 @@ class MainWindow(QMainWindow):
         self.accounts = {}
         self.load_accounts()
 
-    
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Return:
             self.copy_otp_code(self.list_widget.currentItem())
