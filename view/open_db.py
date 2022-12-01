@@ -48,7 +48,7 @@ class OpenDBWindow(QMainWindow):
         self.db_password_input = QLineEdit()
         self.db_password_input.setEchoMode(QLineEdit.Password)
         self.db_password_input.returnPressed.connect(self.__open_db)
-        
+
         # Auto focus cursor on password input
         self.db_password_input.setFocus()
 
@@ -77,6 +77,9 @@ class OpenDBWindow(QMainWindow):
 
     def __open_db(self):
         db_path = self.db_path_input.text()
+        if self.config["db_path"] != db_path:
+            self.config["db_path"] = db_path
+            config.update_config(self.config)
         db_password = self.db_password_input.text()
         db.open_db(db_path, db_password)
         self.data_ready.emit(db_path)

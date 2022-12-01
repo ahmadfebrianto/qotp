@@ -108,14 +108,10 @@ class CreateDBWindow(QMainWindow):
         )
 
         # Create config file
-        self.__create_config()
-
+        config.create_config()
+        
         self.data_ready.emit(db)
         self.close()
-
-    # Create config file
-    def __create_config(self):
-        config.create_config(self.db_path)
 
     def __check_passwords(self):
         # Check if the passwords match
