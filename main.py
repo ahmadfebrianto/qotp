@@ -84,16 +84,13 @@ class MainWindow(QMainWindow):
         self.show_notification("OTP code copied to clipboard")
 
     def show_notification(self, message):
-        from plyer import notification
+        import notify2
 
-        notification.notify(
-            title="OTPY",
-            message=message,
-            app_name="OTPY",
-            # app_icon="assets/icon.png",
-            timeout=3,
-        )
-
+        # Show notification for 1 second
+        notify2.init("OTPY")
+        n = notify2.Notification("OTPY", message)
+        n.set_timeout(1000)
+        n.show()
 
     def load_accounts(self):
         entries = db.instance.entries
