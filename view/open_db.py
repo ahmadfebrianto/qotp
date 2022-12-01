@@ -74,6 +74,7 @@ class OpenDBWindow(QMainWindow):
             self, "Open database", "", "KeePass database (*.kdbx)"
         )
         self.db_path_input.setText(db[0])
+        self.db_password_input.setFocus()
 
     def __open_db(self):
         db_path = self.db_path_input.text()
