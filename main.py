@@ -86,7 +86,6 @@ class MainWindow(QMainWindow):
     def show_notification(self, message):
         import notify2
 
-        # Show notification for 1 second
         notify2.init("OTPY")
         n = notify2.Notification("OTPY", message)
         n.set_timeout(1000)

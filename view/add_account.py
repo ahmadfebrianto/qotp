@@ -84,6 +84,7 @@ class AddAccountWindow(QMainWindow):
             return
 
         self.image_label.setPixmap(QPixmap.fromImage(image))
+        QApplication.clipboard().clear()
 
     def read_qr_code(self):
         # Get the image from the label
@@ -106,7 +107,4 @@ class AddAccountWindow(QMainWindow):
             return
 
         self.data_ready.emit(data[0].data.decode("utf-8"))
-        app = QApplication.instance()
-        app.clipboard().setText(data[0].data.decode("utf-8"))
-
         self.close()
