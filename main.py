@@ -4,6 +4,8 @@ import pyotp
 from PySide6 import QtCore
 from PySide6.QtWidgets import (
     QApplication,
+    QHBoxLayout,
+    QLabel,
     QListWidget,
     QListWidgetItem,
     QMainWindow,
@@ -35,7 +37,7 @@ class MainWindow(QMainWindow):
 
         self.list_widget = QListWidget()
         # Set padding for the list widget
-        self.list_widget.setStyleSheet("QListWidget::item { padding: 10px; }")
+        # self.list_widget.setStyleSheet("QListWidget::item { padding: 10px; }")
 
         # Copy on double click
         self.list_widget.itemDoubleClicked.connect(self.copy_otp_code)
@@ -94,10 +96,40 @@ class MainWindow(QMainWindow):
     def load_accounts(self):
         entries = db.instance.entries
         for entry in entries:
+
             display_name = f"{entry.title} ({entry.username})"
-            widget_item = QListWidgetItem(display_name)
-            self.list_widget.addItem(widget_item)
+            label_account = QLabel(display_name)
             self.accounts[display_name] = entry
+
+            button_edit = QPushButton("Edit")
+            button_edit.clicked.connect(self.open_edit_account_window)
+
+            button_delete = QPushButton("Delete")
+            button_delete.clicked.connect(self.delete_account)
+
+            hbutton_layout = QHBoxLayout()
+            hbutton_layout.addStretch()
+            hbutton_layout.addWidget(button_edit)
+            hbutton_layout.addWidget(button_delete)
+
+            hlayout = QHBoxLayout()
+            hlayout.addWidget(label_account)
+            hlayout.addLayout(hbutton_layout)
+
+            widget = QWidget()
+            widget.setLayout(hlayout)
+
+            widget_item = QListWidgetItem()
+            widget_item.setSizeHint(widget.sizeHint())
+
+            self.list_widget.addItem(widget_item)
+            self.list_widget.setItemWidget(widget_item, widget)
+
+    def open_edit_account_window(self):
+        pass
+
+    def delete_account(self):
+        pass
 
     def update_accounts(self):
         self.list_widget.clear()
