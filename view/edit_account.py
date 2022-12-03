@@ -1,6 +1,13 @@
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QKeySequence, QShortcut
-from PySide6.QtWidgets import QLineEdit, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtGui import QKeySequence, QScreen, QShortcut
+from PySide6.QtWidgets import (
+    QApplication,
+    QLineEdit,
+    QPushButton,
+    QStyle,
+    QVBoxLayout,
+    QWidget,
+)
 
 from model import db
 
@@ -15,6 +22,7 @@ class EditAccountWindow(QWidget):
 
     def setup_ui(self):
         self.setWindowFlags(Qt.FramelessWindowHint)
+
         self.esc = QShortcut(QKeySequence("Esc"), self)
         self.esc.activated.connect(self.close)
 
@@ -39,3 +47,8 @@ class EditAccountWindow(QWidget):
             account.username = new_username
             db.instance.save()
             self.close()
+
+    def show(self) -> None:
+        super().show()
+
+

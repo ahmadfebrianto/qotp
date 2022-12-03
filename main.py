@@ -67,6 +67,9 @@ class MainWindow(QMainWindow):
         self.add_account_window.data_ready.connect(self.add_account)
         self.add_account_window.show()
 
+        # Center the window
+        self.center_window(self.add_account_window)
+
     def add_account(self, data):
         parsed_uri = self.parse_uri(data)
         title = parsed_uri.issuer
@@ -101,7 +104,6 @@ class MainWindow(QMainWindow):
             title="OTPY",
             message=message,
             app_name="OTPY",
-            app_icon="icon.ico",
             timeout=1,
         )
 
@@ -123,6 +125,9 @@ class MainWindow(QMainWindow):
         self.edit_username_window = EditAccountWindow(selected_account.username)
         self.edit_username_window.closeEvent = self.update_accounts
         self.edit_username_window.show()
+
+        # Center the window
+        self.center_window(self.edit_username_window)
 
     def save_changes(self):
         pass
@@ -155,6 +160,13 @@ class MainWindow(QMainWindow):
         if event.key() == QtCore.Qt.Key_Return:
             self.copy_otp_code(self.list_widget.currentItem())
 
+    def center_window(self, window):
+        window.move(
+            self.frameGeometry().topLeft()
+            + self.rect().center()
+            - window.rect().center()
+        )
+
 
 class App(QApplication):
     def __init__(self, argv):
@@ -164,6 +176,7 @@ class App(QApplication):
             self.create_db_window = CreateDBWindow()
             self.create_db_window.data_ready.connect(self.open_main_window)
             self.create_db_window.show()
+
         else:
             self.open_db_window = OpenDBWindow()
             self.open_db_window.data_ready.connect(self.open_main_window)

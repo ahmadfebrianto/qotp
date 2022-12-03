@@ -1,5 +1,6 @@
 from PySide6 import QtCore
 from PySide6.QtWidgets import (
+    QApplication,
     QFileDialog,
     QHBoxLayout,
     QLabel,
@@ -92,4 +93,14 @@ class OpenDBWindow(QMainWindow):
 
     def show(self) -> None:
         super().show()
+        # Get the screen geometry
+        screen = QApplication.primaryScreen().geometry()
+
+        # Calculate the center point of the screen
+        x = (screen.width() - self.width()) / 2
+        y = (screen.height() - self.height()) / 2
+
+        # Move the widget to the center of the screen
+        self.move(x, y)
+
         self.db_password_input.setFocus()
