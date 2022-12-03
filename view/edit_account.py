@@ -1,10 +1,8 @@
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QKeySequence, QScreen, QShortcut
+from PySide6.QtGui import QKeySequence, QShortcut
 from PySide6.QtWidgets import (
-    QApplication,
     QLineEdit,
     QPushButton,
-    QStyle,
     QVBoxLayout,
     QWidget,
 )
@@ -47,8 +45,3 @@ class EditAccountWindow(QWidget):
             account.username = new_username
             db.instance.save()
             self.close()
-
-    def show(self) -> None:
-        super().show()
-
-

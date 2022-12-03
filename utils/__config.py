@@ -11,9 +11,9 @@ class Config:
             self.path = Path(os.environ["LOCALAPPDATA"], "otpy", "config.json")
         else:
             self.path = Path.home() / ".config" / "otpy" / "otpy.conf"
-        self.is_present = self.__check_config()
 
-    def __check_config(self):
+    @property
+    def is_present(self):
         if not self.path.exists():
             return False
         return True
