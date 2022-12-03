@@ -76,19 +76,24 @@ class MainWindow(QMainWindow):
         return parsed_uri
 
     def copy_otp_code(self, item):
-        clicked_account = self.accounts[item.text()]
+        widget = self.list_widget.itemWidget(item)
+        label = widget.findChild(QLabel)
+        clicked_account = self.accounts[label.text()]
         parsed_uri = pyotp.parse_uri(clicked_account.url)
         otp_code = parsed_uri.now()
         QApplication.clipboard().setText(otp_code)
         self.show_notification("OTP code copied to clipboard")
 
     def show_notification(self, message):
-        import notify2
+        import plyer
 
-        notify2.init("OTPY")
-        n = notify2.Notification("OTPY", message)
-        n.set_timeout(1000)
-        n.show()
+        plyer.notification.notify(
+            title="OTPY",
+            message=message,
+            app_name="OTPY",
+            app_icon="icon.ico",
+            timeout=1,
+        )
 
     def load_accounts(self):
         entries = db.instance.entries
