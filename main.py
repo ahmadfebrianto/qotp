@@ -36,11 +36,8 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
 
         self.list_widget = QListWidget()
-        # Set padding for the list widget
-        # self.list_widget.setStyleSheet("QListWidget::item { padding: 10px; }")
-
-        # Copy on double click
         self.list_widget.itemDoubleClicked.connect(self.copy_otp_code)
+        self.list_widget.itemSelectionChanged.connect(self.on_selection_changed)
 
         btn_add_account = QPushButton("Add Account")
         btn_add_account.clicked.connect(self.open_add_account_window)
@@ -102,9 +99,13 @@ class MainWindow(QMainWindow):
             self.accounts[display_name] = entry
 
             button_edit = QPushButton("Edit")
+            button_edit.setObjectName("button_edit")
+            button_edit.hide()
             button_edit.clicked.connect(self.open_edit_account_window)
 
             button_delete = QPushButton("Delete")
+            button_delete.setObjectName("button_delete")
+            button_delete.hide()
             button_delete.clicked.connect(self.delete_account)
 
             hbutton_layout = QHBoxLayout()
@@ -125,6 +126,8 @@ class MainWindow(QMainWindow):
             self.list_widget.addItem(widget_item)
             self.list_widget.setItemWidget(widget_item, widget)
 
+        self.list_widget.setCurrentRow(0)
+
     def open_edit_account_window(self):
         pass
 
@@ -139,6 +142,18 @@ class MainWindow(QMainWindow):
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Return:
             self.copy_otp_code(self.list_widget.currentItem())
+
+    def on_selection_changed(self):
+        for i in range(self.list_widget.count()):
+            item = self.list_widget.item(i)
+            widget = self.list_widget.itemWidget(item)
+            widget.findChild(QPushButton, "button_edit").hide()
+            widget.findChild(QPushButton, "button_delete").hide()
+
+        item = self.list_widget.currentItem()
+        widget = self.list_widget.itemWidget(item)
+        widget.findChild(QPushButton, "button_edit").show()
+        widget.findChild(QPushButton, "button_delete").show()
 
 
 class App(QApplication):
