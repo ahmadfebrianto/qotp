@@ -1,4 +1,5 @@
 from time import sleep
+from urllib.parse import unquote
 
 import pyotp
 from PySide6 import QtCore
@@ -26,6 +27,7 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(600, 400)
         self.setup_ui()
         self.accounts = {}
+        self.hashes = []
         self.load_accounts()
 
     def setup_ui(self):
@@ -65,12 +67,22 @@ class MainWindow(QMainWindow):
         # Center the window
         # self.center_window(self.add_account_window)
 
-    def add_account(self, data):
-        parsed_uri = parse_uri(data)
+    def add_account(self, uri):
+        uri = unquote(uri)
+        uri_hash = self.get_digest(uri)
+        if uri_hash in self.hashes:
+            QMessageBox.warning(
+                self,
+                "Duplicate entry",
+                "This entry already exists in your database",
+            )
+            return
+
+        parsed_uri = parse_uri(uri)
         title = parsed_uri.issuer
         username = parsed_uri.name
         password = parsed_uri.secret
-        url = parsed_uri.provisioning_uri
+        url = uri
 
         from model import db
 
@@ -92,11 +104,17 @@ class MainWindow(QMainWindow):
         sleep(1)
         self.close()
 
+    def get_digest(self, uri):
+        from hashlib import sha256
+
+        return sha256(uri.encode()).hexdigest()
+
     def load_accounts(self):
         entries = db.instance.entries
         for entry in entries:
             display_name = f"{entry.title} ({entry.username})"
             self.accounts[display_name] = entry
+            self.hashes.append(self.get_digest(entry.url))
             self.list_widget.addItem(display_name)
 
         self.list_widget.setCurrentRow(0)
