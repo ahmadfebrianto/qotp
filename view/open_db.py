@@ -92,6 +92,7 @@ class OpenDBWindow(QMainWindow):
 
             # Create a button to create the database
             self.open_db_btn = QPushButton("Open database")
+            self.open_db_btn.setFixedWidth(label_max_width)
             self.open_db_btn.clicked.connect(self.__open_db)
 
             # Create a vertical layout and add the horizontal layouts
