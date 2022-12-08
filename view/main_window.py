@@ -55,6 +55,7 @@ class MainWindow(QMainWindow):
         from PySide6.QtWidgets import QMenu
 
         menu = QMenu()
+        menu.addAction("Copy OTP code", self.copy_otp_code)
         menu.addAction("Edit entry", self.open_edit_account_window)
         menu.addAction("Delete entry", self.delete_account)
         menu.exec(self.list_widget.mapToGlobal(position))
@@ -95,7 +96,9 @@ class MainWindow(QMainWindow):
 
         self.update_accounts()
 
-    def copy_otp_code(self, item):
+    def copy_otp_code(self, item=None):
+        if not item:
+            item = self.list_widget.currentItem()
         clicked_account = self.accounts[item.text()]
         parsed_uri = pyotp.parse_uri(clicked_account.url)
         otp_code = parsed_uri.now()
