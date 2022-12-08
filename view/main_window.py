@@ -29,6 +29,8 @@ class MainWindow(QMainWindow):
         self.accounts = {}
         self.hashes = []
         self.load_accounts()
+        self.key_pressed = False
+        self.timer = QtCore.QElapsedTimer()
 
     def setup_ui(self):
         widget = QWidget()
@@ -156,8 +158,28 @@ class MainWindow(QMainWindow):
         self.load_accounts()
 
     def keyPressEvent(self, event):
-        if event.key() == QtCore.Qt.Key_Return:
-            self.copy_otp_code(self.list_widget.currentItem())
+        # Check if the RETURN or ENTER key was pressed
+        if event.key() == QtCore.Qt.Key_Return or event.key() == QtCore.Qt.Key_Enter:
+            # If the key has already been pressed once, check if the time elapsed is less than the threshold
+            if self.key_pressed:
+                # If the elapsed time is less than the threshold, copy the item's data to the clipboard
+                if self.timer.elapsed() < 500:  # The threshold is 500 milliseconds
+                    item = self.list_widget.currentItem()
+                    self.copy_otp_code(item)
+
+                # Reset the flag and time
+                self.reset_key_pressed()
+            else:
+                # If the key has not been pressed before, set the flag to indicate that it has been pressed once
+                # and start the time
+                self.key_pressed = True
+                self.timer.start()
+
+        super().keyPressEvent(event)
+
+    def reset_key_pressed(self):
+        self.key_pressed = False
+        self.timer.invalidate()
 
     def center_window(self, window):
         window.move(
