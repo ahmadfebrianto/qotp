@@ -67,9 +67,6 @@ class MainWindow(QMainWindow):
         self.add_account_window.data_ready.connect(self.add_account)
         self.add_account_window.show()
 
-        # Center the window
-        # self.center_window(self.add_account_window)
-
     def add_account(self, uri):
         uri = unquote(uri)
         uri_hash = self.get_digest(uri)
