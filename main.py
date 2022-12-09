@@ -4,7 +4,7 @@ from PySide6.QtWidgets import (
     QApplication,
 )
 
-from utils import config
+from utils.config import config
 from view.create_db import CreateDBWindow
 from view.main_window import MainWindow
 from view.open_db import OpenDBWindow
@@ -15,7 +15,7 @@ class App(QApplication):
         super().__init__(argv)
         self.main_window = None
 
-        if not config.is_present:
+        if not config.exists:
             self.create_db_window = CreateDBWindow()
             self.create_db_window.data_ready.connect(self.open_main_window)
             self.create_db_window.show()

@@ -11,7 +11,6 @@ def show_notification(message):
     )
 
 
-
 def parse_uri(data):
     parsed_uri = pyotp.parse_uri(data)
     return parsed_uri

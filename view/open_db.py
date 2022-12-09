@@ -15,7 +15,7 @@ from PySide6.QtWidgets import (
 )
 
 from model import db
-from utils import config
+from utils.config import config
 
 
 class OpenDBWindow(QMainWindow):
@@ -25,7 +25,7 @@ class OpenDBWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setMinimumSize(600, 150)
-        self.config = config.read_config()
+        self.config = config.read()
         self.__setup_ui()
 
     def __setup_ui(self):
@@ -117,7 +117,7 @@ class OpenDBWindow(QMainWindow):
     def __open_db(self):
         db_path = self.db_path_input.text()
         self.config["db_path"] = db_path
-        config.update_config(self.config)
+        config.update(self.config)
         db_password = self.db_password_input.text()
         db.open_db(db_path, db_password)
         self.data_ready.emit(db_path)

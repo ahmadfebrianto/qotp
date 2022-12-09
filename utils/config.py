@@ -13,12 +13,12 @@ class Config:
             self.path = Path.home() / ".config" / "otpy" / "otpy.conf"
 
     @property
-    def is_present(self):
+    def exists(self):
         if not self.path.exists():
             return False
         return True
 
-    def create_config(self):
+    def create(self):
         config = {
             "db_path": db.db_path,
         }
@@ -26,11 +26,14 @@ class Config:
         with open(self.path, "w") as f:
             json.dump(config, f)
 
-    def read_config(self):
+    def read(self):
         with open(self.path, "r") as f:
             config = json.load(f)
         return config
 
-    def update_config(self, config):
+    def update(self, config):
         with open(self.path, "w") as f:
             json.dump(config, f)
+
+
+config = Config()

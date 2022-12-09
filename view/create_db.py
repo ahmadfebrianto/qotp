@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from utils import config
+from utils.config import config
 
 
 class CreateDBWindow(QMainWindow):
@@ -107,8 +107,8 @@ class CreateDBWindow(QMainWindow):
         )
 
         # Create config file
-        config.create_config()
-        
+        config.create()
+
         self.data_ready.emit(db)
         self.close()
 
