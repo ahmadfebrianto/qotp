@@ -7,7 +7,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from model import db
+
+from model.db import db
 
 
 class EditAccountWindow(QWidget):

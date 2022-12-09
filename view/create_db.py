@@ -11,10 +11,10 @@ from PySide6.QtWidgets import (
 )
 
 from utils.config import config
+from model.db import db
 
 
 class CreateDBWindow(QMainWindow):
-
     data_ready = QtCore.Signal(str)
 
     def __init__(self):
@@ -95,13 +95,12 @@ class CreateDBWindow(QMainWindow):
 
     def __create_db(self):
         # Create the database
-        from model import db
 
         self.db_path = (
             f"{self.db_location_input.text()}/{self.db_name_input.text()}.kdbx"
         )
 
-        db.create_db(
+        db.create(
             self.db_path,
             self.db_password_input.text(),
         )

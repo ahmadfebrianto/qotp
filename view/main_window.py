@@ -13,7 +13,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from model import db
+from model.db import db
 from utils.common import parse_uri, show_notification
 
 
@@ -83,8 +83,6 @@ class MainWindow(QMainWindow):
         username = parsed_uri.name
         password = parsed_uri.secret
         url = uri
-
-        from model import db
 
         db.instance.add_entry(
             db.instance.root_group, title, username, password, url=url

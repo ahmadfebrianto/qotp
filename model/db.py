@@ -14,14 +14,16 @@ class OTPAccount:
 
 
 class Database:
-
     instance = None
     db_path = None
 
-    def create_db(self, db_path, db_password):
+    def create(self, db_path, db_password):
         self.instance = pykeepass.create_database(db_path, db_password)
         self.db_path = db_path
 
-    def open_db(self, db_path, db_password):
+    def open(self, db_path, db_password):
         self.instance = pykeepass.PyKeePass(db_path, password=db_password)
         self.db_path = db_path
+
+
+db = Database()

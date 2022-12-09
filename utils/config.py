@@ -2,7 +2,7 @@ import json
 import os
 from pathlib import Path
 
-from model import db
+from model.db import db
 
 
 class Config:
