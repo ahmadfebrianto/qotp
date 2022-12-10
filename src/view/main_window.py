@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
 
 from model.db import db
 from utils.common import parse_uri, show_notification
+from utils.strings import String
 
 
 class MainWindow(QMainWindow):
@@ -23,7 +24,7 @@ class MainWindow(QMainWindow):
         self.edit_username_window = None
         self.add_account_window = None
         self.list_widget = None
-        self.setWindowTitle("OTPY")
+        self.setWindowTitle(String.APP_NAME)
         self.setMinimumSize(600, 400)
         self.setup_ui()
         self.accounts = {}
@@ -42,7 +43,7 @@ class MainWindow(QMainWindow):
         self.list_widget.customContextMenuRequested.connect(self.show_menu)
         self.list_widget.setStyleSheet("QListWidget::item { padding: 10px; }")
 
-        btn_add_account = QPushButton("Add Account")
+        btn_add_account = QPushButton(String.BUTTON_ADD_ACCOUNT)
         btn_add_account.clicked.connect(self.open_add_account_window)
 
         vlayout = QVBoxLayout()
@@ -55,9 +56,9 @@ class MainWindow(QMainWindow):
         from PySide6.QtWidgets import QMenu
 
         menu = QMenu()
-        menu.addAction("Copy OTP code", self.copy_otp_code)
-        menu.addAction("Edit entry", self.open_edit_account_window)
-        menu.addAction("Delete entry", self.delete_account)
+        menu.addAction(String.CTX_MENU_COPY, self.copy_otp_code)
+        menu.addAction(String.CTX_MENU_EDIT, self.open_edit_account_window)
+        menu.addAction(String.CTX_MENU_DELETE, self.delete_account)
         menu.exec(self.list_widget.mapToGlobal(position))
 
     def open_add_account_window(self):
@@ -73,8 +74,8 @@ class MainWindow(QMainWindow):
         if uri_hash in self.hashes:
             QMessageBox.warning(
                 self,
-                "Duplicate entry",
-                "This entry already exists in your database",
+                String.WARNING_DUPLICATE_TITLE,
+                String.WARNING_DUPLICATE_BODY,
             )
             return
 
@@ -99,7 +100,7 @@ class MainWindow(QMainWindow):
         otp_code = parsed_uri.now()
         QApplication.clipboard().setText(otp_code)
 
-        show_notification("OTP code copied to clipboard")
+        show_notification(String.APP_NAME, String.NOTIF_COPY_SUCCESS)
 
         sleep(1)
         self.close()
@@ -134,8 +135,8 @@ class MainWindow(QMainWindow):
     def delete_account(self):
         # Create a dialog
         dialog = QMessageBox()
-        dialog.setWindowTitle("Delete entry")
-        dialog.setText("Are you sure you want to delete this entry?")
+        dialog.setWindowTitle(String.DELETE_ENTRY_TITLE)
+        dialog.setText(String.DELETE_ENTRY_BODY)
         dialog.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         dialog.setDefaultButton(QMessageBox.No)
         dialog.setIcon(QMessageBox.Warning)
@@ -161,7 +162,7 @@ class MainWindow(QMainWindow):
             # If the key has already been pressed once, check if the time elapsed is less than the threshold
             if self.key_pressed:
                 # If the elapsed time is less than the threshold, copy the item's data to the clipboard
-                if self.timer.elapsed() < 500:  # The threshold is 500 milliseconds
+                if self.timer.elapsed() < 500: 
                     item = self.list_widget.currentItem()
                     self.copy_otp_code(item)
 

@@ -3,14 +3,12 @@ import os
 from pathlib import Path
 
 from model.db import db
+from utils.strings import String
 
 
 class Config:
     def __init__(self) -> None:
-        if os.name == "nt":
-            self.path = Path(os.environ["LOCALAPPDATA"], "otpy", "config.json")
-        else:
-            self.path = Path.home() / ".config" / "otpy" / "otpy.conf"
+        self.path = Path(String.APP_CONFIG_PATH)
 
     @property
     def exists(self):
@@ -20,7 +18,7 @@ class Config:
 
     def create(self):
         config = {
-            "db_path": db.db_path,
+            String.DB_PATH_KEY: db.db_path,
         }
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with open(self.path, "w") as f:

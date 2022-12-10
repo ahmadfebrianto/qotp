@@ -10,8 +10,9 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from utils.config import config
 from model.db import db
+from utils.config import config
+from utils.strings import String
 
 
 class CreateDBWindow(QMainWindow):
@@ -19,7 +20,7 @@ class CreateDBWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Create a new database")
+        self.setWindowTitle(String.CREATE_DB_TITLE)
         self.setMinimumSize(600, 150)
         self.setup_ui()
 
@@ -28,9 +29,7 @@ class CreateDBWindow(QMainWindow):
         widget = QWidget()
         self.setCentralWidget(widget)
 
-        # Create input for db name and db dialog location
-        self.db_name = QLabel("Database name")
-        # Make this label width the same as the other labels
+        self.db_name = QLabel(String.LABEL_DB_NAME)
         self.db_name.setFixedWidth(label_max_width)
         self.db_name_input = QLineEdit()
 
@@ -38,12 +37,12 @@ class CreateDBWindow(QMainWindow):
         hlayout_db_name.addWidget(self.db_name)
         hlayout_db_name.addWidget(self.db_name_input)
 
-        self.db_location = QLabel("Database location")
+        self.db_location = QLabel(String.LABEL_DB_LOCATION)
         self.db_location.setFixedWidth(label_max_width)
         self.db_location_input = QLineEdit()
         self.db_location_input.setReadOnly(True)
-        self.db_location_input.setPlaceholderText("Select a location")
-        self.db_location_dialog = QPushButton("...")
+        self.db_location_input.setPlaceholderText(String.PH_DB_LOCATION)
+        self.db_location_dialog = QPushButton(String.BTN_DIALOG)
         self.db_location_dialog.clicked.connect(self.__open_db_location_dialog)
 
         hlayout_db_location = QHBoxLayout()
@@ -51,7 +50,7 @@ class CreateDBWindow(QMainWindow):
         hlayout_db_location.addWidget(self.db_location_input)
         hlayout_db_location.addWidget(self.db_location_dialog)
 
-        self.db_password_label = QLabel("Database password")
+        self.db_password_label = QLabel(String.LABEL_DB_PASSWORD)
         self.db_password_label.setFixedWidth(label_max_width)
         self.db_password_input = QLineEdit()
         self.db_password_input.setEchoMode(QLineEdit.Password)
@@ -60,7 +59,7 @@ class CreateDBWindow(QMainWindow):
         hlayout_db_password.addWidget(self.db_password_label)
         hlayout_db_password.addWidget(self.db_password_input)
 
-        self.db_password_confirm_label = QLabel("Confirm password")
+        self.db_password_confirm_label = QLabel(String.LABEL_DB_PASSWORD_CONFIRM)
         self.db_password_confirm_label.setFixedWidth(label_max_width)
         self.db_password_confirm_input = QLineEdit()
         self.db_password_confirm_input.setEchoMode(QLineEdit.Password)
@@ -73,7 +72,7 @@ class CreateDBWindow(QMainWindow):
         hlayout_db_password_confirm.addWidget(self.db_password_confirm_input)
 
         # Create database button
-        self.create_db_btn = QPushButton("Create database")
+        self.create_db_btn = QPushButton(String.BTN_CREATE_DB)
         self.create_db_btn.setEnabled(False)
         self.create_db_btn.clicked.connect(self.__create_db)
 
@@ -88,16 +87,14 @@ class CreateDBWindow(QMainWindow):
 
     def __open_db_location_dialog(self):
         # Get the location of the database
-        db_location = QFileDialog.getExistingDirectory(
-            self, "Select a location for the database"
-        )
+        db_location = QFileDialog.getExistingDirectory(self, String.DB_DIALOG_TITLE)
         self.db_location_input.setText(db_location)
 
     def __create_db(self):
         # Create the database
 
-        self.db_path = (
-            f"{self.db_location_input.text()}/{self.db_name_input.text()}.kdbx"
+        self.db_path = String.get_db_path(
+            self.db_location_input.text(), self.db_name_input.text()
         )
 
         db.create(

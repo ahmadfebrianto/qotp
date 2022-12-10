@@ -1,21 +1,16 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QKeySequence, QShortcut
-from PySide6.QtWidgets import (
-    QLineEdit,
-    QPushButton,
-    QVBoxLayout,
-    QWidget,
-)
-
+from PySide6.QtWidgets import QLineEdit, QPushButton, QVBoxLayout, QWidget
 
 from model.db import db
+from utils.strings import String
 
 
 class EditAccountWindow(QWidget):
     def __init__(self, username):
         super().__init__()
         self.old_username = username
-        self.setWindowTitle("Edit username")
+        self.setWindowTitle(String.EDIT_ACCOUNT_TITLE)
         self.setMinimumSize(300, 100)
         self.setup_ui()
 
@@ -26,11 +21,11 @@ class EditAccountWindow(QWidget):
         self.esc.activated.connect(self.close)
 
         self.username = QLineEdit()
-        self.username.setPlaceholderText("Enter new username")
+        self.username.setPlaceholderText(String.PH_NEW_USERNAME)
         self.username.setText(self.old_username)
         self.username.returnPressed.connect(self.save_changes)
 
-        btn_save = QPushButton("Save")
+        btn_save = QPushButton(String.BTN_SAVE_USERNAME)
         btn_save.clicked.connect(self.save_changes)
 
         vlayout = QVBoxLayout()

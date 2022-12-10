@@ -1,12 +1,14 @@
+import os
+
 import plyer
 import pyotp
 
 
-def show_notification(message):
+def show_notification(app_name, message):
     plyer.notification.notify(
-        title="OTPY",
+        title=app_name,
         message=message,
-        app_name="OTPY",
+        app_name=app_name,
         timeout=1,
     )
 
@@ -14,3 +16,10 @@ def show_notification(message):
 def parse_uri(data):
     parsed_uri = pyotp.parse_uri(data)
     return parsed_uri
+
+
+def get_config_path(app_name, app_config_name):
+    if os.name == "nt":
+        return os.path.join(os.environ["LOCALAPPDATA"], app_name, app_config_name)
+    else:
+        return os.path.join(os.environ["HOME"], ".config", app_name, app_config_name)
