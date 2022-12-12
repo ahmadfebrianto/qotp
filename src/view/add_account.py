@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QMainWindow,
+    QMessageBox,
     QPushButton,
     QVBoxLayout,
     QWidget,
@@ -102,6 +103,11 @@ class AddAccountWindow(QMainWindow):
         data = decode(Image.open(io.BytesIO(buffer.data())))
 
         if not data:
+            QMessageBox.warning(
+                self,
+                String.WARNING_DUPLICATE_TITLE,
+                String.WARNING_NOT_QR_CODE,
+            )
             return
 
         self.data_ready.emit(data[0].data.decode("utf-8"))

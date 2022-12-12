@@ -2,6 +2,7 @@ import os
 
 import plyer
 import pyotp
+from PySide6.QtWidgets import QMessageBox
 
 
 def show_notification(app_name, message):

@@ -33,6 +33,8 @@ class String:
     FILE_IMAGE_FILTER = "Image Files (*.png *.jpg *.bmp)"
     IMAGE_PNG = "PNG"
 
+    WARNING_NOT_QR_CODE = "This is not a QR code"
+
     # File: view/edit_account.py
     EDIT_ACCOUNT_TITLE = "Edit Account"
     PH_NEW_USERNAME = "New username"
