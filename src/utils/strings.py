@@ -15,8 +15,8 @@ class String:
     CTX_MENU_EDIT = "Edit entry"
     CTX_MENU_DELETE = "Delete entry"
 
-    WARNING_DUPLICATE_TITLE = "Duplicate entry"
-    WARNING_DUPLICATE_BODY = "This entry already exists in your database"
+    WARNING_DUPLICATE_ENTRY = "Duplicate entry"
+    WARNING_DUPLICATE_ENTRY_BODY = "This entry already exists in your database"
 
     NOTIF_COPY_SUCCESS = "OTP code copied to clipboard"
 
@@ -33,7 +33,11 @@ class String:
     FILE_IMAGE_FILTER = "Image Files (*.png *.jpg *.bmp)"
     IMAGE_PNG = "PNG"
 
-    WARNING_NOT_QR_CODE = "This is not a QR code"
+    WARNING_INVALID_QR = "Invalid QR Code"
+    WARNING_INVALID_QR_BODY = "This is not a valid QR code."
+
+    WARNING_INVALID_IMAGE_SIZE = "Invalid image size"
+    WARNING_INVALID_IMAGE_SIZE_BODY = "Image size is too large."
 
     # File: view/edit_account.py
     EDIT_ACCOUNT_TITLE = "Edit Account"

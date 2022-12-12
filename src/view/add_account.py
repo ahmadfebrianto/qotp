@@ -60,7 +60,8 @@ class AddAccountWindow(QMainWindow):
 
     def load_image(self, path):
         image = QImage(path)
-        if image.isNull():
+        if not self.ensure_image_size(image):
+            self.show_warning(String.WARNING_INVALID_IMAGE_SIZE)
             return
 
         self.image_label.setPixmap(QPixmap.fromImage(image))
@@ -84,6 +85,11 @@ class AddAccountWindow(QMainWindow):
         if image.isNull():
             return
 
+        # Ensure the image size is not too large
+        if not self.ensure_image_size(image):
+            self.show_warning(String.WARNING_INVALID_IMAGE_SIZE)
+            return
+
         self.image_label.setPixmap(QPixmap.fromImage(image))
         QApplication.clipboard().clear()
 
@@ -103,12 +109,38 @@ class AddAccountWindow(QMainWindow):
         data = decode(Image.open(io.BytesIO(buffer.data())))
 
         if not data:
-            QMessageBox.warning(
-                self,
-                String.WARNING_DUPLICATE_TITLE,
-                String.WARNING_NOT_QR_CODE,
-            )
+            self.show_warning(String.WARNING_INVALID_QR)
             return
 
         self.data_ready.emit(data[0].data.decode("utf-8"))
         self.close()
+
+    def ensure_image_size(self, image):
+        # Limit to 1 MB
+        MAX_LIMIT = 1024 * 1024
+        if image.sizeInBytes() > MAX_LIMIT:
+            return False
+
+        return True
+
+    def show_warning(self, warning):
+        if warning == String.WARNING_INVALID_IMAGE_SIZE:
+            QMessageBox.warning(
+                self,
+                String.WARNING_INVALID_IMAGE_SIZE,
+                String.WARNING_INVALID_IMAGE_SIZE_BODY,
+            )
+
+        elif warning == String.WARNING_INVALID_QR:
+            QMessageBox.warning(
+                self,
+                String.WARNING_INVALID_QR,
+                String.WARNING_INVALID_QR_BODY,
+            )
+
+        elif warning == String.WARNING_DUPLICATE_ENTRY:
+            QMessageBox.warning(
+                self,
+                String.WARNING_DUPLICATE_ENTRY,
+                String.WARNING_DUPLICATE_ENTRY_BODY,
+            )

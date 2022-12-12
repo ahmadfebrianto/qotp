@@ -74,8 +74,8 @@ class MainWindow(QMainWindow):
         if uri_hash in self.hashes:
             QMessageBox.warning(
                 self,
-                String.WARNING_DUPLICATE_TITLE,
-                String.WARNING_DUPLICATE_BODY,
+                String.WARNING_DUPLICATE_ENTRY,
+                String.WARNING_DUPLICATE_ENTRY_BODY,
             )
             return
 
@@ -162,7 +162,7 @@ class MainWindow(QMainWindow):
             # If the key has already been pressed once, check if the time elapsed is less than the threshold
             if self.key_pressed:
                 # If the elapsed time is less than the threshold, copy the item's data to the clipboard
-                if self.timer.elapsed() < 500: 
+                if self.timer.elapsed() < 500:
                     item = self.list_widget.currentItem()
                     self.copy_otp_code(item)
 
