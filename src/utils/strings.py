@@ -56,6 +56,10 @@ class String:
     DB_DIALOG_TITLE = "Select a location for the database"
     BTN_CREATE_DB = "Create database"
 
+    # File: view/export_account.py
+    EXPORT_ACCOUNT_TITLE = "Export Account"
+    BTN_COPY_SECRET = "Copy secret"
+
     # File: utils/config.py
     APP_CONFIG_NAME = APP_NAME_LOWER + ".conf"
     APP_CONFIG_PATH = get_config_path(APP_NAME_LOWER, APP_CONFIG_NAME)

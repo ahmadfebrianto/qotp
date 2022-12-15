@@ -57,6 +57,7 @@ class MainWindow(QMainWindow):
 
         menu = QMenu()
         menu.addAction(String.CTX_MENU_COPY, self.copy_otp_code)
+        menu.addAction(String.CTX_MENU_EXPORT, self.open_export_account_window)
         menu.addAction(String.CTX_MENU_EDIT, self.open_edit_account_window)
         menu.addAction(String.CTX_MENU_DELETE, self.delete_account)
         menu.exec(self.list_widget.mapToGlobal(position))
@@ -67,6 +68,14 @@ class MainWindow(QMainWindow):
         self.add_account_window = AddAccountWindow()
         self.add_account_window.data_ready.connect(self.add_account)
         self.add_account_window.show()
+
+    def open_export_account_window(self):
+        from view.export_account import ExportAccountWindow
+        
+        current_item = self.list_widget.currentItem()
+        chosen_account = self.accounts[current_item.text()]
+        self.export_account_window = ExportAccountWindow(self, chosen_account)
+        self.export_account_window.show()
 
     def add_account(self, uri):
         uri = unquote(uri)
