@@ -122,6 +122,9 @@ class OpenDBWindow(QMainWindow):
             self.__setup_ui()
             self.show()
 
+        else:
+            self.db_path_input.setText(db[0])
+
     def __open_db(self):
         db_path = self.db_path_input.text()
         self.config["db_path"] = db_path
