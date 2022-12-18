@@ -165,6 +165,9 @@ class MainWindow(QMainWindow):
         self.accounts = {}
         self.load_accounts()
 
+        # Set the last item as the current item
+        self.list_widget.setCurrentRow(self.list_widget.count() - 1)
+
     def keyPressEvent(self, event):
         # Check if the RETURN or ENTER key was pressed
         if event.key() == QtCore.Qt.Key_Return or event.key() == QtCore.Qt.Key_Enter:
