@@ -71,7 +71,7 @@ class MainWindow(QMainWindow):
 
     def open_export_account_window(self):
         from view.export_account import ExportAccountWindow
-        
+
         current_item = self.list_widget.currentItem()
         chosen_account = self.accounts[current_item.text()]
         self.export_account_window = ExportAccountWindow(self, chosen_account)

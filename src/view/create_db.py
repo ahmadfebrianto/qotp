@@ -25,7 +25,7 @@ class CreateDBWindow(QMainWindow):
         self.setup_ui()
 
     def setup_ui(self):
-        label_max_width = 200
+        label_max_width = 150
         widget = QWidget()
         self.setCentralWidget(widget)
 
