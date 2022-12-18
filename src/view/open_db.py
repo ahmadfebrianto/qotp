@@ -33,6 +33,8 @@ class OpenDBWindow(QMainWindow):
         widget = QWidget()
         self.setCentralWidget(widget)
 
+        # If the database path in the config file is not valid, show a dialog
+        # to create a new database or open an existing one.
         if not self.__is_db_path_valid(self.config["db_path"]):
             self.setWindowTitle("Create or Open an existing database")
             db_path = self.config["db_path"]
@@ -61,6 +63,8 @@ class OpenDBWindow(QMainWindow):
 
             widget.setLayout(layout)
 
+        # If the database path in the config file is valid, show a dialog
+        # to open an existing database.
         else:
             self.setWindowTitle("Open an existing database")
             self.db_path = QLabel("Database path")
@@ -108,6 +112,10 @@ class OpenDBWindow(QMainWindow):
         db = QFileDialog.getOpenFileName(
             self, "Open database", "", "KeePass database (*.kdbx)"
         )
+
+        # If the user cancels the dialog, return
+        if not db[0]:
+            return
 
         if not self.__is_db_path_valid(self.config["db_path"]):
             self.config["db_path"] = db[0]
