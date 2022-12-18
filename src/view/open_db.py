@@ -119,7 +119,17 @@ class OpenDBWindow(QMainWindow):
         self.config["db_path"] = db_path
         config.update(self.config)
         db_password = self.db_password_input.text()
-        db.open(db_path, db_password)
+
+        try:
+            db.open(db_path, db_password)
+
+        except Exception as e:
+            self.db_password_input.setStyleSheet(
+                "QLineEdit { border: 1px solid tomato; padding: 2px;}"
+            )
+            self.db_password_input.setToolTip(str(e))
+            return
+
         self.data_ready.emit(db_path)
         self.close()
 
