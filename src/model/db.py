@@ -16,6 +16,9 @@ class Database:
         self.instance = pykeepass.PyKeePass(db_path, password=db_password)
         self.db_path = db_path
 
+    def entries(self):
+        return self.instance.entries
+
 
 class Entry(Database):
     def __init__(self, uri):
@@ -36,3 +39,4 @@ class Entry(Database):
         pass
 
 
+db = Database()
