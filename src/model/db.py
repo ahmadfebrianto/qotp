@@ -1,16 +1,7 @@
+from urllib.parse import unquote
+
 import pykeepass
-
-
-class OTPAccount:
-    def __init__(self, name, username, password, url, otp_secret):
-        self.name = name
-        self.username = username
-        self.password = password
-        self.url = url
-        self.otp_secret = otp_secret
-
-    def __str__(self):
-        return f"{type(self).__name__}({self.name}, {self.username}, {self.url})"
+from pyotp import parse_uri
 
 
 class Database:
@@ -26,4 +17,22 @@ class Database:
         self.db_path = db_path
 
 
-db = Database()
+class Entry(Database):
+    def __init__(self, uri):
+        self.otp = parse_uri(unquote(uri))
+
+    def save(self):
+        title = self.otp.issuer
+        username = self.otp.name
+        password = self.otp.secret
+        url = self.otp.provisioning_uri()
+
+        self.instance.add_entry(
+            self.instance.root_group, title, username, password, url=url
+        )
+        self.instance.save()
+
+    def delete(self):
+        pass
+
+
