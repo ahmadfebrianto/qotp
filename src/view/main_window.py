@@ -1,5 +1,4 @@
 from time import sleep
-from urllib.parse import unquote
 
 import pyotp
 from PySide6 import QtCore
@@ -28,7 +27,7 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(600, 400)
         self.setup_ui()
         self.accounts = {}
-        self.hashes = []
+        # self.hashes = []
         self.load_accounts()
         self.key_pressed = False
         self.timer = QtCore.QElapsedTimer()
@@ -66,7 +65,7 @@ class MainWindow(QMainWindow):
         from view.add_account import AddAccountWindow
 
         self.add_account_window = AddAccountWindow()
-        self.add_account_window.data_ready.connect(self.add_account)
+        self.add_account_window.closed.connect(self.load_accounts)
         self.add_account_window.show()
 
     def open_export_account_window(self):
@@ -76,30 +75,6 @@ class MainWindow(QMainWindow):
         chosen_account = self.accounts[current_item.text()]
         self.export_account_window = ExportAccountWindow(self, chosen_account)
         self.export_account_window.show()
-
-    def add_account(self, uri):
-        uri = unquote(uri)
-        uri_hash = self.get_digest(uri)
-        if uri_hash in self.hashes:
-            QMessageBox.warning(
-                self,
-                String.WARNING_DUPLICATE_ENTRY,
-                String.WARNING_DUPLICATE_ENTRY_BODY,
-            )
-            return
-
-        parsed_uri = parse_uri(uri)
-        title = parsed_uri.issuer
-        username = parsed_uri.name
-        password = parsed_uri.secret
-        url = uri
-
-        db.instance.add_entry(
-            db.instance.root_group, title, username, password, url=url
-        )
-        db.instance.save()
-
-        self.update_accounts()
 
     def copy_otp_code(self, item=None):
         if not item:
@@ -124,7 +99,7 @@ class MainWindow(QMainWindow):
         for entry in entries:
             display_name = f"{entry.title} ({entry.username})"
             self.accounts[display_name] = entry
-            self.hashes.append(self.get_digest(entry.url))
+            # self.hashes.append(self.get_digest(entry.url))
             self.list_widget.addItem(display_name)
 
         self.list_widget.setCurrentRow(0)

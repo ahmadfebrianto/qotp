@@ -15,12 +15,13 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from model.db import db
 from utils.strings import String
 
 
 class AddAccountWindow(QMainWindow):
 
-    data_ready = QtCore.Signal(str)
+    closed = QtCore.Signal()
 
     def __init__(self):
         super().__init__()
@@ -111,8 +112,9 @@ class AddAccountWindow(QMainWindow):
         if not data:
             self.show_warning(String.WARNING_INVALID_QR)
             return
-
-        self.data_ready.emit(data[0].data.decode("utf-8"))
+        uri = data[0].data.decode("utf-8")
+        db.add_entry(uri)
+        self.closed.emit()
         self.close()
 
     def ensure_image_size(self, image):
