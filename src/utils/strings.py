@@ -65,6 +65,9 @@ class String:
     APP_CONFIG_PATH = get_config_path(APP_NAME_LOWER, APP_CONFIG_NAME)
     DB_PATH_KEY = "db_path"
 
+    # Etc
+    UTF_8 = "utf-8"
+
     @classmethod
     def get_db_path(cls, dir, name):
         return os.path.join(dir, name + cls.APP_DB_EXT)

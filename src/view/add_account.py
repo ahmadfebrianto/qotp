@@ -1,4 +1,5 @@
 import io
+from urllib.parse import unquote
 
 from PySide6 import QtCore
 from PySide6.QtCore import QBuffer
@@ -112,7 +113,13 @@ class AddAccountWindow(QMainWindow):
         if not data:
             self.show_warning(String.WARNING_INVALID_QR)
             return
-        uri = data[0].data.decode("utf-8")
+
+        uri = data[0].data.decode(String.UTF_8)
+
+        if db.exists(uri):
+            self.show_warning(String.WARNING_DUPLICATE_ENTRY)
+            return
+
         db.add_entry(uri)
         self.closed.emit()
         self.close()

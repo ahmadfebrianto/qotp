@@ -29,4 +29,10 @@ class Database:
         )
         self.instance.save()
 
+    def exists(self, uri):
+        uri = unquote(uri)
+        entry = self.instance.find_entries(otp=uri, first=True)
+        return entry is not None
+
+
 db = Database()
