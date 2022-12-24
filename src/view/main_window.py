@@ -79,20 +79,12 @@ class MainWindow(QMainWindow):
     def copy_otp_code(self, item=None):
         if not item:
             item = self.list_widget.currentItem()
-        clicked_account = self.accounts[item.text()]
-        parsed_uri = pyotp.parse_uri(clicked_account.url)
-        otp_code = parsed_uri.now()
+        otp_code = db.get_otp_code(item.text())
         QApplication.clipboard().setText(otp_code)
 
         show_notification(String.APP_NAME, String.NOTIF_COPY_SUCCESS)
-
         sleep(1)
         self.close()
-
-    def get_digest(self, uri):
-        from hashlib import sha256
-
-        return sha256(uri.encode()).hexdigest()
 
     def load_accounts(self):
         entries = db.instance.entries

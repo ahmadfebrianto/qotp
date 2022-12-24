@@ -17,6 +17,11 @@ class Database:
         self.instance = pykeepass.PyKeePass(db_path, password=db_password)
         self.db_path = db_path
 
+    def get_entry(self, title_username):
+        title, username = re.search(r"(.*) \((.*)\)", title_username).groups()
+        entry = self.instance.find_entries(title=title, username=username, first=True)
+        return entry
+
     def add_entry(self, uri):
         uri = unquote(uri)
         otp = parse_uri(uri)
@@ -35,9 +40,8 @@ class Database:
         entry.username = new_username
         self.instance.save()
 
-    def delete_entry(self, entry):
-        title, username = re.search(r"(.*) \((.*)\)", entry).groups()
-        entry = self.instance.find_entries(title=title, username=username, first=True)
+    def delete_entry(self, title_username):
+        entry = self.get_entry(title_username)
         self.instance.delete_entry(entry)
         self.instance.save()
 
@@ -45,6 +49,11 @@ class Database:
         uri = unquote(uri)
         entry = self.instance.find_entries(otp=uri, first=True)
         return entry is not None
+
+    def get_otp_code(self, title_username):
+        entry = self.get_entry(title_username)
+        otp = parse_uri(entry.otp)
+        return otp.now()
 
 
 db = Database()
