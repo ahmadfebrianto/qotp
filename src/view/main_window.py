@@ -72,7 +72,6 @@ class MainWindow(QMainWindow):
         from view.export_account import ExportAccountWindow
 
         chosen_entry = self.list_widget.currentItem().text()
-        # chosen_account = self.accounts[chosen_entry.text()]
         self.export_account_window = ExportAccountWindow(self, chosen_entry)
         self.export_account_window.show()
 
@@ -87,7 +86,7 @@ class MainWindow(QMainWindow):
         self.close()
 
     def load_accounts(self):
-        entries = db.instance.entries
+        entries = db.entries
         for entry in entries:
             display_name = f"{entry.title} ({entry.username})"
             self.accounts[display_name] = entry
@@ -98,9 +97,9 @@ class MainWindow(QMainWindow):
     def open_edit_account_window(self):
         from view.edit_account import EditAccountWindow
 
-        selected_item = self.list_widget.currentItem()
-        selected_account = self.accounts[selected_item.text()]
-        self.edit_username_window = EditAccountWindow(selected_account.username)
+        selected_entry = self.list_widget.currentItem().text()
+        username = re.search(r"\((.*)\)", selected_entry).group(1)
+        self.edit_username_window = EditAccountWindow(username)
         self.edit_username_window.closeEvent = self.update_accounts
         self.edit_username_window.show()
 
