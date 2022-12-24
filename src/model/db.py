@@ -30,6 +30,11 @@ class Database:
         )
         self.instance.save()
 
+    def update_entry(self, old_username, new_username):
+        entry = self.instance.find_entries(username=old_username, first=True)
+        entry.username = new_username
+        self.instance.save()
+
     def delete_entry(self, entry):
         title, username = re.search(r"(.*) \((.*)\)", entry).groups()
         entry = self.instance.find_entries(title=title, username=username, first=True)

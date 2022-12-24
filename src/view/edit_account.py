@@ -37,7 +37,5 @@ class EditAccountWindow(QWidget):
     def save_changes(self):
         new_username = self.username.text()
         if new_username:
-            account = db.instance.find_entries_by_username(self.old_username)[0]
-            account.username = new_username
-            db.instance.save()
+            db.update_entry(self.old_username, new_username)
             self.close()
