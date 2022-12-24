@@ -14,11 +14,6 @@ def show_notification(app_name, message):
     )
 
 
-def parse_uri(data):
-    parsed_uri = pyotp.parse_uri(data)
-    return parsed_uri
-
-
 def get_config_path(app_name, app_config_name):
     if os.name == "nt":
         return os.path.join(os.environ["LOCALAPPDATA"], app_name, app_config_name)
