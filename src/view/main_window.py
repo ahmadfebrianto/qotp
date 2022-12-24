@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (
     QApplication,
     QListWidget,
     QMainWindow,
+    QMenu,
     QMessageBox,
     QPushButton,
     QVBoxLayout,
@@ -16,6 +17,9 @@ from PySide6.QtWidgets import (
 from model.db import db
 from utils.common import copy_to_clipboard, show_notification
 from utils.strings import String
+from view.add_account import AddAccountWindow
+from view.edit_account import EditAccountWindow
+from view.export_account import ExportAccountWindow
 
 
 class MainWindow(QMainWindow):
@@ -27,8 +31,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(String.APP_NAME)
         self.setMinimumSize(600, 400)
         self.setup_ui()
-        self.accounts = {}
-        self.load_accounts()
+        self.update_accounts()
         self.key_pressed = False
         self.timer = QtCore.QElapsedTimer()
 
@@ -52,8 +55,6 @@ class MainWindow(QMainWindow):
         widget.setLayout(vlayout)
 
     def show_menu(self, position):
-        from PySide6.QtWidgets import QMenu
-
         menu = QMenu()
         menu.addAction(String.CTX_MENU_COPY, self.copy_otp_code)
         menu.addAction(String.CTX_MENU_EXPORT, self.open_export_account_window)
@@ -62,15 +63,11 @@ class MainWindow(QMainWindow):
         menu.exec(self.list_widget.mapToGlobal(position))
 
     def open_add_account_window(self):
-        from view.add_account import AddAccountWindow
-
         self.add_account_window = AddAccountWindow()
-        self.add_account_window.closed.connect(self.load_accounts)
+        self.add_account_window.closeEvent = self.update_accounts
         self.add_account_window.show()
 
     def open_export_account_window(self):
-        from view.export_account import ExportAccountWindow
-
         chosen_entry = self.list_widget.currentItem().text()
         self.export_account_window = ExportAccountWindow(self, chosen_entry)
         self.export_account_window.show()
@@ -86,17 +83,11 @@ class MainWindow(QMainWindow):
         self.close()
 
     def load_accounts(self):
-        entries = db.entries
-        for entry in entries:
-            display_name = f"{entry.title} ({entry.username})"
-            self.accounts[display_name] = entry
-            self.list_widget.addItem(display_name)
-
-        self.list_widget.setCurrentRow(0)
+        for entry in db.entries:
+            entry_display = f"{entry.title} ({entry.username})"
+            self.list_widget.addItem(entry_display)
 
     def open_edit_account_window(self):
-        from view.edit_account import EditAccountWindow
-
         selected_entry = self.list_widget.currentItem().text()
         username = re.search(r"\((.*)\)", selected_entry).group(1)
         self.edit_username_window = EditAccountWindow(username)
@@ -122,19 +113,26 @@ class MainWindow(QMainWindow):
             self.update_accounts()
 
     def update_accounts(self, *args):
+        currentRow = self.list_widget.currentRow()
+        previousCount = self.list_widget.count()
         self.list_widget.clear()
-        self.accounts = {}
         self.load_accounts()
 
-        # Set the last item as the current item
-        self.list_widget.setCurrentRow(self.list_widget.count() - 1)
+        if self.list_widget.count() > previousCount:
+            self.list_widget.setCurrentRow(previousCount)
+        elif self.list_widget.count() < previousCount:
+            self.list_widget.setCurrentRow(currentRow - 1)
+        else:
+            self.list_widget.setCurrentRow(currentRow)
 
     def keyPressEvent(self, event):
         # Check if the RETURN or ENTER key was pressed
         if event.key() == QtCore.Qt.Key_Return or event.key() == QtCore.Qt.Key_Enter:
-            # If the key has already been pressed once, check if the time elapsed is less than the threshold
+            # If the key has already been pressed once,
+            # check if the time elapsed is less than the threshold
             if self.key_pressed:
-                # If the elapsed time is less than the threshold, copy the item's data to the clipboard
+                # If the elapsed time is less than the threshold,
+                # copy the item's data to the clipboard
                 if self.timer.elapsed() < 500:
                     item = self.list_widget.currentItem()
                     self.copy_otp_code(item)
@@ -142,7 +140,8 @@ class MainWindow(QMainWindow):
                 # Reset the flag and time
                 self.reset_key_pressed()
             else:
-                # If the key has not been pressed before, set the flag to indicate that it has been pressed once
+                # If the key has not been pressed before,
+                # set the flag to indicate that it has been pressed once
                 # and start the time
                 self.key_pressed = True
                 self.timer.start()

@@ -22,8 +22,6 @@ from utils.strings import String
 
 class AddAccountWindow(QMainWindow):
 
-    closed = QtCore.Signal()
-
     def __init__(self):
         super().__init__()
         self.setWindowTitle(String.ADD_ACCOUNT_TITLE)
@@ -121,7 +119,6 @@ class AddAccountWindow(QMainWindow):
             return
 
         db.add_entry(uri)
-        self.closed.emit()
         self.close()
 
     def ensure_image_size(self, image):
