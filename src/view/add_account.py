@@ -34,6 +34,9 @@ class AddAccountWindow(QWidget):
         # Paste image button
         btn_paste_image = QPushButton(String.BTN_PASTE_IMAGE)
         btn_paste_image.clicked.connect(self.paste_qr_image)
+        # Cancel Button
+        btn_cancel = QPushButton(String.BTN_CANCEL)
+        btn_cancel.clicked.connect(self.close)
         # Read QR code button
         btn_read_qr_code = QPushButton(String.BTN_READ_QR_CODE)
         btn_read_qr_code.clicked.connect(self.read_qr_code)
@@ -43,11 +46,15 @@ class AddAccountWindow(QWidget):
         hlayout = QHBoxLayout()
         hlayout.addWidget(btn_load_image)
         hlayout.addWidget(btn_paste_image)
+        # Horizontal layout for "Cancel" and "Read QR code" buttons
+        hlayout2 = QHBoxLayout()
+        hlayout2.addWidget(btn_cancel)
+        hlayout2.addWidget(btn_read_qr_code)
         # Vertical layout for Image label and hlayout (the buttons)
         vlayout = QVBoxLayout()
         vlayout.addWidget(self.image_label)
         vlayout.addLayout(hlayout)
-        vlayout.addWidget(btn_read_qr_code)
+        vlayout.addLayout(hlayout2)
         # Center the image
         vlayout.setAlignment(self.image_label, QtCore.Qt.AlignCenter)
         # Set layout

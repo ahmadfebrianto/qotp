@@ -26,6 +26,7 @@ class String:
     # File: view/add_account.py
     ADD_ACCOUNT_TITLE = "Add Account"
 
+    BTN_CANCEL = "Cancel"
     BTN_LOAD_IMAGE = "Load Image"
     BTN_PASTE_IMAGE = "Paste Image"
     BTN_READ_QR_CODE = "Read QR Code"
