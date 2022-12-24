@@ -55,5 +55,13 @@ class Database:
         otp = parse_uri(entry.otp)
         return otp.now()
 
+    def get_secret(self, title_username):
+        entry = self.get_entry(title_username)
+        return entry.password
+
+    def get_uri(self, title_username):
+        entry = self.get_entry(title_username)
+        return entry.otp
+
 
 db = Database()

@@ -71,9 +71,9 @@ class MainWindow(QMainWindow):
     def open_export_account_window(self):
         from view.export_account import ExportAccountWindow
 
-        current_item = self.list_widget.currentItem()
-        chosen_account = self.accounts[current_item.text()]
-        self.export_account_window = ExportAccountWindow(self, chosen_account)
+        chosen_entry = self.list_widget.currentItem().text()
+        # chosen_account = self.accounts[chosen_entry.text()]
+        self.export_account_window = ExportAccountWindow(self, chosen_entry)
         self.export_account_window.show()
 
     def copy_otp_code(self, item=None):
