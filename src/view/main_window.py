@@ -1,3 +1,4 @@
+import re
 from time import sleep
 
 import pyotp
@@ -27,7 +28,6 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(600, 400)
         self.setup_ui()
         self.accounts = {}
-        # self.hashes = []
         self.load_accounts()
         self.key_pressed = False
         self.timer = QtCore.QElapsedTimer()
@@ -99,7 +99,6 @@ class MainWindow(QMainWindow):
         for entry in entries:
             display_name = f"{entry.title} ({entry.username})"
             self.accounts[display_name] = entry
-            # self.hashes.append(self.get_digest(entry.url))
             self.list_widget.addItem(display_name)
 
         self.list_widget.setCurrentRow(0)
@@ -125,14 +124,10 @@ class MainWindow(QMainWindow):
         dialog.setDefaultButton(QMessageBox.No)
         dialog.setIcon(QMessageBox.Warning)
 
-        # Execute the dialog
         result = dialog.exec()
-
         if result == QMessageBox.Yes:
             selected_item = self.list_widget.currentItem()
-            selected_account = self.accounts[selected_item.text()]
-            db.instance.delete_entry(selected_account)
-            db.instance.save()
+            db.delete_entry(selected_item.text())
             self.update_accounts()
 
     def update_accounts(self, *args):

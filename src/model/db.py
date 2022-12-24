@@ -1,3 +1,4 @@
+import re
 from urllib.parse import unquote
 
 import pykeepass
@@ -27,6 +28,12 @@ class Database:
             password=otp.secret,
             otp=uri,
         )
+        self.instance.save()
+
+    def delete_entry(self, entry):
+        title, username = re.search(r"(.*) \((.*)\)", entry).groups()
+        entry = self.instance.find_entries(title=title, username=username, first=True)
+        self.instance.delete_entry(entry)
         self.instance.save()
 
     def exists(self, uri):
