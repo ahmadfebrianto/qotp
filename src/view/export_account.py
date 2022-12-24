@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from utils.common import copy_to_clipboard
 from utils.strings import String
 
 
@@ -26,7 +27,7 @@ class ExportAccountWindow(QMainWindow):
     def setup_ui(self):
         self.label_qr = QLabel()
         self.label_qr.setAlignment(Qt.AlignCenter)
-        self.set_qr_label(self.account.url)
+        self.set_qr_label(self.account.otp)
 
         self.btn_copy_secret = QPushButton(String.BTN_COPY_SECRET)
         self.btn_copy_secret.clicked.connect(self.copy_secret)
@@ -48,6 +49,5 @@ class ExportAccountWindow(QMainWindow):
         self.label_qr.setPixmap(qt_pixmap)
 
     def copy_secret(self):
-        clipboard = QApplication.clipboard()
-        clipboard.setText(self.account.password)
+        copy_to_clipboard(self.account.password)
         self.close()

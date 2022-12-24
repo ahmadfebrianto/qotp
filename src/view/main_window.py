@@ -14,7 +14,7 @@ from PySide6.QtWidgets import (
 )
 
 from model.db import db
-from utils.common import parse_uri, show_notification
+from utils.common import copy_to_clipboard, show_notification
 from utils.strings import String
 
 
@@ -80,7 +80,7 @@ class MainWindow(QMainWindow):
         if not item:
             item = self.list_widget.currentItem()
         otp_code = db.get_otp_code(item.text())
-        QApplication.clipboard().setText(otp_code)
+        copy_to_clipboard(otp_code)
 
         show_notification(String.APP_NAME, String.NOTIF_COPY_SUCCESS)
         sleep(1)
