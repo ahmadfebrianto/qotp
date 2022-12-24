@@ -26,7 +26,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.edit_username_window = None
-        self.add_account_window = None
+        # self.add_account_widget = None
+        self.main_widget = QWidget()
         self.list_widget = None
         self.setWindowTitle(String.APP_NAME)
         self.setMinimumSize(600, 400)
@@ -36,9 +37,6 @@ class MainWindow(QMainWindow):
         self.timer = QtCore.QElapsedTimer()
 
     def setup_ui(self):
-        widget = QWidget()
-        self.setCentralWidget(widget)
-
         self.list_widget = QListWidget()
         self.list_widget.itemDoubleClicked.connect(self.copy_otp_code)
         self.list_widget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -52,7 +50,8 @@ class MainWindow(QMainWindow):
         vlayout.addWidget(self.list_widget)
         vlayout.addWidget(btn_add_account)
 
-        widget.setLayout(vlayout)
+        self.main_widget.setLayout(vlayout)
+        self.setCentralWidget(self.main_widget)
 
     def show_menu(self, position):
         menu = QMenu()
@@ -63,9 +62,10 @@ class MainWindow(QMainWindow):
         menu.exec(self.list_widget.mapToGlobal(position))
 
     def open_add_account_window(self):
-        self.add_account_window = AddAccountWindow()
-        self.add_account_window.closeEvent = self.update_accounts
-        self.add_account_window.show()
+        self.add_account_widget = AddAccountWindow()
+        self.add_account_widget.closeEvent = self.show
+        self.add_account_widget.show()
+        self.hide()
 
     def open_export_account_window(self):
         chosen_entry = self.list_widget.currentItem().text()
@@ -158,3 +158,7 @@ class MainWindow(QMainWindow):
             + self.rect().center()
             - window.rect().center()
         )
+
+    def show(self, *args) -> None:
+        super().show()
+        self.update_accounts()

@@ -1,6 +1,6 @@
 import io
-from urllib.parse import unquote
 
+from PIL import Image
 from PySide6 import QtCore
 from PySide6.QtCore import QBuffer
 from PySide6.QtGui import QImage, QPixmap
@@ -9,19 +9,18 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QHBoxLayout,
     QLabel,
-    QMainWindow,
     QMessageBox,
     QPushButton,
     QVBoxLayout,
     QWidget,
 )
+from pyzbar.pyzbar import decode
 
 from model.db import db
 from utils.strings import String
 
 
-class AddAccountWindow(QMainWindow):
-
+class AddAccountWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle(String.ADD_ACCOUNT_TITLE)
@@ -29,36 +28,32 @@ class AddAccountWindow(QMainWindow):
         self.setup_ui()
 
     def setup_ui(self):
-        widget = QWidget()
-        self.setCentralWidget(widget)
-
+        # Load image button
         btn_load_image = QPushButton(String.BTN_LOAD_IMAGE)
-        btn_load_image.clicked.connect(self.open_file_dialog)
-
+        btn_load_image.clicked.connect(self.load_qr_image)
+        # Paste image button
         btn_paste_image = QPushButton(String.BTN_PASTE_IMAGE)
-        btn_paste_image.clicked.connect(self.paste_image)
-
+        btn_paste_image.clicked.connect(self.paste_qr_image)
+        # Read QR code button
         btn_read_qr_code = QPushButton(String.BTN_READ_QR_CODE)
         btn_read_qr_code.clicked.connect(self.read_qr_code)
-
+        # Image label (placeholder for the image)
         self.image_label = QLabel()
-
         # Horizontal layout for "Load image" and "Paste image" buttons
         hlayout = QHBoxLayout()
         hlayout.addWidget(btn_load_image)
         hlayout.addWidget(btn_paste_image)
-
-        # Vertical layout for Image label and the buttons
+        # Vertical layout for Image label and hlayout (the buttons)
         vlayout = QVBoxLayout()
         vlayout.addWidget(self.image_label)
-        # Center the image label
-        vlayout.setAlignment(self.image_label, QtCore.Qt.AlignCenter)
         vlayout.addLayout(hlayout)
         vlayout.addWidget(btn_read_qr_code)
+        # Center the image
+        vlayout.setAlignment(self.image_label, QtCore.Qt.AlignCenter)
+        # Set layout
+        self.setLayout(vlayout)
 
-        widget.setLayout(vlayout)
-
-    def load_image(self, path):
+    def set_qr_image(self, path):
         image = QImage(path)
         if not self.ensure_image_size(image):
             self.show_warning(String.WARNING_INVALID_IMAGE_SIZE)
@@ -66,7 +61,7 @@ class AddAccountWindow(QMainWindow):
 
         self.image_label.setPixmap(QPixmap.fromImage(image))
 
-    def open_file_dialog(self):
+    def load_qr_image(self):
         dialog = QFileDialog()
         dialog.setNameFilter(String.FILE_IMAGE_FILTER)
         dialog.setFileMode(QFileDialog.ExistingFile)
@@ -77,9 +72,9 @@ class AddAccountWindow(QMainWindow):
             paths = dialog.selectedFiles()
             if paths:
                 path = paths[0]
-                self.load_image(path)
+                self.set_qr_image(path)
 
-    def paste_image(self):
+    def paste_qr_image(self):
         # Get the image from the clipboard
         image = QApplication.clipboard().image()
         if image.isNull():
@@ -96,24 +91,18 @@ class AddAccountWindow(QMainWindow):
     def read_qr_code(self):
         # Get the image from the label
         image = self.image_label.pixmap().toImage()
-
         if image.isNull():
             return
-
-        from PIL import Image
-        from pyzbar.pyzbar import decode
 
         buffer = QBuffer()
         buffer.open(QBuffer.ReadWrite)
         image.save(buffer, String.IMAGE_PNG)
         data = decode(Image.open(io.BytesIO(buffer.data())))
-
         if not data:
             self.show_warning(String.WARNING_INVALID_QR)
             return
 
         uri = data[0].data.decode(String.UTF_8)
-
         if db.exists(uri):
             self.show_warning(String.WARNING_DUPLICATE_ENTRY)
             return
@@ -122,7 +111,7 @@ class AddAccountWindow(QMainWindow):
         self.close()
 
     def ensure_image_size(self, image):
-        # Limit to 1 MB
+        # Limit image size to 1MB
         MAX_LIMIT = 1024 * 1024
         if image.sizeInBytes() > MAX_LIMIT:
             return False
