@@ -146,3 +146,7 @@ class AddAccountWindow(QWidget):
                 String.WARNING_DUPLICATE_ENTRY,
                 String.WARNING_DUPLICATE_ENTRY_BODY,
             )
+
+    # Override exit button
+    def closeEvent(self, event):
+        self.close()

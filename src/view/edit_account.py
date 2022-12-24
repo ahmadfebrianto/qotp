@@ -15,23 +15,20 @@ class EditAccountWindow(QWidget):
         self.setup_ui()
 
     def setup_ui(self):
+        # Set window frameless
         self.setWindowFlags(Qt.FramelessWindowHint)
-
-        self.esc = QShortcut(QKeySequence("Esc"), self)
-        self.esc.activated.connect(self.close)
-
+        # Username input
         self.username = QLineEdit()
         self.username.setPlaceholderText(String.PH_NEW_USERNAME)
         self.username.setText(self.old_username)
-        self.username.returnPressed.connect(self.save_changes)
-
+        # Save button
         btn_save = QPushButton(String.BTN_SAVE_USERNAME)
         btn_save.clicked.connect(self.save_changes)
-
+        # Wrap widgets in layout
         vlayout = QVBoxLayout()
         vlayout.addWidget(self.username)
         vlayout.addWidget(btn_save)
-
+        # Set layout
         self.setLayout(vlayout)
 
     def save_changes(self):
@@ -39,3 +36,11 @@ class EditAccountWindow(QWidget):
         if new_username:
             db.update_entry(self.old_username, new_username)
             self.close()
+
+    # Define key events
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Escape:
+            self.close()
+
+        if event.key() == Qt.Key_Return:
+            self.save_changes()

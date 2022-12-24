@@ -3,23 +3,16 @@ from io import BytesIO
 import qrcode
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import (
-    QApplication,
-    QLabel,
-    QMainWindow,
-    QPushButton,
-    QVBoxLayout,
-    QWidget,
-)
+from PySide6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
 
 from model.db import db
 from utils.common import copy_to_clipboard
 from utils.strings import String
 
 
-class ExportAccountWindow(QMainWindow):
-    def __init__(self, parent, entry):
-        super().__init__(parent)
+class ExportAccountWindow(QWidget):
+    def __init__(self, entry):
+        super().__init__()
         self.entry = entry
         self.setFixedSize(300, 300)
         self.setWindowTitle(String.EXPORT_ACCOUNT_TITLE)
@@ -37,9 +30,7 @@ class ExportAccountWindow(QMainWindow):
         vlayout.addWidget(self.label_qr)
         vlayout.addWidget(self.btn_copy_secret)
 
-        widget = QWidget()
-        widget.setLayout(vlayout)
-        self.setCentralWidget(widget)
+        self.setLayout(vlayout)
 
     def set_qr_label(self):
         uri = db.get_uri(self.entry)

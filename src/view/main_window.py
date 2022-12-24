@@ -1,10 +1,8 @@
 import re
 from time import sleep
 
-import pyotp
 from PySide6 import QtCore
 from PySide6.QtWidgets import (
-    QApplication,
     QListWidget,
     QMainWindow,
     QMenu,
@@ -69,7 +67,7 @@ class MainWindow(QMainWindow):
 
     def open_export_account_window(self):
         chosen_entry = self.list_widget.currentItem().text()
-        self.export_account_window = ExportAccountWindow(self, chosen_entry)
+        self.export_account_window = ExportAccountWindow(chosen_entry)
         self.export_account_window.show()
 
     def copy_otp_code(self, item=None):
