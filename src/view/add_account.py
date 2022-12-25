@@ -110,7 +110,7 @@ class AddAccountWindow(QWidget):
             return
 
         uri = data[0].data.decode(String.UTF_8)
-        if db.exists(uri):
+        if db.entry_exists(uri):
             self.show_warning(String.WARNING_DUPLICATE_ENTRY)
             return
 

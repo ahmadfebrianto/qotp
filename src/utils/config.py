@@ -33,5 +33,14 @@ class Config:
         with open(self.path, "w") as f:
             json.dump(config, f)
 
+    @property
+    def db_path_valid(self):
+        if not self.exists:
+            return False
+        config = self.read()
+        if not os.path.exists(config[String.DB_PATH_KEY]):
+            return False
+        return True
+
 
 config = Config()

@@ -81,6 +81,8 @@ class MainWindow(QMainWindow):
         self.close()
 
     def load_accounts(self):
+        if not db.entries:
+            return
         for entry in db.entries:
             entry_display = f"{entry.title} ({entry.username})"
             self.list_widget.addItem(entry_display)

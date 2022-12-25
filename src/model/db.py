@@ -49,7 +49,7 @@ class Database:
         self._instance.delete_entry(entry)
         self._instance.save()
 
-    def exists(self, uri):
+    def entry_exists(self, uri):
         uri = unquote(uri)
         entry = self._instance.find_entries(otp=uri, first=True)
         return entry is not None
