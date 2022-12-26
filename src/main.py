@@ -3,7 +3,9 @@ import sys
 from PySide6.QtWidgets import QApplication
 
 from utils.config import config
+from utils.strings import String
 from view.create_db import CreateDBWindow
+from view.dialog import FileDialogWindow
 from view.main_window import MainWindow
 from view.open_db import OpenDBWindow
 from view.welcome import Welcome
@@ -26,11 +28,16 @@ class App(QApplication):
         self.welcome_window = Welcome()
         self.welcome_window.show()
         self.welcome_window.signal_create.connect(self.open_create_db_window)
-        self.welcome_window.signal_open.connect(self.open_open_db_window)
+        self.welcome_window.signal_open.connect(self.load_db)
+
+    def load_db(self):
+        self.db = FileDialogWindow().load_db()
+        if self.db:
+            config.update({String.DB_PATH_KEY: self.db})
+            self.open_open_db_window()
 
     def open_open_db_window(self):
         self.open_db_window = OpenDBWindow()
-        
         self.open_db_window.show()
         self.open_db_window.closeEvent = self.open_main_window
 
