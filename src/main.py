@@ -30,6 +30,7 @@ class App(QApplication):
 
     def open_open_db_window(self):
         self.open_db_window = OpenDBWindow()
+        
         self.open_db_window.show()
         self.open_db_window.closeEvent = self.open_main_window
 

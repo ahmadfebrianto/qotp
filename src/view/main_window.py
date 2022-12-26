@@ -35,20 +35,21 @@ class MainWindow(QMainWindow):
         self.timer = QtCore.QElapsedTimer()
 
     def setup_ui(self):
+        # List widget
         self.list_widget = QListWidget()
         self.list_widget.itemDoubleClicked.connect(self.copy_otp_code)
         self.list_widget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.list_widget.customContextMenuRequested.connect(self.show_menu)
         self.list_widget.setStyleSheet("QListWidget::item { padding: 10px; }")
+        # Add account button
+        self.btn_add_account = QPushButton(String.BUTTON_ADD_ACCOUNT)
+        self.btn_add_account.clicked.connect(self.open_add_account_window)
 
-        btn_add_account = QPushButton(String.BUTTON_ADD_ACCOUNT)
-        btn_add_account.clicked.connect(self.open_add_account_window)
+        self.vlayout = QVBoxLayout()
+        self.vlayout.addWidget(self.list_widget)
+        self.vlayout.addWidget(self.btn_add_account)
 
-        vlayout = QVBoxLayout()
-        vlayout.addWidget(self.list_widget)
-        vlayout.addWidget(btn_add_account)
-
-        self.main_widget.setLayout(vlayout)
+        self.main_widget.setLayout(self.vlayout)
         self.setCentralWidget(self.main_widget)
 
     def show_menu(self, position):

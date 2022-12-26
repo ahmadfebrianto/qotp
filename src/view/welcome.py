@@ -21,14 +21,14 @@ class Welcome(QMainWindow):
         self.btn_create_db = QPushButton("Create a new database")
         self.btn_create_db.clicked.connect(self.on_clicked_create)
 
-        vlayout = QVBoxLayout()
-        vlayout.addWidget(self.btn_open_db)
-        vlayout.addWidget(self.btn_create_db)
+        self.vlayout = QVBoxLayout()
+        self.vlayout.addWidget(self.btn_open_db)
+        self.vlayout.addWidget(self.btn_create_db)
 
-        widget = QWidget()
-        widget.setLayout(vlayout)
+        self.widget = QWidget()
+        self.widget.setLayout(self.vlayout)
 
-        self.setCentralWidget(widget)
+        self.setCentralWidget(self.widget)
 
     def on_clicked_open(self):
         self.signal_open.emit()

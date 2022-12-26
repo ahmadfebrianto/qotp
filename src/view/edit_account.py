@@ -1,5 +1,4 @@
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QKeySequence, QShortcut
 from PySide6.QtWidgets import QLineEdit, QPushButton, QVBoxLayout, QWidget
 
 from model.db import db
@@ -22,14 +21,14 @@ class EditAccountWindow(QWidget):
         self.username.setPlaceholderText(String.PH_NEW_USERNAME)
         self.username.setText(self.old_username)
         # Save button
-        btn_save = QPushButton(String.BTN_SAVE_USERNAME)
-        btn_save.clicked.connect(self.save_changes)
+        self.btn_save = QPushButton(String.BTN_SAVE_USERNAME)
+        self.btn_save.clicked.connect(self.save_changes)
         # Wrap widgets in layout
-        vlayout = QVBoxLayout()
-        vlayout.addWidget(self.username)
-        vlayout.addWidget(btn_save)
+        self.vlayout = QVBoxLayout()
+        self.vlayout.addWidget(self.username)
+        self.vlayout.addWidget(self.btn_save)
         # Set layout
-        self.setLayout(vlayout)
+        self.setLayout(self.vlayout)
 
     def save_changes(self):
         new_username = self.username.text()

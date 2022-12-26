@@ -61,6 +61,13 @@ class String:
     EXPORT_ACCOUNT_TITLE = "Export Account"
     BTN_COPY_SECRET = "Copy secret"
 
+    # File: view/load_file.py
+    TITLE_CHOOSE_DB_LOCATION = "Choose Database Location"
+    TITLE_LOAD_DB = "Load Database"
+    TITLE_LOAD_IMAGE = "Load QR Code Image"
+    LOAD_FILTER_IMAGE = "Image files (*.png *.jpg *.bmp)"
+    LOAD_FILTER_DB = "KeePass database (*.kdbx)"
+
     # File: utils/config.py
     APP_CONFIG_NAME = APP_NAME_LOWER + ".conf"
     APP_CONFIG_PATH = get_config_path(APP_NAME_LOWER, APP_CONFIG_NAME)

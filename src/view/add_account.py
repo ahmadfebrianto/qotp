@@ -6,7 +6,6 @@ from PySide6.QtCore import QBuffer
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtWidgets import (
     QApplication,
-    QFileDialog,
     QHBoxLayout,
     QLabel,
     QMessageBox,
@@ -18,6 +17,7 @@ from pyzbar.pyzbar import decode
 
 from model.db import db
 from utils.strings import String
+from view.dialog import FileDialogWindow
 
 
 class AddAccountWindow(QWidget):
@@ -29,36 +29,36 @@ class AddAccountWindow(QWidget):
 
     def setup_ui(self):
         # Load image button
-        btn_load_image = QPushButton(String.BTN_LOAD_IMAGE)
-        btn_load_image.clicked.connect(self.load_qr_image)
+        self.btn_load_image = QPushButton(String.BTN_LOAD_IMAGE)
+        self.btn_load_image.clicked.connect(self.load_qr_image)
         # Paste image button
-        btn_paste_image = QPushButton(String.BTN_PASTE_IMAGE)
-        btn_paste_image.clicked.connect(self.paste_qr_image)
+        self.btn_paste_image = QPushButton(String.BTN_PASTE_IMAGE)
+        self.btn_paste_image.clicked.connect(self.paste_qr_image)
         # Cancel Button
-        btn_cancel = QPushButton(String.BTN_CANCEL)
-        btn_cancel.clicked.connect(self.close)
+        self.btn_cancel = QPushButton(String.BTN_CANCEL)
+        self.btn_cancel.clicked.connect(self.close)
         # Read QR code button
-        btn_read_qr_code = QPushButton(String.BTN_READ_QR_CODE)
-        btn_read_qr_code.clicked.connect(self.read_qr_code)
+        self.btn_read_qr_code = QPushButton(String.BTN_READ_QR_CODE)
+        self.btn_read_qr_code.clicked.connect(self.read_qr_code)
         # Image label (placeholder for the image)
         self.image_label = QLabel()
         # Horizontal layout for "Load image" and "Paste image" buttons
-        hlayout = QHBoxLayout()
-        hlayout.addWidget(btn_load_image)
-        hlayout.addWidget(btn_paste_image)
+        self.hlayout = QHBoxLayout()
+        self.hlayout.addWidget(self.btn_load_image)
+        self.hlayout.addWidget(self.btn_paste_image)
         # Horizontal layout for "Cancel" and "Read QR code" buttons
-        hlayout2 = QHBoxLayout()
-        hlayout2.addWidget(btn_cancel)
-        hlayout2.addWidget(btn_read_qr_code)
-        # Vertical layout for Image label and hlayout (the buttons)
-        vlayout = QVBoxLayout()
-        vlayout.addWidget(self.image_label)
-        vlayout.addLayout(hlayout)
-        vlayout.addLayout(hlayout2)
+        self.hlayout2 = QHBoxLayout()
+        self.hlayout2.addWidget(self.btn_cancel)
+        self.hlayout2.addWidget(self.btn_read_qr_code)
+        # Vertical layout for Image label and self.hlayout (the buttons)
+        self.vlayout = QVBoxLayout()
+        self.vlayout.addWidget(self.image_label)
+        self.vlayout.addLayout(self.hlayout)
+        self.vlayout.addLayout(self.hlayout2)
         # Center the image
-        vlayout.setAlignment(self.image_label, QtCore.Qt.AlignCenter)
+        self.vlayout.setAlignment(self.image_label, QtCore.Qt.AlignCenter)
         # Set layout
-        self.setLayout(vlayout)
+        self.setLayout(self.vlayout)
 
     def set_qr_image(self, path):
         image = QImage(path)
@@ -69,17 +69,9 @@ class AddAccountWindow(QWidget):
         self.image_label.setPixmap(QPixmap.fromImage(image))
 
     def load_qr_image(self):
-        dialog = QFileDialog()
-        dialog.setNameFilter(String.FILE_IMAGE_FILTER)
-        dialog.setFileMode(QFileDialog.ExistingFile)
-        dialog.setAcceptMode(QFileDialog.AcceptOpen)
-        dialog.setDirectory(".")
-
-        if dialog.exec():
-            paths = dialog.selectedFiles()
-            if paths:
-                path = paths[0]
-                self.set_qr_image(path)
+        qr = FileDialogWindow().load_qr()
+        if qr:
+            self.set_qr_image(qr)
 
     def paste_qr_image(self):
         # Get the image from the clipboard
