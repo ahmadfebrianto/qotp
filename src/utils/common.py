@@ -23,3 +23,7 @@ def get_config_path(app_name, app_config_name):
 def copy_to_clipboard(text):
     clipboard = QApplication.clipboard()
     clipboard.setText(text)
+
+
+def get_db_path(dir, name, ext):
+    return os.path.join(dir, name + ext)

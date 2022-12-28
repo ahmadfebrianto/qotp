@@ -18,13 +18,9 @@ from view.dialog import FileDialogWindow
 
 
 class OpenDBWindow(QMainWindow):
-
-    data_ready = QtCore.Signal(str)
-
     def __init__(self):
         super().__init__()
         self.setMinimumSize(600, 150)
-        self.config = config.read()
         self._setup_ui()
 
     def _setup_ui(self):
@@ -36,7 +32,7 @@ class OpenDBWindow(QMainWindow):
         self.db_path_input = QLineEdit()
         self.db_path_input.setReadOnly(True)
         self.db_path_input.setPlaceholderText("Select a location")
-        self.db_path_input.setText(self.config["db_path"])
+        self.db_path_input.setText(config["database"]["database_path"])
         self.db_path_dialog = QPushButton("...")
         self.db_path_dialog.clicked.connect(self._open_db_location_dialog)
 
@@ -81,44 +77,28 @@ class OpenDBWindow(QMainWindow):
 
     def _open_db(self):
         db_path = self.db_path_input.text()
-        self.config["db_path"] = db_path
-        config.update(self.config)
         db_password = self.db_password_input.text()
 
         try:
             db.open(db_path, db_password)
-
         except Exception as e:
             self.db_password_input.setStyleSheet(
                 "QLineEdit { border: 1px solid tomato; padding: 2px;}"
             )
             self.db_password_input.setToolTip(str(e))
             return
-
-        self.data_ready.emit(db_path)
+        config["database"]["database_path"] = db_path
+        config.save()
         self.close()
-
-    def _is_db_path_valid(self, path):
-        db_path = Path(path)
-        if not db_path.exists():
-            return False
-        return True
 
     def show(self) -> None:
         super().show()
         # Get the screen geometry
         screen = QApplication.primaryScreen().geometry()
-
         # Calculate the center point of the screen
         x = (screen.width() - self.width()) / 2
         y = (screen.height() - self.height()) / 2
-
         # Move the self.widget to the center of the screen
         self.move(x, y)
-
-        if self._is_db_path_valid(self.config["db_path"]):
+        if config.is_db_path_valid:
             self.db_password_input.setFocus()
-
-    def close(self):
-        self.data_ready.emit("")
-        super().close()

@@ -7,15 +7,12 @@ from pyotp import parse_uri
 
 class Database:
     _instance = None
-    db_path = None
 
     def create(self, db_path, db_password):
         self._instance = pykeepass.create_database(db_path, db_password)
-        self.db_path = db_path
 
     def open(self, db_path, db_password):
         self._instance = pykeepass.PyKeePass(db_path, password=db_password)
-        self.db_path = db_path
 
     def get_entry(self, title_username):
         title, username = re.search(r"(.*) \((.*)\)", title_username).groups()

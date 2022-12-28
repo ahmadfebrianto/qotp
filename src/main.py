@@ -19,7 +19,7 @@ class App(QApplication):
     def start(self):
         if not config.exists:
             self.welcome()
-        elif config.exists and not config.db_path_valid:
+        elif config.exists and not config.is_db_path_valid:
             self.welcome()
         else:
             self.open_open_db_window()
@@ -28,13 +28,7 @@ class App(QApplication):
         self.welcome_window = Welcome()
         self.welcome_window.show()
         self.welcome_window.signal_create.connect(self.open_create_db_window)
-        self.welcome_window.signal_open.connect(self.load_db)
-
-    def load_db(self):
-        self.db = FileDialogWindow().load_db()
-        if self.db:
-            config.update({String.DB_PATH_KEY: self.db})
-            self.open_open_db_window()
+        self.welcome_window.signal_open.connect(self.open_open_db_window)
 
     def open_open_db_window(self):
         self.open_db_window = OpenDBWindow()

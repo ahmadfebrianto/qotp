@@ -1,46 +1,26 @@
 import json
 import os
-from pathlib import Path
+from configparser import ConfigParser
 
-from model.db import db
 from utils.strings import String
 
 
-class Config:
+class Config(ConfigParser):
     def __init__(self) -> None:
-        self.path = Path(String.APP_CONFIG_PATH)
+        super().__init__()
 
     @property
     def exists(self):
-        if not self.path.exists():
-            return False
-        return True
-
-    def create(self):
-        config = {
-            String.DB_PATH_KEY: db.db_path,
-        }
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        with open(self.path, "w") as f:
-            json.dump(config, f)
-
-    def read(self):
-        with open(self.path, "r") as f:
-            config = json.load(f)
-        return config
-
-    def update(self, config):
-        with open(self.path, "w") as f:
-            json.dump(config, f)
+        return os.path.exists(String.APP_CONFIG_PATH)
 
     @property
-    def db_path_valid(self):
-        if not self.exists:
-            return False
-        config = self.read()
-        if not os.path.exists(config[String.DB_PATH_KEY]):
-            return False
-        return True
+    def is_db_path_valid(self):
+        self.read(String.APP_CONFIG_PATH)
+        return os.path.exists(self.get("database", String.DB_PATH_KEY))
+
+    def save(self):
+        with open(String.APP_CONFIG_PATH, "w") as f:
+            self.write(f)
 
 
 config = Config()

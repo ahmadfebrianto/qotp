@@ -10,6 +10,7 @@ from PySide6.QtWidgets import (
 )
 
 from model.db import db
+from utils.common import get_db_path
 from utils.config import config
 from utils.strings import String
 from view.dialog import FileDialogWindow
@@ -85,15 +86,18 @@ class CreateDBWindow(QMainWindow):
 
     def _create_db(self):
         # Get the database path
-        self.db_path = String.get_db_path(
-            self.db_location_input.text(), self.db_name_input.text()
+        db_path = get_db_path(
+            self.db_location_input.text(), self.db_name_input.text(), String.APP_DB_EXT
         )
+        db_password = self.db_password_input.text()
 
         # Create the database
-        db.create(self.db_path, self.db_password_input.text())
+        db.create(db_path, db_password)
 
         # Create config file after the database is created
-        config.create()
+        config["database"] = {}
+        config["database"]["database_path"] = db_path
+        config.save()
 
         # self.data_ready.emit(db)
         self.close()

@@ -1,6 +1,9 @@
 from PySide6 import QtCore
 from PySide6.QtWidgets import QMainWindow, QPushButton, QVBoxLayout, QWidget
 
+from utils.config import config
+from view.dialog import FileDialogWindow
+
 
 class Welcome(QMainWindow):
 
@@ -31,6 +34,11 @@ class Welcome(QMainWindow):
         self.setCentralWidget(self.widget)
 
     def on_clicked_open(self):
+        db_path = FileDialogWindow().load_db()
+        if not db_path:
+            return
+        config["database"] = {}
+        config["database"]["database_path"] = db_path
         self.signal_open.emit()
         self.close()
 
