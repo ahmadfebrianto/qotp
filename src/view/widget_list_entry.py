@@ -15,18 +15,15 @@ from PySide6.QtWidgets import (
 from model.db import db
 from utils.common import copy_to_clipboard, show_notification
 from utils.strings import String
-from view.add_account_widget import AddAccountWidget
-from view.edit_account_widget import EditAccountWidget
-from view.export_account import ExportAccountWindow
+from view.widget_add_entry import AddEntryWidget
+from view.widget_edit_entry import EditEntryWidget
+from view.widget_export_entry import ExportEntryWidget
 
 
 class ListEntryWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.edit_username_window = None
-        # self.add_account_widget = None
-        # self.main_widget = QWidget()
-        # self.list_widget = None
         self.setWindowTitle(String.APP_NAME)
         self.setMinimumSize(600, 400)
         self.setup_ui()
@@ -68,7 +65,7 @@ class ListEntryWidget(QWidget):
 
     def open_export_account_window(self):
         chosen_entry = self.list_widget.currentItem().text()
-        self.export_account_window = ExportAccountWindow(chosen_entry)
+        self.export_account_window = ExportEntryWidget(chosen_entry)
         self.export_account_window.show()
 
     def copy_otp_code(self, item=None):
@@ -91,7 +88,7 @@ class ListEntryWidget(QWidget):
     def open_edit_account_window(self):
         selected_entry = self.list_widget.currentItem().text()
         username = re.search(r"\((.*)\)", selected_entry).group(1)
-        self.edit_username_window = EditAccountWidget(username)
+        self.edit_username_window = EditEntryWidget(username)
         self.edit_username_window.closeEvent = self.update_accounts
         self.edit_username_window.show()
 

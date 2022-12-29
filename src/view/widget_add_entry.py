@@ -17,10 +17,10 @@ from pyzbar.pyzbar import decode
 
 from model.db import db
 from utils.strings import String
-from view.dialog import FileDialogWindow
+from view.dialog_file import FileDialog
 
 
-class AddAccountWidget(QWidget):
+class AddEntryWidget(QWidget):
 
     entry_added = QtCore.Signal()
 
@@ -72,7 +72,7 @@ class AddAccountWidget(QWidget):
         self.image_label.setPixmap(QPixmap.fromImage(image))
 
     def load_qr_image(self):
-        qr = FileDialogWindow().load_qr()
+        qr = FileDialog().load_qr()
         if qr:
             self.set_qr_image(qr)
 

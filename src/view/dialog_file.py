@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QFileDialog
 from utils.strings import String
 
 
-class FileDialogWindow(QFileDialog):
+class FileDialog(QFileDialog):
     def load_qr(self):
         self.setWindowTitle(String.TITLE_LOAD_IMAGE)
         self.setFileMode(QFileDialog.ExistingFile)

@@ -3,8 +3,8 @@ import sys
 from PySide6.QtWidgets import QApplication
 
 from utils.config import config
-from view.main_window import MainWindow
-from view.welcome_window import WelcomeWindow
+from view.window_main import MainWindow
+from view.window_welcome import WelcomeWindow
 
 
 class App(QApplication):

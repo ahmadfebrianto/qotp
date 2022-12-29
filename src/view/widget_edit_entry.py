@@ -5,7 +5,7 @@ from model.db import db
 from utils.strings import String
 
 
-class EditAccountWidget(QWidget):
+class EditEntryWidget(QWidget):
     def __init__(self, username):
         super().__init__()
         self.old_username = username

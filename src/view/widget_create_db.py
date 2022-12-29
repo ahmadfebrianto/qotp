@@ -13,7 +13,7 @@ from model.db import db
 from utils.common import get_db_path
 from utils.config import config
 from utils.strings import String
-from view.dialog import FileDialogWindow
+from view.dialog_file import FileDialog
 
 
 class CreateDBWidget(QWidget):
@@ -88,7 +88,7 @@ class CreateDBWidget(QWidget):
         self.setLayout(self.vlayout)
 
     def _open_db_location_dialog(self):
-        db_location = FileDialogWindow().choose_db_location()
+        db_location = FileDialog().choose_db_location()
         self.db_location_input.setText(db_location)
 
     def _create_db(self):
@@ -115,5 +115,3 @@ class CreateDBWidget(QWidget):
             self.create_db_btn.setEnabled(True)
         else:
             self.create_db_btn.setEnabled(False)
-
-

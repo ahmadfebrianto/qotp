@@ -11,8 +11,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from view.add_account_widget import AddAccountWidget
-from view.list_entry_widget import ListEntryWidget
+from view.widget_add_entry import AddEntryWidget
+from view.widget_list_entry import ListEntryWidget
 
 
 class MainWindow(QMainWindow):
@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):
         self.list_entry_widget.btn_add_account.clicked.connect(
             self.on_clicked_add_account
         )
-        self.add_account_widget = AddAccountWidget()
+        self.add_account_widget = AddEntryWidget()
         self.add_account_widget.entry_added.connect(self.on_added_entry)
         self.add_account_widget.btn_cancel.clicked.connect(
             lambda: self.stack.setCurrentIndex(0)

@@ -10,7 +10,7 @@ from utils.common import copy_to_clipboard
 from utils.strings import String
 
 
-class ExportAccountWindow(QWidget):
+class ExportEntryWidget(QWidget):
     def __init__(self, entry):
         super().__init__()
         self.entry = entry
