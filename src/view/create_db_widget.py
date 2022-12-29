@@ -16,8 +16,10 @@ from utils.strings import String
 from view.dialog import FileDialogWindow
 
 
-class CreateDBWindow(QMainWindow):
-    data_ready = QtCore.Signal(str)
+class CreateDBWidget(QWidget):
+
+    db_created = QtCore.Signal(bool)
+    canceled = QtCore.Signal()
 
     def __init__(self):
         super().__init__()
@@ -64,21 +66,26 @@ class CreateDBWindow(QMainWindow):
         self.hlayout_db_password_confirm = QHBoxLayout()
         self.hlayout_db_password_confirm.addWidget(self.db_password_confirm_label)
         self.hlayout_db_password_confirm.addWidget(self.db_password_confirm_input)
+        # Cancel button
+        self.cancel_btn = QPushButton(String.BTN_CANCEL)
+        self.cancel_btn.clicked.connect(self.canceled.emit)
         # Database create button
         self.create_db_btn = QPushButton(String.BTN_CREATE_DB)
         self.create_db_btn.setEnabled(False)
         self.create_db_btn.clicked.connect(self._create_db)
+        # Hlayout buttons setup
+        self.hlayout_buttons = QHBoxLayout()
+        self.hlayout_buttons.addWidget(self.cancel_btn)
+        self.hlayout_buttons.addWidget(self.create_db_btn)
         # Layout setup
         self.vlayout = QVBoxLayout()
         self.vlayout.addLayout(self.hlayout_db_name)
         self.vlayout.addLayout(self.hlayout_db_location)
         self.vlayout.addLayout(self.hlayout_db_password)
         self.vlayout.addLayout(self.hlayout_db_password_confirm)
-        self.vlayout.addWidget(self.create_db_btn)
+        self.vlayout.addLayout(self.hlayout_buttons)
         # Widget setup
-        self.widget = QWidget()
-        self.widget.setLayout(self.vlayout)
-        self.setCentralWidget(self.widget)
+        self.setLayout(self.vlayout)
 
     def _open_db_location_dialog(self):
         db_location = FileDialogWindow().choose_db_location()
@@ -99,8 +106,8 @@ class CreateDBWindow(QMainWindow):
         config["database"]["database_path"] = db_path
         config.save()
 
-        # self.data_ready.emit(db)
-        self.close()
+        self.db_created.emit(True)
+        # self.close()
 
     def _check_passwords(self):
         # If the passwords match, enable the create button. Otherwise, disable it.
@@ -108,3 +115,5 @@ class CreateDBWindow(QMainWindow):
             self.create_db_btn.setEnabled(True)
         else:
             self.create_db_btn.setEnabled(False)
+
+

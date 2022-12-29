@@ -20,7 +20,10 @@ from utils.strings import String
 from view.dialog import FileDialogWindow
 
 
-class AddAccountWindow(QWidget):
+class AddAccountWidget(QWidget):
+
+    entry_added = QtCore.Signal()
+
     def __init__(self):
         super().__init__()
         self.setWindowTitle(String.ADD_ACCOUNT_TITLE)
@@ -36,7 +39,7 @@ class AddAccountWindow(QWidget):
         self.btn_paste_image.clicked.connect(self.paste_qr_image)
         # Cancel Button
         self.btn_cancel = QPushButton(String.BTN_CANCEL)
-        self.btn_cancel.clicked.connect(self.close)
+        # self.btn_cancel.clicked.connect(self.close)
         # Read QR code button
         self.btn_read_qr_code = QPushButton(String.BTN_READ_QR_CODE)
         self.btn_read_qr_code.clicked.connect(self.read_qr_code)
@@ -107,7 +110,7 @@ class AddAccountWindow(QWidget):
             return
 
         db.add_entry(uri)
-        self.close()
+        self.entry_added.emit()
 
     def ensure_image_size(self, image):
         # Limit image size to 1MB
@@ -138,7 +141,3 @@ class AddAccountWindow(QWidget):
                 String.WARNING_DUPLICATE_ENTRY,
                 String.WARNING_DUPLICATE_ENTRY_BODY,
             )
-
-    # Override exit button
-    def closeEvent(self, event):
-        self.close()

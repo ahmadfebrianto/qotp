@@ -17,13 +17,15 @@ from utils.config import config
 from view.dialog import FileDialogWindow
 
 
-class OpenDBWindow(QMainWindow):
+class OpenDBWidget(QWidget):
 
     db_opened = QtCore.Signal(bool)
+    canceled = QtCore.Signal()
 
     def __init__(self):
         super().__init__()
         self.setMinimumSize(600, 150)
+        config.read()
         self._setup_ui()
 
     def _setup_ui(self):
@@ -57,21 +59,29 @@ class OpenDBWindow(QMainWindow):
         self.hlayout_db_password.addWidget(self.db_password_label)
         self.hlayout_db_password.addWidget(self.db_password_input)
 
+        # Cancel button
+        self.cancel_btn = QPushButton("Cancel")
+        self.cancel_btn.setFixedWidth(label_max_width)
+        self.cancel_btn.clicked.connect(self.canceled.emit)
+
         # Create a button to create the database
         self.open_db_btn = QPushButton("Open database")
         self.open_db_btn.setFixedWidth(label_max_width)
         self.open_db_btn.clicked.connect(self._open_db)
 
+        # Create a horizontal layout and add the buttons
+        self.hlayout_buttons = QHBoxLayout()
+        self.hlayout_buttons.addWidget(self.cancel_btn)
+        self.hlayout_buttons.addWidget(self.open_db_btn)
+
         # Create a vertical layout and add the horizontal layouts
         self.vlayout = QVBoxLayout()
         self.vlayout.addLayout(self.hlayout_db_path)
         self.vlayout.addLayout(self.hlayout_db_password)
-        self.vlayout.addWidget(self.open_db_btn)
-        self.vlayout.setAlignment(self.open_db_btn, QtCore.Qt.AlignCenter)
+        self.vlayout.addLayout(self.hlayout_buttons)
+        # self.vlayout.setAlignment(self.open_db_btn, QtCore.Qt.AlignCenter)
 
-        self.widget = QWidget()
-        self.widget.setLayout(self.vlayout)
-        self.setCentralWidget(self.widget)
+        self.setLayout(self.vlayout)
 
     def _open_db_location_dialog(self):
         db = FileDialogWindow().load_db()
@@ -106,4 +116,3 @@ class OpenDBWindow(QMainWindow):
         self.move(x, y)
         if config.is_db_path_valid:
             self.db_password_input.setFocus()
-
