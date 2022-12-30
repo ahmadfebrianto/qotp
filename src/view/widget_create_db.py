@@ -1,9 +1,8 @@
-from PySide6 import QtCore
+from PySide6.QtCore import Signal
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QMainWindow,
     QPushButton,
     QVBoxLayout,
     QWidget,
@@ -18,8 +17,8 @@ from view.widget_file_dialog import FileDialogWidget
 
 class CreateDBWidget(QWidget):
 
-    db_created = QtCore.Signal(bool)
-    canceled = QtCore.Signal()
+    db_created = Signal()
+    canceled = Signal()
 
     def __init__(self):
         super().__init__()

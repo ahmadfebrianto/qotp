@@ -4,7 +4,6 @@ from time import sleep
 from PySide6 import QtCore
 from PySide6.QtWidgets import (
     QListWidget,
-    QMainWindow,
     QMenu,
     QMessageBox,
     QPushButton,

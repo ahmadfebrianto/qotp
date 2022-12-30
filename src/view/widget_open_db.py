@@ -1,12 +1,9 @@
-from pathlib import Path
-
-from PySide6 import QtCore
+from PySide6.QtCore import Signal
 from PySide6.QtWidgets import (
     QApplication,
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QMainWindow,
     QPushButton,
     QVBoxLayout,
     QWidget,
@@ -19,8 +16,8 @@ from view.widget_file_dialog import FileDialogWidget
 
 class OpenDBWidget(QWidget):
 
-    db_opened = QtCore.Signal(bool)
-    canceled = QtCore.Signal()
+    db_opened = Signal()
+    canceled = Signal()
 
     def __init__(self):
         super().__init__()

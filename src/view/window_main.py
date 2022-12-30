@@ -1,15 +1,4 @@
-from PySide6 import QtCore
-from PySide6.QtWidgets import (
-    QApplication,
-    QHBoxLayout,
-    QLabel,
-    QLineEdit,
-    QMainWindow,
-    QPushButton,
-    QStackedWidget,
-    QVBoxLayout,
-    QWidget,
-)
+from PySide6.QtWidgets import QMainWindow, QStackedWidget
 
 from view.widget_add_entry import AddEntryWidget
 from view.widget_list_entry import ListEntryWidget

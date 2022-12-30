@@ -1,22 +1,15 @@
-from PySide6 import QtCore
-from PySide6.QtWidgets import (
-    QMainWindow,
-    QPushButton,
-    QStackedWidget,
-    QVBoxLayout,
-    QWidget,
-)
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import QMainWindow, QStackedWidget
 
 from utils.config import config
 from view.widget_choose_action import ChooseActionWidget
 from view.widget_create_db import CreateDBWidget
-from view.widget_file_dialog import FileDialogWidget
 from view.widget_open_db import OpenDBWidget
 
 
 class WelcomeWindow(QMainWindow):
 
-    done = QtCore.Signal()
+    done = Signal()
 
     def __init__(self):
         super().__init__()

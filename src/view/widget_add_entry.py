@@ -1,8 +1,7 @@
 import io
 
 from PIL import Image
-from PySide6 import QtCore
-from PySide6.QtCore import QBuffer
+from PySide6.QtCore import QBuffer, Signal, Qt
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtWidgets import (
     QApplication,
@@ -22,7 +21,7 @@ from view.widget_file_dialog import FileDialogWidget
 
 class AddEntryWidget(QWidget):
 
-    entry_added = QtCore.Signal()
+    entry_added = Signal()
 
     def __init__(self):
         super().__init__()
@@ -59,7 +58,7 @@ class AddEntryWidget(QWidget):
         self.vlayout.addLayout(self.hlayout)
         self.vlayout.addLayout(self.hlayout2)
         # Center the image
-        self.vlayout.setAlignment(self.image_label, QtCore.Qt.AlignCenter)
+        self.vlayout.setAlignment(self.image_label, Qt.AlignCenter)
         # Set layout
         self.setLayout(self.vlayout)
 
