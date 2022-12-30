@@ -8,48 +8,10 @@ from PySide6.QtWidgets import (
 )
 
 from utils.config import config
+from view.widget_choose_action import ChooseActionWidget
 from view.widget_create_db import CreateDBWidget
 from view.widget_file_dialog import FileDialogWidget
 from view.widget_open_db import OpenDBWidget
-
-
-class CreateOrOpenDBWidget(QWidget):
-
-    open_clicked = QtCore.Signal()
-    create_clicked = QtCore.Signal()
-
-    def __init__(self):
-        super().__init__()
-        self.setMinimumSize(600, 150)
-        self.setup_ui()
-
-    def setup_ui(self):
-        self.setWindowTitle("Welcome")
-
-        self.btn_open_db = QPushButton("Open an existing database")
-        self.btn_open_db.clicked.connect(self.show_open_db_widget)
-
-        self.btn_create_db = QPushButton("Create a new database")
-        self.btn_create_db.clicked.connect(self.show_create_db_widget)
-
-        self.vlayout = QVBoxLayout()
-        self.vlayout.addWidget(self.btn_open_db)
-        self.vlayout.addWidget(self.btn_create_db)
-
-        self.setLayout(self.vlayout)
-
-    def show_open_db_widget(self):
-        db_path = FileDialogWidget().load_db()
-        if not db_path:
-            return
-        config["database"] = {}
-        config["database"]["database_path"] = db_path
-        self.open_clicked.emit()
-        # self.close()
-
-    def show_create_db_widget(self):
-        self.create_clicked.emit()
-        # self.close()
 
 
 class WelcomeWindow(QMainWindow):
@@ -65,9 +27,9 @@ class WelcomeWindow(QMainWindow):
     def setup_ui(self):
         self.setWindowTitle("Welcome")
 
-        self.create_or_open_db_widget = CreateOrOpenDBWidget()
-        self.create_or_open_db_widget.open_clicked.connect(self.show_open_db_widget)
-        self.create_or_open_db_widget.create_clicked.connect(self.show_create_db_widget)
+        self.choose_action_widget = ChooseActionWidget()
+        self.choose_action_widget.open_clicked.connect(self.show_open_db_widget)
+        self.choose_action_widget.create_clicked.connect(self.show_create_db_widget)
 
         self.open_db_widget = OpenDBWidget()
         self.open_db_widget.db_opened.connect(self.on_done)
@@ -78,7 +40,7 @@ class WelcomeWindow(QMainWindow):
         self.create_db_widget.canceled.connect(self.on_cancel)
 
         self.stacked_widget = QStackedWidget()
-        self.stacked_widget.addWidget(self.create_or_open_db_widget)
+        self.stacked_widget.addWidget(self.choose_action_widget)
         self.stacked_widget.addWidget(self.open_db_widget)
         self.stacked_widget.addWidget(self.create_db_widget)
 
