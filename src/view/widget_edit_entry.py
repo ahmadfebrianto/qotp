@@ -9,7 +9,7 @@ class EditEntryWidget(QWidget):
     def __init__(self, username):
         super().__init__()
         self.old_username = username
-        self.setWindowTitle(String.EDIT_ACCOUNT_TITLE)
+        self.setWindowTitle(String.TITLE_EDIT_ENTRY)
         self.setMinimumSize(300, 100)
         self.setup_ui()
 
@@ -18,7 +18,7 @@ class EditEntryWidget(QWidget):
         self.setWindowFlags(Qt.FramelessWindowHint)
         # Username input
         self.username = QLineEdit()
-        self.username.setPlaceholderText(String.PH_NEW_USERNAME)
+        self.username.setPlaceholderText(String.PHOLDER_NEW_USERNAME)
         self.username.setText(self.old_username)
         # Save button
         self.btn_save = QPushButton(String.BTN_SAVE_USERNAME)

@@ -27,7 +27,7 @@ class ListEntryWidget(QWidget):
         self.setWindowTitle(String.APP_NAME)
         self.setMinimumSize(600, 400)
         self.setup_ui()
-        self.update_accounts()
+        self.update_entries()
         self.key_pressed = False
         self.timer = QtCore.QElapsedTimer()
 
@@ -38,35 +38,28 @@ class ListEntryWidget(QWidget):
         self.list_widget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.list_widget.customContextMenuRequested.connect(self.show_menu)
         self.list_widget.setStyleSheet("QListWidget::item { padding: 10px; }")
-        # Add account button
-        self.btn_add_account = QPushButton(String.BUTTON_ADD_ACCOUNT)
-        # self.btn_add_account.clicked.connect(self.open_add_account_window)
+        # Add entry button
+        self.btn_add_entry = QPushButton(String.BTN_ADD_ENTRY)
+        # self.btn_add_entry.clicked.connect(self.open_add_entry_window)
 
         self.vlayout = QVBoxLayout()
         self.vlayout.addWidget(self.list_widget)
-        self.vlayout.addWidget(self.btn_add_account)
+        self.vlayout.addWidget(self.btn_add_entry)
 
         self.setLayout(self.vlayout)
-        # self.setCentralWidget(self.main_widget)
 
     def show_menu(self, position):
         menu = QMenu()
         menu.addAction(String.CTX_MENU_COPY, self.copy_otp_code)
-        menu.addAction(String.CTX_MENU_EXPORT, self.open_export_account_window)
-        menu.addAction(String.CTX_MENU_EDIT, self.open_edit_account_window)
-        menu.addAction(String.CTX_MENU_DELETE, self.delete_account)
+        menu.addAction(String.CTX_MENU_EXPORT, self.open_export_entry_window)
+        menu.addAction(String.CTX_MENU_EDIT, self.open_edit_entry_window)
+        menu.addAction(String.CTX_MENU_DELETE, self.delete_entry)
         menu.exec(self.list_widget.mapToGlobal(position))
 
-    # def open_add_account_window(self):
-    #     self.add_account_widget = AddAccountWidget()
-    #     self.add_account_widget.closeEvent = self.show
-    #     self.add_account_widget.show()
-    #     self.hide()
-
-    def open_export_account_window(self):
+    def open_export_entry_window(self):
         chosen_entry = self.list_widget.currentItem().text()
-        self.export_account_window = ExportEntryWidget(chosen_entry)
-        self.export_account_window.show()
+        self.export_entry_window = ExportEntryWidget(chosen_entry)
+        self.export_entry_window.show()
 
     def copy_otp_code(self, item=None):
         if not item:
@@ -78,28 +71,28 @@ class ListEntryWidget(QWidget):
         sleep(1)
         self.close()
 
-    def load_accounts(self):
+    def load_entrys(self):
         if not db.entries:
             return
         for entry in db.entries:
             entry_display = f"{entry.title} ({entry.username})"
             self.list_widget.addItem(entry_display)
 
-    def open_edit_account_window(self):
+    def open_edit_entry_window(self):
         selected_entry = self.list_widget.currentItem().text()
         username = re.search(r"\((.*)\)", selected_entry).group(1)
         self.edit_username_window = EditEntryWidget(username)
-        self.edit_username_window.closeEvent = self.update_accounts
+        self.edit_username_window.closeEvent = self.update_entries
         self.edit_username_window.show()
 
         # Center the window
         self.center_window(self.edit_username_window)
 
-    def delete_account(self):
+    def delete_entry(self):
         # Create a dialog
         dialog = QMessageBox()
-        dialog.setWindowTitle(String.DELETE_ENTRY_TITLE)
-        dialog.setText(String.DELETE_ENTRY_BODY)
+        dialog.setWindowTitle(String.TITLE_DELETE_ENTRY)
+        dialog.setText(String.BODY_DELETE_ENTRY)
         dialog.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         dialog.setDefaultButton(QMessageBox.No)
         dialog.setIcon(QMessageBox.Warning)
@@ -108,13 +101,13 @@ class ListEntryWidget(QWidget):
         if result == QMessageBox.Yes:
             selected_item = self.list_widget.currentItem()
             db.delete_entry(selected_item.text())
-            self.update_accounts()
+            self.update_entries()
 
-    def update_accounts(self, *args):
+    def update_entries(self, *args):
         currentRow = self.list_widget.currentRow()
         previousCount = self.list_widget.count()
         self.list_widget.clear()
-        self.load_accounts()
+        self.load_entrys()
 
         if self.list_widget.count() > previousCount:
             self.list_widget.setCurrentRow(previousCount)
@@ -159,4 +152,4 @@ class ListEntryWidget(QWidget):
 
     def show(self, *args) -> None:
         super().show()
-        self.update_accounts()
+        self.update_entries()

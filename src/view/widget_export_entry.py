@@ -15,7 +15,7 @@ class ExportEntryWidget(QWidget):
         super().__init__()
         self.entry = entry
         self.setFixedSize(300, 300)
-        self.setWindowTitle(String.EXPORT_ACCOUNT_TITLE)
+        self.setWindowTitle(String.TITLE_EXPORT_ENTRY)
         self.setup_ui()
 
     def setup_ui(self):

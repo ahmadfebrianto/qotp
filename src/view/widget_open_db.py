@@ -14,7 +14,7 @@ from PySide6.QtWidgets import (
 
 from model.db import db
 from utils.config import config
-from view.dialog_file import FileDialog
+from view.widget_file_dialog import FileDialogWidget
 
 
 class OpenDBWidget(QWidget):
@@ -84,7 +84,7 @@ class OpenDBWidget(QWidget):
         self.setLayout(self.vlayout)
 
     def _open_db_location_dialog(self):
-        db = FileDialog().load_db()
+        db = FileDialogWidget().load_db()
         if db:
             self.db_path_input.setText(db)
 

@@ -13,7 +13,7 @@ from model.db import db
 from utils.common import get_db_path
 from utils.config import config
 from utils.strings import String
-from view.dialog_file import FileDialog
+from view.widget_file_dialog import FileDialogWidget
 
 
 class CreateDBWidget(QWidget):
@@ -23,7 +23,7 @@ class CreateDBWidget(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(String.CREATE_DB_TITLE)
+        self.setWindowTitle(String.TITLE_CREATE_DB)
         self.setMinimumSize(600, 150)
         self.setup_ui()
 
@@ -41,7 +41,7 @@ class CreateDBWidget(QWidget):
         self.db_location.setFixedWidth(label_max_width)
         self.db_location_input = QLineEdit()
         self.db_location_input.setReadOnly(True)
-        self.db_location_input.setPlaceholderText(String.PH_DB_LOCATION)
+        self.db_location_input.setPlaceholderText(String.PHOLDER_DB_LOCATION)
         self.db_location_dialog = QPushButton(String.BTN_DIALOG)
         self.db_location_dialog.clicked.connect(self._open_db_location_dialog)
         self.hlayout_db_location = QHBoxLayout()
@@ -88,7 +88,7 @@ class CreateDBWidget(QWidget):
         self.setLayout(self.vlayout)
 
     def _open_db_location_dialog(self):
-        db_location = FileDialog().choose_db_location()
+        db_location = FileDialogWidget().choose_db_location()
         self.db_location_input.setText(db_location)
 
     def _create_db(self):

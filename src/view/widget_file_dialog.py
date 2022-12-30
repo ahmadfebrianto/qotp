@@ -5,11 +5,11 @@ from PySide6.QtWidgets import QFileDialog
 from utils.strings import String
 
 
-class FileDialog(QFileDialog):
+class FileDialogWidget(QFileDialog):
     def load_qr(self):
         self.setWindowTitle(String.TITLE_LOAD_IMAGE)
         self.setFileMode(QFileDialog.ExistingFile)
-        self.setNameFilter(String.LOAD_FILTER_IMAGE)
+        self.setNameFilter(String.FILTER_IMAGE)
         self.setDirectory(os.getenv("HOME"))
 
         if self.exec() == QFileDialog.Accepted:
@@ -29,7 +29,7 @@ class FileDialog(QFileDialog):
     def load_db(self):
         self.setWindowTitle(String.TITLE_LOAD_DB)
         self.setFileMode(QFileDialog.ExistingFile)
-        self.setNameFilter(String.LOAD_FILTER_DB)
+        self.setNameFilter(String.FILTER_DB)
         self.setDirectory(os.getenv("HOME"))
 
         if self.exec() == QFileDialog.Accepted:

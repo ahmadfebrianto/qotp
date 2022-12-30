@@ -17,7 +17,7 @@ from pyzbar.pyzbar import decode
 
 from model.db import db
 from utils.strings import String
-from view.dialog_file import FileDialog
+from view.widget_file_dialog import FileDialogWidget
 
 
 class AddEntryWidget(QWidget):
@@ -26,7 +26,7 @@ class AddEntryWidget(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(String.ADD_ACCOUNT_TITLE)
+        self.setWindowTitle(String.TITLE_ADD_ENTRY)
         self.setMinimumSize(600, 400)
         self.setup_ui()
 
@@ -66,13 +66,13 @@ class AddEntryWidget(QWidget):
     def set_qr_image(self, path):
         image = QImage(path)
         if not self.ensure_image_size(image):
-            self.show_warning(String.WARNING_INVALID_IMAGE_SIZE)
+            self.show_warning(String.WARN_INVALID_IMAGE_SIZE)
             return
 
         self.image_label.setPixmap(QPixmap.fromImage(image))
 
     def load_qr_image(self):
-        qr = FileDialog().load_qr()
+        qr = FileDialogWidget().load_qr()
         if qr:
             self.set_qr_image(qr)
 
@@ -84,7 +84,7 @@ class AddEntryWidget(QWidget):
 
         # Ensure the image size is not too large
         if not self.ensure_image_size(image):
-            self.show_warning(String.WARNING_INVALID_IMAGE_SIZE)
+            self.show_warning(String.WARN_INVALID_IMAGE_SIZE)
             return
 
         self.image_label.setPixmap(QPixmap.fromImage(image))
@@ -101,12 +101,12 @@ class AddEntryWidget(QWidget):
         image.save(buffer, String.IMAGE_PNG)
         data = decode(Image.open(io.BytesIO(buffer.data())))
         if not data:
-            self.show_warning(String.WARNING_INVALID_QR)
+            self.show_warning(String.WARN_INVALID_QR)
             return
 
         uri = data[0].data.decode(String.UTF_8)
         if db.entry_exists(uri):
-            self.show_warning(String.WARNING_DUPLICATE_ENTRY)
+            self.show_warning(String.WARN_DUPLICATE_ENTRY)
             return
 
         db.add_entry(uri)
@@ -121,23 +121,23 @@ class AddEntryWidget(QWidget):
         return True
 
     def show_warning(self, warning):
-        if warning == String.WARNING_INVALID_IMAGE_SIZE:
+        if warning == String.WARN_INVALID_IMAGE_SIZE:
             QMessageBox.warning(
                 self,
-                String.WARNING_INVALID_IMAGE_SIZE,
-                String.WARNING_INVALID_IMAGE_SIZE_BODY,
+                String.WARN_INVALID_IMAGE_SIZE,
+                String.WARN_INVALID_IMAGE_SIZE_BODY,
             )
 
-        elif warning == String.WARNING_INVALID_QR:
+        elif warning == String.WARN_INVALID_QR:
             QMessageBox.warning(
                 self,
-                String.WARNING_INVALID_QR,
-                String.WARNING_INVALID_QR_BODY,
+                String.WARN_INVALID_QR,
+                String.WARN_INVALID_QR_BODY,
             )
 
-        elif warning == String.WARNING_DUPLICATE_ENTRY:
+        elif warning == String.WARN_DUPLICATE_ENTRY:
             QMessageBox.warning(
                 self,
-                String.WARNING_DUPLICATE_ENTRY,
-                String.WARNING_DUPLICATE_ENTRY_BODY,
+                String.WARN_DUPLICATE_ENTRY,
+                String.WARN_DUPLICATE_ENTRY_BODY,
             )

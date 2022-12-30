@@ -8,8 +8,8 @@ from PySide6.QtWidgets import (
 )
 
 from utils.config import config
-from view.dialog_file import FileDialog
 from view.widget_create_db import CreateDBWidget
+from view.widget_file_dialog import FileDialogWidget
 from view.widget_open_db import OpenDBWidget
 
 
@@ -39,7 +39,7 @@ class CreateOrOpenDBWidget(QWidget):
         self.setLayout(self.vlayout)
 
     def show_open_db_widget(self):
-        db_path = FileDialog().load_db()
+        db_path = FileDialogWidget().load_db()
         if not db_path:
             return
         config["database"] = {}
