@@ -116,7 +116,6 @@ class AddEntryWidget(QWidget):
         MAX_LIMIT = 1024 * 1024
         if image.sizeInBytes() > MAX_LIMIT:
             return False
-
         return True
 
     def show_warning(self, warning):

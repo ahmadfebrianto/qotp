@@ -41,7 +41,6 @@ class ListEntryWidget(QWidget):
         self.list_widget.setStyleSheet("QListWidget::item { padding: 10px; }")
         # Add entry button
         self.btn_add_entry = QPushButton(String.BTN_ADD_ENTRY)
-        # self.btn_add_entry.clicked.connect(self.open_add_entry_window)
 
         self.vlayout = QVBoxLayout()
         self.vlayout.addWidget(self.list_widget)
@@ -149,7 +148,3 @@ class ListEntryWidget(QWidget):
             + self.rect().center()
             - window.rect().center()
         )
-
-    def show(self, *args) -> None:
-        super().show()
-        self.update_entries()
