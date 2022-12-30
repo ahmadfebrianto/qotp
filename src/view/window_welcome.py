@@ -2,6 +2,7 @@ from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
 
 from utils.config import config
+from utils.strings import String
 from view.widget_choose_action import ChooseActionWidget
 from view.widget_create_db import CreateDBWidget
 from view.widget_open_db import OpenDBWidget
@@ -18,8 +19,6 @@ class WelcomeWindow(QMainWindow):
         self.show()
 
     def setup_ui(self):
-        self.setWindowTitle("Welcome")
-
         self.choose_action_widget = ChooseActionWidget()
         self.choose_action_widget.open_clicked.connect(self.show_open_db_widget)
         self.choose_action_widget.create_clicked.connect(self.show_create_db_widget)
@@ -50,12 +49,15 @@ class WelcomeWindow(QMainWindow):
 
     def show_choose_action_widget(self):
         self.stacked_widget.setCurrentIndex(0)
+        self.setWindowTitle(String.TITLE_WELCOME)
 
     def show_open_db_widget(self):
         self.stacked_widget.setCurrentIndex(1)
+        self.setWindowTitle(String.TITLE_OPEN_DB)
 
     def show_create_db_widget(self):
         self.stacked_widget.setCurrentIndex(2)
+        self.setWindowTitle(String.TITLE_CREATE_DB)
 
     def on_cancel(self):
         self.show_choose_action_widget()
