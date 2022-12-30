@@ -106,7 +106,6 @@ class CreateDBWidget(QWidget):
         config.save()
 
         self.db_created.emit(True)
-        # self.close()
 
     def _check_passwords(self):
         # If the passwords match, enable the create button. Otherwise, disable it.

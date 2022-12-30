@@ -15,11 +15,11 @@ class MainWindow(QMainWindow):
 
         self.list_entry_widget = ListEntryWidget()
         self.list_entry_widget.btn_add_entry.clicked.connect(self.show_add_entry_widget)
+        self.list_entry_widget.otp_copied.connect(self.close)
+
         self.add_entry_widget = AddEntryWidget()
         self.add_entry_widget.entry_added.connect(self.show_entry_list)
-        self.add_entry_widget.btn_cancel.clicked.connect(
-            lambda: self.stack.setCurrentIndex(0)
-        )
+        self.add_entry_widget.btn_cancel.clicked.connect(self.show_entry_list)
         self.stack.addWidget(self.list_entry_widget)
         self.stack.addWidget(self.add_entry_widget)
 

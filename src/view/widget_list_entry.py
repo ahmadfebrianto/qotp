@@ -1,7 +1,7 @@
 import re
 from time import sleep
 
-from PySide6 import QtCore
+from PySide6.QtCore import QElapsedTimer, Qt, Signal
 from PySide6.QtWidgets import (
     QListWidget,
     QMenu,
@@ -14,12 +14,14 @@ from PySide6.QtWidgets import (
 from model.db import db
 from utils.common import copy_to_clipboard, show_notification
 from utils.strings import String
-from view.widget_add_entry import AddEntryWidget
 from view.widget_edit_entry import EditEntryWidget
 from view.widget_export_entry import ExportEntryWidget
 
 
 class ListEntryWidget(QWidget):
+
+    otp_copied = Signal()
+
     def __init__(self):
         super().__init__()
         self.edit_username_window = None
@@ -28,13 +30,13 @@ class ListEntryWidget(QWidget):
         self.setup_ui()
         self.update_entries()
         self.key_pressed = False
-        self.timer = QtCore.QElapsedTimer()
+        self.timer = QElapsedTimer()
 
     def setup_ui(self):
         # List widget
         self.list_widget = QListWidget()
         self.list_widget.itemDoubleClicked.connect(self.copy_otp_code)
-        self.list_widget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.list_widget.setContextMenuPolicy(Qt.CustomContextMenu)
         self.list_widget.customContextMenuRequested.connect(self.show_menu)
         self.list_widget.setStyleSheet("QListWidget::item { padding: 10px; }")
         # Add entry button
@@ -65,10 +67,9 @@ class ListEntryWidget(QWidget):
             item = self.list_widget.currentItem()
         otp_code = db.get_otp_code(item.text())
         copy_to_clipboard(otp_code)
-
         show_notification(String.APP_NAME, String.NOTIF_COPY_SUCCESS)
         sleep(1)
-        self.close()
+        self.otp_copied.emit()
 
     def load_entrys(self):
         if not db.entries:
@@ -117,7 +118,7 @@ class ListEntryWidget(QWidget):
 
     def keyPressEvent(self, event):
         # Check if the RETURN or ENTER key was pressed
-        if event.key() == QtCore.Qt.Key_Return or event.key() == QtCore.Qt.Key_Enter:
+        if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
             # If the key has already been pressed once,
             # check if the time elapsed is less than the threshold
             if self.key_pressed:

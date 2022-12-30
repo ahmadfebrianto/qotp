@@ -42,13 +42,13 @@ class WelcomeWindow(QMainWindow):
     def show(self):
         super().show()
         if not config.exists:
-            self.show_open_or_create_db_widget()
+            self.show_choose_action_widget()
         elif config.exists and not config.is_db_path_valid:
-            self.show_open_or_create_db_widget()
+            self.show_choose_action_widget()
         else:
             self.show_open_db_widget()
 
-    def show_open_or_create_db_widget(self):
+    def show_choose_action_widget(self):
         self.stacked_widget.setCurrentIndex(0)
 
     def show_open_db_widget(self):
@@ -58,7 +58,7 @@ class WelcomeWindow(QMainWindow):
         self.stacked_widget.setCurrentIndex(2)
 
     def on_cancel(self):
-        self.show_open_or_create_db_widget()
+        self.show_choose_action_widget()
 
     def on_done(self):
         self.done.emit()
