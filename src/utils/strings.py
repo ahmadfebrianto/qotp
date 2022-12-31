@@ -8,6 +8,7 @@ class String:
     APP_NAME = "QOTP"
     APP_NAME_LOWER = APP_NAME.lower()
     APP_DB_EXT = ".kdbx"
+    APP_ICON = "assets/images/icon.png"
 
     # File: view/window_welcome.py
     TITLE_CHOOSE_ACTION = "Choose an action"
