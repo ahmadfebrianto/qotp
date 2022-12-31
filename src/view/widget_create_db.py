@@ -100,9 +100,9 @@ class CreateDBWidget(QWidget):
         db.create(db_path, db_password)
 
         # Create config file after the database is created
-        config.set(String.CONFIG_SECTION_DB, String.CONFIG_KEY_DBPASSWORD, db_password)
+        config.set(String.CONFIG_SECTION_DB, String.CONFIG_KEY_DBPATH, db_password)
         config.save()
-        self.db_created.emit(True)
+        self.db_created.emit()
 
     def check_passwords(self):
         # If the passwords match, enable the create button. Otherwise, disable it.
