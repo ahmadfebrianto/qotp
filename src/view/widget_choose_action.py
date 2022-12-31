@@ -2,6 +2,7 @@ from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QPushButton, QVBoxLayout, QWidget
 
 from utils.config import config
+from utils.strings import String
 from view.widget_file_dialog import FileDialogWidget
 
 
@@ -16,12 +17,12 @@ class ChooseActionWidget(QWidget):
         self.setup_ui()
 
     def setup_ui(self):
-        self.setWindowTitle("Welcome")
+        self.setWindowTitle(String.TITLE_CHOOSE_ACTION)
 
-        self.btn_open_db = QPushButton("Open an existing database")
+        self.btn_open_db = QPushButton(String.TITLE_OPEN_DB)
         self.btn_open_db.clicked.connect(self.show_open_db_widget)
 
-        self.btn_create_db = QPushButton("Create a new database")
+        self.btn_create_db = QPushButton(String.TITLE_CREATE_DB)
         self.btn_create_db.clicked.connect(self.show_create_db_widget)
 
         self.vlayout = QVBoxLayout()
@@ -34,8 +35,8 @@ class ChooseActionWidget(QWidget):
         db_path = FileDialogWidget().load_db()
         if not db_path:
             return
-        config["database"] = {}
-        config["database"]["database_path"] = db_path
+        config[String.CONFIG_SECTION_DB] = {}
+        config[String.CONFIG_SECTION_DB][String.CONFIG_KEY_DBPATH] = db_path
         self.open_clicked.emit()
 
     def show_create_db_widget(self):

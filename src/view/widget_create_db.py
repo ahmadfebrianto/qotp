@@ -41,8 +41,8 @@ class CreateDBWidget(QWidget):
         self.db_location_input = QLineEdit()
         self.db_location_input.setReadOnly(True)
         self.db_location_input.setPlaceholderText(String.PHOLDER_DB_LOCATION)
-        self.db_location_dialog = QPushButton(String.BTN_DIALOG)
-        self.db_location_dialog.clicked.connect(self._open_db_location_dialog)
+        self.db_location_dialog = QPushButton(String.BTN_DOTS)
+        self.db_location_dialog.clicked.connect(self.open_db_location_dialog)
         self.hlayout_db_location = QHBoxLayout()
         self.hlayout_db_location.addWidget(self.db_location)
         self.hlayout_db_location.addWidget(self.db_location_input)
@@ -61,7 +61,7 @@ class CreateDBWidget(QWidget):
         self.db_password_confirm_input = QLineEdit()
         self.db_password_confirm_input.setEchoMode(QLineEdit.Password)
         # Check if the passwords match
-        self.db_password_confirm_input.textChanged.connect(self._check_passwords)
+        self.db_password_confirm_input.textChanged.connect(self.check_passwords)
         self.hlayout_db_password_confirm = QHBoxLayout()
         self.hlayout_db_password_confirm.addWidget(self.db_password_confirm_label)
         self.hlayout_db_password_confirm.addWidget(self.db_password_confirm_input)
@@ -71,7 +71,7 @@ class CreateDBWidget(QWidget):
         # Database create button
         self.create_db_btn = QPushButton(String.BTN_CREATE_DB)
         self.create_db_btn.setEnabled(False)
-        self.create_db_btn.clicked.connect(self._create_db)
+        self.create_db_btn.clicked.connect(self.create_db)
         # Hlayout buttons setup
         self.hlayout_buttons = QHBoxLayout()
         self.hlayout_buttons.addWidget(self.cancel_btn)
@@ -86,11 +86,11 @@ class CreateDBWidget(QWidget):
         # Widget setup
         self.setLayout(self.vlayout)
 
-    def _open_db_location_dialog(self):
+    def open_db_location_dialog(self):
         db_location = FileDialogWidget().choose_db_location()
         self.db_location_input.setText(db_location)
 
-    def _create_db(self):
+    def create_db(self):
         # Get the database path
         db_path = get_db_path(
             self.db_location_input.text(), self.db_name_input.text(), String.APP_DB_EXT
@@ -101,13 +101,13 @@ class CreateDBWidget(QWidget):
         db.create(db_path, db_password)
 
         # Create config file after the database is created
-        config["database"] = {}
-        config["database"]["database_path"] = db_path
+        config[String.CONFIG_SECTION_DB] = {}
+        config[String.CONFIG_SECTION_DB][String.CONFIG_KEY_DBPATH] = db_path
         config.save()
 
         self.db_created.emit(True)
 
-    def _check_passwords(self):
+    def check_passwords(self):
         # If the passwords match, enable the create button. Otherwise, disable it.
         if self.db_password_input.text() == self.db_password_confirm_input.text():
             self.create_db_btn.setEnabled(True)

@@ -10,19 +10,21 @@ class String:
     APP_DB_EXT = ".kdbx"
 
     # File: view/window_welcome.py
-    TITLE_WELCOME = "Welcome"
+    TITLE_CHOOSE_ACTION = "Choose an action"
 
     # File: view/widget_open_db.py
-    TITLE_OPEN_DB = "Open existing database"
+    TITLE_OPEN_DB = "Open an existing database"
+    LABEL_DB_PATH = "Database path"
+    BTN_OPEN_DB = "Open database"
 
     # File: view/widget_create_db.py
-    TITLE_CREATE_DB = "Create Database"
+    TITLE_CREATE_DB = "Create a new database"
     LABEL_DB_NAME = "Database name"
     LABEL_DB_LOCATION = "Database location"
-    PHOLDER_DB_LOCATION = "Select location"
+    PHOLDER_DB_LOCATION = "Select a location"
     LABEL_DB_PASSWORD = "Database password"
     LABEL_DB_PASSWORD_CONFIRM = "Confirm password"
-    BTN_DIALOG = "..."
+    BTN_DOTS = "..."
     TITLE_DB_DIALOG = "Select a location for the database"
     BTN_CREATE_DB = "Create database"
 
@@ -68,9 +70,11 @@ class String:
     FILTER_DB = "KeePass database (*.kdbx)"
 
     # File: utils/config.py
-    APP_CONFIG_NAME = APP_NAME_LOWER + ".ini"
-    APP_CONFIG_PATH = get_config_path(APP_NAME_LOWER, APP_CONFIG_NAME)
-    DB_PATH_KEY = "database_path"
+    CONFIG_FILENAME = APP_NAME_LOWER + ".ini"
+    CONFIG_PATH = get_config_path(APP_NAME_LOWER, CONFIG_FILENAME)
+    CONFIG_SECTION_DB = "database"
+    CONFIG_KEY_DBPATH = "database_path"
 
     # Etc
     UTF_8 = "utf-8"
+    DIR_HOME = "HOME"

@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
 
 from model.db import db
 from utils.config import config
+from utils.strings import String
 from view.widget_file_dialog import FileDialogWidget
 
 
@@ -27,15 +28,16 @@ class OpenDBWidget(QWidget):
 
     def setup_ui(self):
         label_max_width = 150
-
-        self.setWindowTitle("Open an existing database")
-        self.db_path = QLabel("Database path")
+        self.setWindowTitle(String.TITLE_OPEN_DB)
+        self.db_path = QLabel(String.LABEL_DB_PATH)
         self.db_path.setFixedWidth(label_max_width)
         self.db_path_input = QLineEdit()
         self.db_path_input.setReadOnly(True)
-        self.db_path_input.setPlaceholderText("Select a location")
-        self.db_path_input.setText(config["database"]["database_path"])
-        self.db_path_dialog = QPushButton("...")
+        self.db_path_input.setPlaceholderText(String.PHOLDER_DB_LOCATION)
+        self.db_path_input.setText(
+            config[String.CONFIG_SECTION_DB][String.CONFIG_KEY_DBPATH]
+        )
+        self.db_path_dialog = QPushButton(String.BTN_DOTS)
         self.db_path_dialog.clicked.connect(self.open_db_location_dialog)
 
         self.hlayout_db_path = QHBoxLayout()
@@ -43,7 +45,7 @@ class OpenDBWidget(QWidget):
         self.hlayout_db_path.addWidget(self.db_path_input)
         self.hlayout_db_path.addWidget(self.db_path_dialog)
 
-        self.db_password_label = QLabel("Database password")
+        self.db_password_label = QLabel(String.LABEL_DB_PASSWORD)
         self.db_password_label.setFixedWidth(label_max_width)
         self.db_password_input = QLineEdit()
         self.db_password_input.setEchoMode(QLineEdit.Password)
@@ -54,12 +56,12 @@ class OpenDBWidget(QWidget):
         self.hlayout_db_password.addWidget(self.db_password_input)
 
         # Cancel button
-        self.cancel_btn = QPushButton("Cancel")
+        self.cancel_btn = QPushButton(String.BTN_CANCEL)
         self.cancel_btn.setFixedWidth(label_max_width)
         self.cancel_btn.clicked.connect(self.canceled.emit)
 
         # Create a button to create the database
-        self.open_db_btn = QPushButton("Open database")
+        self.open_db_btn = QPushButton(String.BTN_OPEN_DB)
         self.open_db_btn.setFixedWidth(label_max_width)
         self.open_db_btn.clicked.connect(self.open_db)
 
@@ -93,6 +95,6 @@ class OpenDBWidget(QWidget):
             )
             self.db_password_input.setToolTip(str(e))
             return
-        config["database"]["database_path"] = db_path
+        config[String.CONFIG_SECTION_DB][String.CONFIG_KEY_DBPATH] = db_path
         config.save()
         self.db_opened.emit()

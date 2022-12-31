@@ -11,18 +11,18 @@ class Config(ConfigParser):
 
     @property
     def exists(self):
-        return os.path.exists(String.APP_CONFIG_PATH)
+        return os.path.exists(String.CONFIG_PATH)
 
     @property
     def is_db_path_valid(self):
         self.read()
-        return os.path.exists(self.get("database", String.DB_PATH_KEY))
+        return os.path.exists(self.get("database", String.CONFIG_KEY_DBPATH))
 
     def read(self):
-        super().read(String.APP_CONFIG_PATH)
+        super().read(String.CONFIG_PATH)
 
     def save(self):
-        with open(String.APP_CONFIG_PATH, "w") as f:
+        with open(String.CONFIG_PATH, "w") as f:
             self.write(f)
 
 

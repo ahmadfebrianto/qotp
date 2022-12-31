@@ -49,7 +49,7 @@ class WelcomeWindow(QMainWindow):
 
     def show_choose_action_widget(self):
         self.stacked_widget.setCurrentIndex(0)
-        self.setWindowTitle(String.TITLE_WELCOME)
+        self.setWindowTitle(String.TITLE_CHOOSE_ACTION)
 
     def show_open_db_widget(self):
         self.stacked_widget.setCurrentIndex(1)
