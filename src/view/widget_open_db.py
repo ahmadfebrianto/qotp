@@ -94,6 +94,7 @@ class OpenDBWidget(QWidget):
             )
             self.db_password_input.setToolTip(str(e))
             return
-        config[String.CONFIG_SECTION_DB][String.CONFIG_KEY_DBPATH] = db_path
+            
+        config.set(String.CONFIG_SECTION_DB, String.CONFIG_KEY_DBPATH, db_path)
         config.save()
         self.db_opened.emit()

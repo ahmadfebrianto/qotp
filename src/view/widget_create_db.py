@@ -100,10 +100,8 @@ class CreateDBWidget(QWidget):
         db.create(db_path, db_password)
 
         # Create config file after the database is created
-        config[String.CONFIG_SECTION_DB] = {}
-        config[String.CONFIG_SECTION_DB][String.CONFIG_KEY_DBPATH] = db_path
+        config.set(String.CONFIG_SECTION_DB, String.CONFIG_KEY_DBPASSWORD, db_password)
         config.save()
-
         self.db_created.emit(True)
 
     def check_passwords(self):

@@ -34,8 +34,8 @@ class ChooseActionWidget(QWidget):
         db_path = FileDialogWidget().load_db()
         if not db_path:
             return
-        config[String.CONFIG_SECTION_DB] = {}
-        config[String.CONFIG_SECTION_DB][String.CONFIG_KEY_DBPATH] = db_path
+            
+        config.set(String.CONFIG_SECTION_DB, String.CONFIG_KEY_DBPATH, db_path)
         self.open_clicked.emit()
 
     def show_create_db_widget(self):

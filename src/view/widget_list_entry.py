@@ -84,7 +84,7 @@ class ListEntryWidget(QWidget):
         self.edit_username_window.show()
 
         # Center the window
-        self.center_window(self.edit_username_window)
+        # self.center_window(self.edit_username_window)
 
     def delete_entry(self):
         # Create a dialog
@@ -140,9 +140,9 @@ class ListEntryWidget(QWidget):
         self.key_pressed = False
         self.timer.invalidate()
 
-    def center_window(self, window):
-        window.move(
-            self.frameGeometry().topLeft()
-            + self.rect().center()
-            - window.rect().center()
-        )
+    # def center_window(self, window):
+    #     window.move(
+    #         self.frameGeometry().topLeft()
+    #         + self.rect().center()
+    #         - window.rect().center()
+    #     )

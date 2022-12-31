@@ -2,7 +2,6 @@ import sys
 
 from PySide6.QtWidgets import QApplication
 
-from utils.config import config
 from view.window_main import MainWindow
 from view.window_welcome import WelcomeWindow
 
