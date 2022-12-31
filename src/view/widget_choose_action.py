@@ -20,11 +20,11 @@ class ChooseActionWidget(QWidget):
         self.setWindowTitle(String.TITLE_CHOOSE_ACTION)
         # Open database button
         self.btn_open_db = QPushButton(String.TITLE_OPEN_DB)
-        self.btn_open_db.setFixedWidth(Constants.BTN_ACTION_MIN_WIDTH)
+        self.btn_open_db.setFixedWidth(Constants.BTN_WIDTH_WIDE)
         self.btn_open_db.clicked.connect(self.show_open_db_widget)
         # Create database button
         self.btn_create_db = QPushButton(String.TITLE_CREATE_DB)
-        self.btn_create_db.setFixedWidth(Constants.BTN_ACTION_MIN_WIDTH)
+        self.btn_create_db.setFixedWidth(Constants.BTN_WIDTH_WIDE)
         self.btn_create_db.clicked.connect(self.show_create_db_widget)
         # Layout
         self.vlayout = QVBoxLayout()

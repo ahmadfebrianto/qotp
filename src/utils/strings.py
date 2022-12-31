@@ -17,6 +17,7 @@ class String:
     TITLE_OPEN_DB = "Open an existing database"
     LABEL_DB_PATH = "Database path"
     BTN_OPEN_DB = "Open database"
+    PHOLDER_DB_PASSWORD = "Database password"
 
     # File: view/widget_create_db.py
     TITLE_CREATE_DB = "Create a new database"
