@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QLineEdit, QPushButton, QVBoxLayout, QWidget
 
 from model.db import db
@@ -7,6 +7,9 @@ from utils.strings import String
 
 
 class EditEntryWidget(QWidget):
+
+    edit_done = Signal()
+
     def __init__(self, username):
         super().__init__()
         self.old_username = username
@@ -35,6 +38,7 @@ class EditEntryWidget(QWidget):
         new_username = self.username.text()
         if new_username:
             db.update_entry(self.old_username, new_username)
+            self.edit_done.emit()
             self.close()
 
     # Define key events

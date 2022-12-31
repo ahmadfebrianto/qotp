@@ -46,3 +46,8 @@ class ExportEntryWidget(QWidget):
         secret = db.get_secret(self.entry)
         copy_to_clipboard(secret)
         self.close()
+
+    def keyPressEvent(self, event):
+        super().keyPressEvent(event)
+        if event.key() == Qt.Key_Escape:
+            self.close()

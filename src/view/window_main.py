@@ -3,6 +3,8 @@ from PySide6.QtWidgets import QMainWindow, QStackedWidget
 from utils.constants import Constants
 from utils.strings import String
 from view.widget_add_entry import AddEntryWidget
+from view.widget_edit_entry import EditEntryWidget
+from view.widget_export_entry import ExportEntryWidget
 from view.widget_list_entry import ListEntryWidget
 
 
@@ -17,6 +19,8 @@ class MainWindow(QMainWindow):
         self.list_entry_widget = ListEntryWidget()
         self.list_entry_widget.btn_add_entry.clicked.connect(self.show_add_entry_widget)
         self.list_entry_widget.otp_copied.connect(self.close)
+        self.list_entry_widget.edit_clicked.connect(self.show_edit_entry_widget)
+        self.list_entry_widget.export_clicked.connect(self.show_export_entry_widget)
 
         self.add_entry_widget = AddEntryWidget()
         self.add_entry_widget.entry_added.connect(self.show_entry_list)
@@ -35,3 +39,17 @@ class MainWindow(QMainWindow):
     def show_add_entry_widget(self):
         self.stack.setCurrentIndex(1)
         self.setWindowTitle(String.TITLE_ADD_ENTRY)
+
+    def show_edit_entry_widget(self, username):
+        self.edit_entry_widget = EditEntryWidget(username)
+        self.edit_entry_widget.edit_done.connect(self.show_entry_list)
+        self.edit_entry_widget.show()
+
+    def show_export_entry_widget(self, entry):
+        self.export_entry_widget = ExportEntryWidget(entry)
+        self.export_entry_widget.show()
+
+    def closeEvent(self, event):
+        self.export_entry_widget = None
+        self.edit_entry_widget = None
+        event.accept()

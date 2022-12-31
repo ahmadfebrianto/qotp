@@ -15,13 +15,13 @@ from model.db import db
 from utils.common import copy_to_clipboard, show_notification
 from utils.constants import Constants
 from utils.strings import String
-from view.widget_edit_entry import EditEntryWidget
-from view.widget_export_entry import ExportEntryWidget
 
 
 class ListEntryWidget(QWidget):
 
     otp_copied = Signal()
+    edit_clicked = Signal(str)
+    export_clicked = Signal(str)
 
     def __init__(self):
         super().__init__()
@@ -50,15 +50,10 @@ class ListEntryWidget(QWidget):
     def show_menu(self, position):
         menu = QMenu()
         menu.addAction(String.CTX_MENU_COPY, self.copy_otp_code)
-        menu.addAction(String.CTX_MENU_EXPORT, self.open_export_entry_window)
-        menu.addAction(String.CTX_MENU_EDIT, self.open_edit_entry_window)
+        menu.addAction(String.CTX_MENU_EXPORT, self.on_menu_export_clicked)
+        menu.addAction(String.CTX_MENU_EDIT, self.on_menu_edit_clicked)
         menu.addAction(String.CTX_MENU_DELETE, self.delete_entry)
         menu.exec(self.list_widget.mapToGlobal(position))
-
-    def open_export_entry_window(self):
-        chosen_entry = self.list_widget.currentItem().text()
-        self.export_entry_window = ExportEntryWidget(chosen_entry)
-        self.export_entry_window.show()
 
     def copy_otp_code(self, item=None):
         if not item:
@@ -69,22 +64,14 @@ class ListEntryWidget(QWidget):
         sleep(1)
         self.otp_copied.emit()
 
-    def load_entrys(self):
-        if not db.entries:
-            return
-        for entry in db.entries:
-            entry_display = f"{entry.title} ({entry.username})"
-            self.list_widget.addItem(entry_display)
+    def on_menu_export_clicked(self):
+        chosen_entry = self.list_widget.currentItem().text()
+        self.export_clicked.emit(chosen_entry)
 
-    def open_edit_entry_window(self):
+    def on_menu_edit_clicked(self):
         selected_entry = self.list_widget.currentItem().text()
         username = re.search(r"\((.*)\)", selected_entry).group(1)
-        self.edit_username_window = EditEntryWidget(username)
-        self.edit_username_window.closeEvent = self.update_entries
-        self.edit_username_window.show()
-
-        # Center the window
-        # self.center_window(self.edit_username_window)
+        self.edit_clicked.emit(username)
 
     def delete_entry(self):
         # Create a dialog
@@ -101,11 +88,18 @@ class ListEntryWidget(QWidget):
             db.delete_entry(selected_item.text())
             self.update_entries()
 
+    def load_entries(self):
+        if not db.entries:
+            return
+        for entry in db.entries:
+            entry_display = f"{entry.title} ({entry.username})"
+            self.list_widget.addItem(entry_display)
+
     def update_entries(self, *args):
         currentRow = self.list_widget.currentRow()
         previousCount = self.list_widget.count()
         self.list_widget.clear()
-        self.load_entrys()
+        self.load_entries()
 
         if self.list_widget.count() > previousCount:
             self.list_widget.setCurrentRow(previousCount)
@@ -115,6 +109,7 @@ class ListEntryWidget(QWidget):
             self.list_widget.setCurrentRow(currentRow)
 
     def keyPressEvent(self, event):
+        super().keyPressEvent(event)
         # Check if the RETURN or ENTER key was pressed
         if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
             # If the key has already been pressed once,
@@ -134,15 +129,6 @@ class ListEntryWidget(QWidget):
                 self.key_pressed = True
                 self.timer.start()
 
-        super().keyPressEvent(event)
-
     def reset_key_pressed(self):
         self.key_pressed = False
         self.timer.invalidate()
-
-    # def center_window(self, window):
-    #     window.move(
-    #         self.frameGeometry().topLeft()
-    #         + self.rect().center()
-    #         - window.rect().center()
-    #     )
