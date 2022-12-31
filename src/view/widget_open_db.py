@@ -12,7 +12,6 @@ from model.db import db
 from utils.config import config
 from utils.constants import Constants
 from utils.strings import String
-from utils.styles import Style
 from view.widget_file_dialog import FileDialogWidget
 
 
@@ -79,7 +78,8 @@ class OpenDBWidget(QWidget):
         try:
             db.open(label_db_path, db_password)
         except Exception as e:
-            self.input_db_password.setStyleSheet(Style().border_red())
+            self.input_db_password.setProperty("cssClass", "error")
+            self.input_db_password.style().polish(self.input_db_password)
             return
 
         config.set(String.CONFIG_SECTION_DB, String.CONFIG_KEY_DBPATH, label_db_path)

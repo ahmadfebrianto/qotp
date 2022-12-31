@@ -1,6 +1,6 @@
 *::focus {
   outline: none;
-  border: 1.5px solid #f5f5f5;
+  border: 1px solid #f5f5f5;
 }
 
 QWidget {
@@ -12,20 +12,24 @@ QLabel {
 }
 
 QPushButton {
-  border: 1px solid #c5c5c5;
+  border: 1px solid #a1a1a1;
   padding: 6px;
   font-size: 13px;
 }
 
 QPushButton:hover {
-  background-color: #f5f5f5;
+  background-color: #c5c5c5;
   color: rgb(22, 22, 22);
 }
 
 QLineEdit {
-  border: 1px solid #c5c5c5;
+  border: 1px solid #a1a1a1;
   padding: 6px;
   font-size: 13px;
+}
+
+QLineEdit[cssClass="error"] {
+  border-color: tomato;
 }
 
 QListWidget::focus {
