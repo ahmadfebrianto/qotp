@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
 
 from model.db import db
 from utils.common import copy_to_clipboard, show_notification
+from utils.constants import Constants
 from utils.strings import String
 from view.widget_edit_entry import EditEntryWidget
 from view.widget_export_entry import ExportEntryWidget
@@ -24,9 +25,7 @@ class ListEntryWidget(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.edit_username_window = None
         self.setWindowTitle(String.APP_NAME)
-        self.setMinimumSize(600, 400)
         self.setup_ui()
         self.update_entries()
         self.key_pressed = False
@@ -123,10 +122,9 @@ class ListEntryWidget(QWidget):
             if self.key_pressed:
                 # If the elapsed time is less than the threshold,
                 # copy the item's data to the clipboard
-                if self.timer.elapsed() < 500:
+                if self.timer.elapsed() < Constants.DOUBLE_TAP_INTERVAL:
                     item = self.list_widget.currentItem()
                     self.copy_otp_code(item)
-
                 # Reset the flag and time
                 self.reset_key_pressed()
             else:

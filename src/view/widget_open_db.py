@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
 
 from model.db import db
 from utils.config import config
+from utils.constants import Constants
 from utils.strings import String
 from view.widget_file_dialog import FileDialogWidget
 
@@ -22,15 +23,13 @@ class OpenDBWidget(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.setMinimumSize(600, 150)
         config.read()
         self.setup_ui()
 
     def setup_ui(self):
-        label_max_width = 150
         self.setWindowTitle(String.TITLE_OPEN_DB)
         self.db_path = QLabel(String.LABEL_DB_PATH)
-        self.db_path.setFixedWidth(label_max_width)
+        self.db_path.setFixedWidth(Constants.LABEL_MAX_WIDTH)
         self.db_path_input = QLineEdit()
         self.db_path_input.setReadOnly(True)
         self.db_path_input.setPlaceholderText(String.PHOLDER_DB_LOCATION)
@@ -46,7 +45,7 @@ class OpenDBWidget(QWidget):
         self.hlayout_db_path.addWidget(self.db_path_dialog)
 
         self.db_password_label = QLabel(String.LABEL_DB_PASSWORD)
-        self.db_password_label.setFixedWidth(label_max_width)
+        self.db_password_label.setFixedWidth(Constants.LABEL_MAX_WIDTH)
         self.db_password_input = QLineEdit()
         self.db_password_input.setEchoMode(QLineEdit.Password)
         self.db_password_input.returnPressed.connect(self.open_db)
@@ -57,12 +56,12 @@ class OpenDBWidget(QWidget):
 
         # Cancel button
         self.cancel_btn = QPushButton(String.BTN_CANCEL)
-        self.cancel_btn.setFixedWidth(label_max_width)
+        self.cancel_btn.setFixedWidth(Constants.LABEL_MAX_WIDTH)
         self.cancel_btn.clicked.connect(self.canceled.emit)
 
         # Create a button to create the database
         self.open_db_btn = QPushButton(String.BTN_OPEN_DB)
-        self.open_db_btn.setFixedWidth(label_max_width)
+        self.open_db_btn.setFixedWidth(Constants.LABEL_MAX_WIDTH)
         self.open_db_btn.clicked.connect(self.open_db)
 
         # Create a horizontal layout and add the buttons

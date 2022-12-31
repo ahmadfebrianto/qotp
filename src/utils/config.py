@@ -16,7 +16,9 @@ class Config(ConfigParser):
     @property
     def is_db_path_valid(self):
         self.read()
-        return os.path.exists(self.get("database", String.CONFIG_KEY_DBPATH))
+        return os.path.exists(
+            self.get(String.CONFIG_SECTION_DB, String.CONFIG_KEY_DBPATH)
+        )
 
     def read(self):
         super().read(String.CONFIG_PATH)

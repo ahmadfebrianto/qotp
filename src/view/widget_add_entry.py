@@ -1,7 +1,7 @@
 import io
 
 from PIL import Image
-from PySide6.QtCore import QBuffer, Signal, Qt
+from PySide6.QtCore import QBuffer, Qt, Signal
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtWidgets import (
     QApplication,
@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
 from pyzbar.pyzbar import decode
 
 from model.db import db
+from utils.constants import Constants
 from utils.strings import String
 from view.widget_file_dialog import FileDialogWidget
 
@@ -26,7 +27,6 @@ class AddEntryWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle(String.TITLE_ADD_ENTRY)
-        self.setMinimumSize(600, 400)
         self.setup_ui()
 
     def setup_ui(self):
@@ -112,9 +112,7 @@ class AddEntryWidget(QWidget):
         self.entry_added.emit()
 
     def ensure_image_size(self, image):
-        # Limit image size to 1MB
-        MAX_LIMIT = 1024 * 1024
-        if image.sizeInBytes() > MAX_LIMIT:
+        if image.sizeInBytes() > Constants.MAX_IMAGE_SIZE:
             return False
         return True
 

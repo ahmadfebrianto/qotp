@@ -13,7 +13,6 @@ class ChooseActionWidget(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.setMinimumSize(600, 150)
         self.setup_ui()
 
     def setup_ui(self):

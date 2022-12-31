@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
 
 from model.db import db
 from utils.common import copy_to_clipboard
+from utils.constants import Constants
 from utils.strings import String
 
 
@@ -14,7 +15,7 @@ class ExportEntryWidget(QWidget):
     def __init__(self, entry):
         super().__init__()
         self.entry = entry
-        self.setFixedSize(300, 300)
+        self.setFixedSize(*Constants.WINDOW_EXPORT_ENRTY_SIZE)
         self.setWindowTitle(String.TITLE_EXPORT_ENTRY)
         self.setup_ui()
 

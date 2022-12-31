@@ -2,6 +2,7 @@ from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
 
 from utils.config import config
+from utils.constants import Constants
 from utils.strings import String
 from view.widget_choose_action import ChooseActionWidget
 from view.widget_create_db import CreateDBWidget
@@ -14,7 +15,7 @@ class WelcomeWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setMinimumSize(600, 150)
+        self.setMinimumSize(*Constants.WINDOW_WELCOME_SIZE)
         self.setup_ui()
         self.show()
 

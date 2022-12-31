@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
 from model.db import db
 from utils.common import get_db_path
 from utils.config import config
+from utils.constants import Constants
 from utils.strings import String
 from view.widget_file_dialog import FileDialogWidget
 
@@ -23,21 +24,19 @@ class CreateDBWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle(String.TITLE_CREATE_DB)
-        self.setMinimumSize(600, 150)
         self.setup_ui()
 
     def setup_ui(self):
-        label_max_width = 150
         # Database name label and input
         self.db_name = QLabel(String.LABEL_DB_NAME)
-        self.db_name.setFixedWidth(label_max_width)
+        self.db_name.setFixedWidth(Constants.LABEL_MAX_WIDTH)
         self.db_name_input = QLineEdit()
         self.hlayout_db_name = QHBoxLayout()
         self.hlayout_db_name.addWidget(self.db_name)
         self.hlayout_db_name.addWidget(self.db_name_input)
         # Database location label and input
         self.db_location = QLabel(String.LABEL_DB_LOCATION)
-        self.db_location.setFixedWidth(label_max_width)
+        self.db_location.setFixedWidth(Constants.LABEL_MAX_WIDTH)
         self.db_location_input = QLineEdit()
         self.db_location_input.setReadOnly(True)
         self.db_location_input.setPlaceholderText(String.PHOLDER_DB_LOCATION)
@@ -49,7 +48,7 @@ class CreateDBWidget(QWidget):
         self.hlayout_db_location.addWidget(self.db_location_dialog)
         # Database password label and input
         self.db_password_label = QLabel(String.LABEL_DB_PASSWORD)
-        self.db_password_label.setFixedWidth(label_max_width)
+        self.db_password_label.setFixedWidth(Constants.LABEL_MAX_WIDTH)
         self.db_password_input = QLineEdit()
         self.db_password_input.setEchoMode(QLineEdit.Password)
         self.hlayout_db_password = QHBoxLayout()
@@ -57,7 +56,7 @@ class CreateDBWidget(QWidget):
         self.hlayout_db_password.addWidget(self.db_password_input)
         # Database password confirm label and input
         self.db_password_confirm_label = QLabel(String.LABEL_DB_PASSWORD_CONFIRM)
-        self.db_password_confirm_label.setFixedWidth(label_max_width)
+        self.db_password_confirm_label.setFixedWidth(Constants.LABEL_MAX_WIDTH)
         self.db_password_confirm_input = QLineEdit()
         self.db_password_confirm_input.setEchoMode(QLineEdit.Password)
         # Check if the passwords match

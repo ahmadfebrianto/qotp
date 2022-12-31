@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
 
+from utils.constants import Constants
 from utils.strings import String
 from view.widget_add_entry import AddEntryWidget
 from view.widget_list_entry import ListEntryWidget
@@ -8,7 +9,7 @@ from view.widget_list_entry import ListEntryWidget
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setMinimumSize(600, 150)
+        self.setMinimumSize(*Constants.WINDOW_MAIN_SIZE)
         self.setup_ui()
         self.show_entry_list()
 
