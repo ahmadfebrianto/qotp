@@ -1,4 +1,4 @@
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
@@ -66,21 +66,26 @@ class CreateDBWidget(QWidget):
         self.hlayout_db_password_confirm.addWidget(self.db_password_confirm_input)
         # Cancel button
         self.cancel_btn = QPushButton(String.BTN_CANCEL)
+        self.cancel_btn.setFixedWidth(Constants.BTN_NORMAL_MIN_WIDTH)
         self.cancel_btn.clicked.connect(self.canceled.emit)
         # Database create button
         self.create_db_btn = QPushButton(String.BTN_CREATE_DB)
+        self.create_db_btn.setFixedWidth(Constants.BTN_NORMAL_MIN_WIDTH)
         self.create_db_btn.setEnabled(False)
         self.create_db_btn.clicked.connect(self.create_db)
         # Hlayout buttons setup
         self.hlayout_buttons = QHBoxLayout()
         self.hlayout_buttons.addWidget(self.cancel_btn)
         self.hlayout_buttons.addWidget(self.create_db_btn)
+        self.hlayout_buttons.setSpacing(Constants.LAYOUT_SPACING)
+        self.hlayout_buttons.setAlignment(Qt.AlignRight)
         # Layout setup
         self.vlayout = QVBoxLayout()
         self.vlayout.addLayout(self.hlayout_db_name)
         self.vlayout.addLayout(self.hlayout_db_location)
         self.vlayout.addLayout(self.hlayout_db_password)
         self.vlayout.addLayout(self.hlayout_db_password_confirm)
+        self.vlayout.addStretch()
         self.vlayout.addLayout(self.hlayout_buttons)
         # Widget setup
         self.setLayout(self.vlayout)
@@ -95,10 +100,8 @@ class CreateDBWidget(QWidget):
             self.db_location_input.text(), self.db_name_input.text(), String.APP_DB_EXT
         )
         db_password = self.db_password_input.text()
-
         # Create the database
         db.create(db_path, db_password)
-
         # Create config file after the database is created
         config.set(String.CONFIG_SECTION_DB, String.CONFIG_KEY_DBPATH, db_password)
         config.save()

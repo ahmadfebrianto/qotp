@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
 
+from utils.common import load_stylesheet
 from utils.constants import Constants
 from utils.strings import String
 from view.widget_add_entry import AddEntryWidget
@@ -11,21 +12,24 @@ from view.widget_list_entry import ListEntryWidget
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setMinimumSize(*Constants.WINDOW_MAIN_SIZE)
+        # self.setMinimumSize(*Constants.WINDOW_MAIN_SIZE)
         self.setup_ui()
+        self.setStyleSheet(load_stylesheet())
         self.show_entry_list()
+        self.setFixedSize(self.size())
 
     def setup_ui(self):
+        # List entry widget
         self.list_entry_widget = ListEntryWidget()
         self.list_entry_widget.btn_add_entry.clicked.connect(self.show_add_entry_widget)
         self.list_entry_widget.otp_copied.connect(self.close)
         self.list_entry_widget.edit_clicked.connect(self.show_edit_entry_widget)
         self.list_entry_widget.export_clicked.connect(self.show_export_entry_widget)
-
+        # Add entry widget
         self.add_entry_widget = AddEntryWidget()
         self.add_entry_widget.entry_added.connect(self.show_entry_list)
         self.add_entry_widget.btn_cancel.clicked.connect(self.show_entry_list)
-
+        # Stacked widget
         self.stack = QStackedWidget()
         self.stack.addWidget(self.list_entry_widget)
         self.stack.addWidget(self.add_entry_widget)

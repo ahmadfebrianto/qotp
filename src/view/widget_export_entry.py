@@ -6,7 +6,7 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
 
 from model.db import db
-from utils.common import copy_to_clipboard
+from utils.common import copy_to_clipboard, load_stylesheet
 from utils.constants import Constants
 from utils.strings import String
 
@@ -18,6 +18,7 @@ class ExportEntryWidget(QWidget):
         self.setFixedSize(*Constants.WINDOW_EXPORT_ENRTY_SIZE)
         self.setWindowTitle(String.TITLE_EXPORT_ENTRY)
         self.setup_ui()
+        self.setStyleSheet(load_stylesheet())
 
     def setup_ui(self):
         # QR code label (image placeholder)

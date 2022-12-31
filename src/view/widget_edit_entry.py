@@ -2,6 +2,7 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QLineEdit, QPushButton, QVBoxLayout, QWidget
 
 from model.db import db
+from utils.common import load_stylesheet
 from utils.constants import Constants
 from utils.strings import String
 
@@ -16,6 +17,7 @@ class EditEntryWidget(QWidget):
         self.setWindowTitle(String.TITLE_EDIT_ENTRY)
         self.setMinimumSize(*Constants.WINDOW_EDIT_ENTRY_SIZE)
         self.setup_ui()
+        self.setStyleSheet(load_stylesheet())
 
     def setup_ui(self):
         # Set window frameless

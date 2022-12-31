@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (
 )
 
 from model.db import db
-from utils.common import copy_to_clipboard, show_notification
+from utils.common import copy_to_clipboard, load_stylesheet, show_notification
 from utils.constants import Constants
 from utils.strings import String
 
@@ -36,14 +36,12 @@ class ListEntryWidget(QWidget):
         self.list_widget.itemDoubleClicked.connect(self.copy_otp_code)
         self.list_widget.setContextMenuPolicy(Qt.CustomContextMenu)
         self.list_widget.customContextMenuRequested.connect(self.show_menu)
-        self.list_widget.setStyleSheet("QListWidget::item { padding: 10px; }")
         # Add entry button
         self.btn_add_entry = QPushButton(String.BTN_ADD_ENTRY)
-
+        # Layout
         self.vlayout = QVBoxLayout()
         self.vlayout.addWidget(self.list_widget)
         self.vlayout.addWidget(self.btn_add_entry)
-
         self.setLayout(self.vlayout)
 
     def show_menu(self, position):
@@ -52,6 +50,7 @@ class ListEntryWidget(QWidget):
         menu.addAction(String.CTX_MENU_EXPORT, self.on_menu_export_clicked)
         menu.addAction(String.CTX_MENU_EDIT, self.on_menu_edit_clicked)
         menu.addAction(String.CTX_MENU_DELETE, self.delete_entry)
+        menu.setStyleSheet(load_stylesheet())
         menu.exec(self.list_widget.mapToGlobal(position))
 
     def copy_otp_code(self, item=None):
@@ -80,6 +79,7 @@ class ListEntryWidget(QWidget):
         dialog.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         dialog.setDefaultButton(QMessageBox.No)
         dialog.setIcon(QMessageBox.Warning)
+        dialog.setStyleSheet(load_stylesheet())
 
         result = dialog.exec()
         if result == QMessageBox.Yes:

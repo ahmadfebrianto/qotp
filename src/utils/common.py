@@ -33,3 +33,9 @@ def copy_to_clipboard(text):
 
 def get_db_path(dir, name, ext):
     return os.path.join(dir, name + ext)
+
+
+def load_stylesheet():
+    style_file = "assets/css/styles.css"
+    with open(style_file, "r") as f:
+        return f.read()

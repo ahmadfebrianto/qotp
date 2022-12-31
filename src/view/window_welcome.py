@@ -1,6 +1,7 @@
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
 
+from utils.common import load_stylesheet
 from utils.config import config
 from utils.constants import Constants
 from utils.strings import String
@@ -17,26 +18,28 @@ class WelcomeWindow(QMainWindow):
         super().__init__()
         self.setMinimumSize(*Constants.WINDOW_WELCOME_SIZE)
         self.setup_ui()
+        self.setStyleSheet(load_stylesheet())
         self.show()
+        self.setFixedSize(self.size())
 
     def setup_ui(self):
+        # Choose action widget
         self.choose_action_widget = ChooseActionWidget()
         self.choose_action_widget.open_clicked.connect(self.show_open_db_widget)
         self.choose_action_widget.create_clicked.connect(self.show_create_db_widget)
-
+        # Open db widget
         self.open_db_widget = OpenDBWidget()
         self.open_db_widget.db_opened.connect(self.on_done)
         self.open_db_widget.canceled.connect(self.on_cancel)
-
+        # Create db widget
         self.create_db_widget = CreateDBWidget()
         self.create_db_widget.db_created.connect(self.on_done)
         self.create_db_widget.canceled.connect(self.on_cancel)
-
+        # Stacked widget
         self.stacked_widget = QStackedWidget()
         self.stacked_widget.addWidget(self.choose_action_widget)
         self.stacked_widget.addWidget(self.open_db_widget)
         self.stacked_widget.addWidget(self.create_db_widget)
-
         self.setCentralWidget(self.stacked_widget)
 
     def show(self):
