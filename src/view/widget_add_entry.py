@@ -109,6 +109,7 @@ class AddEntryWidget(QWidget):
             return
 
         db.add_entry(uri)
+        self.image_label.clear()
         self.entry_added.emit()
 
     def ensure_image_size(self, image):

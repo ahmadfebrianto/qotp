@@ -27,7 +27,6 @@ class ListEntryWidget(QWidget):
         super().__init__()
         self.setWindowTitle(String.APP_NAME)
         self.setup_ui()
-        self.update_entries()
         self.key_pressed = False
         self.timer = QElapsedTimer()
 
