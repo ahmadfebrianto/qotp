@@ -1,7 +1,6 @@
 import re
-from time import sleep
 
-from PySide6.QtCore import QElapsedTimer, Qt, Signal
+from PySide6.QtCore import QElapsedTimer, Qt, QTimer, Signal
 from PySide6.QtWidgets import (
     QListWidget,
     QMenu,
@@ -12,7 +11,7 @@ from PySide6.QtWidgets import (
 )
 
 from model.db import db
-from utils.common import copy_to_clipboard, load_stylesheet, show_notification
+from utils.common import copy_to_clipboard, load_stylesheet
 from utils.constants import Constants
 from utils.strings import String
 
@@ -28,7 +27,8 @@ class ListEntryWidget(QWidget):
         self.setWindowTitle(String.APP_NAME)
         self.setup_ui()
         self.key_pressed = False
-        self.timer = QElapsedTimer()
+        self.elapsed_timer = QElapsedTimer()
+        self.timeout_timer = QTimer()
 
     def setup_ui(self):
         # List widget
@@ -56,11 +56,10 @@ class ListEntryWidget(QWidget):
     def copy_otp_code(self, item=None):
         if not item:
             item = self.list_widget.currentItem()
-        otp_code = db.get_otp_code(item.text())
+        text = item.text()
+        otp_code = db.get_otp_code(text)
         copy_to_clipboard(otp_code)
-        show_notification(String.APP_NAME, String.NOTIF_COPY_SUCCESS)
-        sleep(1)
-        self.otp_copied.emit()
+        self.notify(item)
 
     def on_menu_export_clicked(self):
         chosen_entry = self.list_widget.currentItem().text()
@@ -116,7 +115,7 @@ class ListEntryWidget(QWidget):
             if self.key_pressed:
                 # If the elapsed time is less than the threshold,
                 # copy the item's data to the clipboard
-                if self.timer.elapsed() < Constants.DOUBLE_TAP_INTERVAL:
+                if self.elapsed_timer.elapsed() < Constants.DOUBLE_TAP_INTERVAL:
                     item = self.list_widget.currentItem()
                     self.copy_otp_code(item)
                 # Reset the flag and time
@@ -126,8 +125,19 @@ class ListEntryWidget(QWidget):
                 # set the flag to indicate that it has been pressed once
                 # and start the time
                 self.key_pressed = True
-                self.timer.start()
+                self.elapsed_timer.start()
 
     def reset_key_pressed(self):
         self.key_pressed = False
-        self.timer.invalidate()
+        self.elapsed_timer.invalidate()
+
+    def notify(self, widget):
+        def update_text():
+            widget.setText(original_text)
+            self.timeout_timer.singleShot(
+                Constants.NOTIF_DURATION, self.otp_copied.emit
+            )
+
+        original_text = widget.text()
+        widget.setText(String.OTP_COPIED)
+        self.timeout_timer.singleShot(Constants.NOTIF_DURATION, update_text)

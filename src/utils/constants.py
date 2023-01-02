@@ -14,3 +14,5 @@ class Constants:
 
     DOUBLE_TAP_INTERVAL = 500
     MAX_IMAGE_SIZE = 1024 * 1024
+
+    NOTIF_DURATION = 1000

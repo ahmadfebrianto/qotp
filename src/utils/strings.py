@@ -41,6 +41,7 @@ class String:
     NOTIF_COPY_SUCCESS = "OTP code copied to clipboard"
     TITLE_DELETE_ENTRY = "Delete entry"
     BODY_DELETE_ENTRY = "Are you sure you want to delete this entry?"
+    OTP_COPIED = "OTP code copied..."
 
     # File: view/widget_add_entry.py
     TITLE_ADD_ENTRY = "Add Entry"
