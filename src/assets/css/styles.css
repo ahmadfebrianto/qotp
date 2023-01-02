@@ -3,9 +3,9 @@
   border: 1px solid #f5f5f5;
 }
 
-QWidget {
+/* QWidget {
   padding: 5px;
-}
+} */
 
 QLabel {
   font-size: 13px;
