@@ -23,21 +23,21 @@ class EditEntryWidget(QWidget):
         # Set window frameless
         self.setWindowFlags(Qt.FramelessWindowHint)
         # Username input
-        self.username = QLineEdit()
-        self.username.setPlaceholderText(String.PHOLDER_NEW_USERNAME)
-        self.username.setText(self.old_username)
+        self.input_username = QLineEdit()
+        self.input_username.setPlaceholderText(String.PHOLDER_NEW_USERNAME)
+        self.input_username.setText(self.old_username)
         # Save button
         self.btn_save = QPushButton(String.BTN_SAVE_USERNAME)
         self.btn_save.clicked.connect(self.save_changes)
         # Wrap widgets in layout
         self.vlayout = QVBoxLayout()
-        self.vlayout.addWidget(self.username)
+        self.vlayout.addWidget(self.input_username)
         self.vlayout.addWidget(self.btn_save)
         # Set layout
         self.setLayout(self.vlayout)
 
     def save_changes(self):
-        new_username = self.username.text()
+        new_username = self.input_username.text()
         if new_username:
             db.update_entry(self.old_username, new_username)
             self.edit_done.emit()
