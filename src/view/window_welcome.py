@@ -40,6 +40,7 @@ class WelcomeWindow(QMainWindow):
         self.stacked_widget.addWidget(self.choose_action_widget)
         self.stacked_widget.addWidget(self.open_db_widget)
         self.stacked_widget.addWidget(self.create_db_widget)
+        self.stacked_widget.currentChanged.connect(self.on_current_changed)
         self.setCentralWidget(self.stacked_widget)
 
     def show(self):
@@ -69,3 +70,8 @@ class WelcomeWindow(QMainWindow):
     def on_done(self):
         self.done.emit()
         self.close()
+
+    def on_current_changed(self, w):
+        widget = self.stacked_widget.widget(w)
+        if widget == self.open_db_widget:
+            widget.input_db_password.setFocus()
