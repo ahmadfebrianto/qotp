@@ -3,10 +3,10 @@ from io import BytesIO
 import qrcode
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout, QWidget
 
 from model.db import db
-from utils.common import copy_to_clipboard, load_stylesheet
+from utils.common import load_stylesheet
 from utils.constants import Constants
 from utils.strings import String
 
@@ -45,7 +45,7 @@ class ExportEntryWidget(QWidget):
 
     def copy_secret(self):
         secret = db.get_secret(self.entry)
-        copy_to_clipboard(secret)
+        QApplication.clipboard().setText(secret)
         self.close()
 
     def keyPressEvent(self, event):

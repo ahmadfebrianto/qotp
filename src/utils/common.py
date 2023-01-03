@@ -1,7 +1,6 @@
 import os
 
 import plyer
-from PySide6.QtWidgets import QApplication
 
 
 def show_notification(app_name, message):
@@ -24,11 +23,6 @@ def get_config_path(app_name, app_config_name):
         return os.path.join(
             os.environ[LINUX_HOME], LINUX_DIR, app_name, app_config_name
         )
-
-
-def copy_to_clipboard(text):
-    clipboard = QApplication.clipboard()
-    clipboard.setText(text)
 
 
 def get_db_path(dir, name, ext):

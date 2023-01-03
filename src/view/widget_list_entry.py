@@ -2,6 +2,7 @@ import re
 
 from PySide6.QtCore import QElapsedTimer, Qt, QTimer, Signal
 from PySide6.QtWidgets import (
+    QApplication,
     QListWidget,
     QMenu,
     QMessageBox,
@@ -11,7 +12,7 @@ from PySide6.QtWidgets import (
 )
 
 from model.db import db
-from utils.common import copy_to_clipboard, load_stylesheet
+from utils.common import load_stylesheet
 from utils.constants import Constants
 from utils.strings import String
 
@@ -58,7 +59,7 @@ class ListEntryWidget(QWidget):
             item = self.list_widget.currentItem()
         text = item.text()
         otp_code = db.get_otp_code(text)
-        copy_to_clipboard(otp_code)
+        QApplication.clipboard().setText(otp_code)
         self.notify(item)
 
     def on_menu_export_clicked(self):
