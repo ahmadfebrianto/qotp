@@ -7,7 +7,7 @@ def get_config_path(app_name, app_config_name):
     LINUX_HOME = "HOME"
     LINUX_DIR = ".config"
     if os.name == WIN:
-        return os.path.join(os.environA[WIN_DIR], app_name, app_config_name)
+        return os.path.join(os.environ[WIN_DIR], app_name, app_config_name)
     else:
         return os.path.join(
             os.environ[LINUX_HOME], LINUX_DIR, app_name, app_config_name
