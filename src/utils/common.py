@@ -1,16 +1,5 @@
 import os
 
-import plyer
-
-
-def show_notification(app_name, message):
-    plyer.notification.notify(
-        title=app_name,
-        message=message,
-        app_name=app_name,
-        timeout=1,
-    )
-
 
 def get_config_path(app_name, app_config_name):
     WIN = "nt"
