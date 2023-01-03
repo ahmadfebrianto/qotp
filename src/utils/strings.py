@@ -15,7 +15,6 @@ class String:
 
     # File: view/widget_open_db.py
     TITLE_OPEN_DB = "Open an existing database"
-    LABEL_DB_PATH = "Database path"
     BTN_OPEN_DB = "Open database"
     PHOLDER_DB_PASSWORD = "Database password"
 
@@ -27,7 +26,6 @@ class String:
     LABEL_DB_PASSWORD = "Database password"
     LABEL_DB_PASSWORD_CONFIRM = "Confirm password"
     BTN_DOTS = "..."
-    TITLE_DB_DIALOG = "Select a location for the database"
     BTN_CREATE_DB = "Create database"
 
     # File: view/widget_list_entry.py
@@ -38,10 +36,9 @@ class String:
     CTX_MENU_DELETE = "Delete entry"
     WARN_DUPLICATE_ENTRY = "Duplicate entry"
     WARN_DUPLICATE_ENTRY_BODY = "This entry already exists in your database"
-    NOTIF_COPY_SUCCESS = "OTP code copied to clipboard"
     TITLE_DELETE_ENTRY = "Delete entry"
     BODY_DELETE_ENTRY = "Are you sure you want to delete this entry?"
-    OTP_COPIED = "OTP code copied..."
+    NOTIF_OTP_COPIED = "OTP code copied..."
 
     # File: view/widget_add_entry.py
     TITLE_ADD_ENTRY = "Add Entry"
@@ -49,7 +46,6 @@ class String:
     BTN_LOAD_IMAGE = "Load Image"
     BTN_PASTE_IMAGE = "Paste Image"
     BTN_READ_QR_CODE = "Read QR Code"
-    FILTER_FILE_IMAGE = "Image Files (*.png *.jpg *.bmp)"
     IMAGE_PNG = "PNG"
     WARN_INVALID_QR = "Invalid QR Code"
     WARN_INVALID_QR_BODY = "This is not a valid QR code."

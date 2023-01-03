@@ -140,5 +140,5 @@ class ListEntryWidget(QWidget):
             )
 
         original_text = widget.text()
-        widget.setText(String.OTP_COPIED)
+        widget.setText(String.NOTIF_OTP_COPIED)
         self.timeout_timer.singleShot(Constants.NOTIF_DURATION, update_text)
