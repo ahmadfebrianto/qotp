@@ -1,35 +1,22 @@
-*::focus {
-  outline: none;
-  border: 1px solid #f5f5f5;
+* {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 13px;
 }
 
-/* QWidget {
-  padding: 5px;
-} */
-
-QLabel {
-  font-size: 13px;
+*::focus {
+  outline: none;
 }
 
 QPushButton {
-  border: 1px solid #a1a1a1;
   padding: 6px;
-  font-size: 13px;
-}
-
-QPushButton:hover {
-  background-color: #c5c5c5;
-  color: rgb(22, 22, 22);
 }
 
 QLineEdit {
-  border: 1px solid #a1a1a1;
   padding: 6px;
-  font-size: 13px;
 }
 
 QLineEdit[cssClass="error"] {
-  border-color: tomato;
+  border: 1px solid tomato;
 }
 
 QListWidget::focus {
@@ -37,5 +24,5 @@ QListWidget::focus {
 }
 
 QListWidget::item {
-  padding: 12px;
+  padding: 13px;
 }
