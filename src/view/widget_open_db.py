@@ -32,9 +32,6 @@ class OpenDBWidget(QWidget):
         self.input_db_path.setReadOnly(True)
         self.input_db_path.setPlaceholderText(String.PHOLDER_DB_LOCATION)
         self.input_db_path.returnPressed.connect(self.open_db_location_dialog)
-        self.input_db_path.setText(
-            config[String.CONFIG_SECTION_DB][String.CONFIG_KEY_DBPATH]
-        )
         self.btn_open_file = QPushButton(String.BTN_DOTS)
         self.btn_open_file.setFixedWidth(Constants.BTN_WIDTH_DOTS)
         self.btn_open_file.clicked.connect(self.open_db_location_dialog)

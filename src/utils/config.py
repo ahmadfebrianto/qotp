@@ -24,8 +24,16 @@ class Config(ConfigParser):
         super().read(String.CONFIG_PATH)
 
     def save(self):
+        parent = os.path.dirname(String.CONFIG_PATH)
+        if not os.path.exists(parent):
+            os.makedirs(parent)
         with open(String.CONFIG_PATH, "w") as f:
             self.write(f)
+
+    def set(self, section, key, value):
+        if not self.has_section(section):
+            self.add_section(section)
+        super().set(section, key, value)
 
 
 config = Config()

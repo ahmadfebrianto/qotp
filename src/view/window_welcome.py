@@ -74,4 +74,7 @@ class WelcomeWindow(QMainWindow):
     def on_current_changed(self, w):
         widget = self.stacked_widget.widget(w)
         if widget == self.open_db_widget:
+            widget.input_db_path.setText(
+                config[String.CONFIG_SECTION_DB][String.CONFIG_KEY_DBPATH]
+            )
             widget.input_db_password.setFocus()
