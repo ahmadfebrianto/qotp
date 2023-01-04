@@ -48,19 +48,19 @@ class AddEntryWidget(QWidget):
         self.hlayout = QHBoxLayout()
         self.hlayout.addWidget(self.btn_load_image)
         self.hlayout.addWidget(self.btn_paste_image)
-        # Horizontal layout for "Cancel" and "Read QR code" buttons
-        self.hlayout2 = QHBoxLayout()
-        self.hlayout2.addWidget(self.btn_cancel)
-        self.hlayout2.addWidget(self.btn_read_qr_code)
-        # Vertical layout for Image label and self.hlayout (the buttons)
+        # Vertical layout for "Cancel" and "Read QR code" buttons
         self.vlayout = QVBoxLayout()
-        self.vlayout.addWidget(self.image_label)
-        self.vlayout.addLayout(self.hlayout)
-        self.vlayout.addLayout(self.hlayout2)
+        self.vlayout.addWidget(self.btn_read_qr_code)
+        self.vlayout.addWidget(self.btn_cancel)
+        # Vertical layout for Image label and self.hlayout (the buttons)
+        self.main_vlayout = QVBoxLayout()
+        self.main_vlayout.addWidget(self.image_label)
+        self.main_vlayout.addLayout(self.hlayout)
+        self.main_vlayout.addLayout(self.vlayout)
         # Center the image
-        self.vlayout.setAlignment(self.image_label, Qt.AlignCenter)
+        self.main_vlayout.setAlignment(self.image_label, Qt.AlignCenter)
         # Set layout
-        self.setLayout(self.vlayout)
+        self.setLayout(self.main_vlayout)
 
     def set_qr_image(self, path):
         image = QImage(path)
