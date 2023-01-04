@@ -30,37 +30,33 @@ class AddEntryWidget(QWidget):
         self.setup_ui()
 
     def setup_ui(self):
-        # Load image button
-        self.btn_load_image = QPushButton(String.BTN_LOAD_IMAGE)
-        self.btn_load_image.clicked.connect(self.load_qr_image)
-        # Paste image button
-        self.btn_paste_image = QPushButton(String.BTN_PASTE_IMAGE)
-        self.btn_paste_image.clicked.connect(self.paste_qr_image)
-        # Cancel Button
-        self.btn_cancel = QPushButton(String.BTN_CANCEL)
-        # self.btn_cancel.clicked.connect(self.close)
-        # Read QR code button
-        self.btn_read_qr_code = QPushButton(String.BTN_READ_QR_CODE)
-        self.btn_read_qr_code.clicked.connect(self.read_qr_code)
         # Image label (placeholder for the image)
         self.image_label = QLabel()
-        # Horizontal layout for "Load image" and "Paste image" buttons
+        # Load and paste image buttons
+        self.btn_load_image = QPushButton(String.BTN_LOAD_IMAGE)
+        self.btn_load_image.clicked.connect(self.load_qr_image)
+        self.btn_paste_image = QPushButton(String.BTN_PASTE_IMAGE)
+        self.btn_paste_image.clicked.connect(self.paste_qr_image)
         self.hlayout = QHBoxLayout()
         self.hlayout.addWidget(self.btn_load_image)
         self.hlayout.addWidget(self.btn_paste_image)
-        # Vertical layout for "Cancel" and "Read QR code" buttons
+        # Read QR code and cancel buttons
+        self.btn_read_qr_code = QPushButton(String.BTN_READ_QR_CODE)
+        self.btn_read_qr_code.setEnabled(False)
+        self.btn_read_qr_code.clicked.connect(self.read_qr_code)
+        self.btn_cancel = QPushButton(String.BTN_CANCEL)
         self.vlayout = QVBoxLayout()
         self.vlayout.addWidget(self.btn_read_qr_code)
         self.vlayout.addWidget(self.btn_cancel)
-        # Vertical layout for Image label and self.hlayout (the buttons)
-        self.main_vlayout = QVBoxLayout()
-        self.main_vlayout.addWidget(self.image_label)
-        self.main_vlayout.addLayout(self.hlayout)
-        self.main_vlayout.addLayout(self.vlayout)
+        # Main layout
+        self.main_layout = QVBoxLayout()
+        self.main_layout.addWidget(self.image_label)
+        self.main_layout.addLayout(self.hlayout)
+        self.main_layout.addLayout(self.vlayout)
         # Center the image
-        self.main_vlayout.setAlignment(self.image_label, Qt.AlignCenter)
+        self.main_layout.setAlignment(self.image_label, Qt.AlignCenter)
         # Set layout
-        self.setLayout(self.main_vlayout)
+        self.setLayout(self.main_layout)
 
     def set_qr_image(self, path):
         image = QImage(path)
@@ -69,6 +65,7 @@ class AddEntryWidget(QWidget):
             return
 
         self.image_label.setPixmap(QPixmap.fromImage(image))
+        self.btn_read_qr_code.setEnabled(True)
 
     def load_qr_image(self):
         qr = FileDialogWidget().load_qr()
@@ -88,6 +85,7 @@ class AddEntryWidget(QWidget):
 
         self.image_label.setPixmap(QPixmap.fromImage(image))
         QApplication.clipboard().clear()
+        self.btn_read_qr_code.setEnabled(True)
 
     def read_qr_code(self):
         # Get the image from the label
