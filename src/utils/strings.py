@@ -54,6 +54,7 @@ class String:
 
     # File: view/widget_edit_entry.py
     TITLE_EDIT_ENTRY = "Edit Entry"
+    PHOLDER_NEW_ISSUER = "New issuer"
     PHOLDER_NEW_USERNAME = "New username"
     BTN_SAVE_USERNAME = "Save"
 

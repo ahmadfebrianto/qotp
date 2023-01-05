@@ -44,8 +44,8 @@ class MainWindow(QMainWindow):
         self.stack.setCurrentIndex(1)
         self.setWindowTitle(String.TITLE_ADD_ENTRY)
 
-    def show_edit_entry_widget(self, username):
-        self.edit_entry_widget = EditEntryWidget(username)
+    def show_edit_entry_widget(self, entry):
+        self.edit_entry_widget = EditEntryWidget(entry)
         self.edit_entry_widget.edit_done.connect(self.show_entry_list)
         self.edit_entry_widget.show()
         self.center_window(self.edit_entry_widget)

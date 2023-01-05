@@ -68,8 +68,7 @@ class ListEntryWidget(QWidget):
 
     def on_menu_edit_clicked(self):
         selected_entry = self.list_widget.currentItem().text()
-        username = re.search(r"\((.*)\)", selected_entry).group(1)
-        self.edit_clicked.emit(username)
+        self.edit_clicked.emit(selected_entry)
 
     def delete_entry(self):
         # Create a dialog

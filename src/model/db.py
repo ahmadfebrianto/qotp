@@ -36,8 +36,9 @@ class Database:
         )
         self._instance.save()
 
-    def update_entry(self, old_username, new_username):
-        entry = self._instance.find_entries(username=old_username, first=True)
+    def update_entry(self, title_username, new_title, new_username):
+        entry = self.get_entry(title_username)
+        entry.title = new_title
         entry.username = new_username
         self._instance.save()
 
