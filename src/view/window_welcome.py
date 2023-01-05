@@ -1,5 +1,5 @@
 from PySide6.QtCore import Signal
-from PySide6.QtWidgets import QMainWindow, QStackedWidget
+from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget
 
 from utils.common import load_stylesheet
 from utils.config import config
@@ -44,13 +44,20 @@ class WelcomeWindow(QMainWindow):
         self.setCentralWidget(self.stacked_widget)
 
     def show(self):
-        super().show()
         if not config.exists:
             self.show_choose_action_widget()
         elif config.exists and not config.is_db_path_valid:
             self.show_choose_action_widget()
         else:
             self.show_open_db_widget()
+
+        screen = QApplication.primaryScreen().geometry()
+        # Calculate the center point of the screen
+        x = (screen.width() - self.width()) / 2
+        y = (screen.height() - self.height()) / 2
+        # Move the widget to the center of the screen
+        self.move(x, y)
+        super().show()
 
     def show_choose_action_widget(self):
         self.stacked_widget.setCurrentIndex(0)
