@@ -48,6 +48,7 @@ class MainWindow(QMainWindow):
         self.edit_entry_widget = EditEntryWidget(username)
         self.edit_entry_widget.edit_done.connect(self.show_entry_list)
         self.edit_entry_widget.show()
+        self.center_window(self.edit_entry_widget)
 
     def show_export_entry_widget(self, entry):
         self.export_entry_widget = ExportEntryWidget(entry)
@@ -57,3 +58,10 @@ class MainWindow(QMainWindow):
         self.export_entry_widget = None
         self.edit_entry_widget = None
         event.accept()
+
+    def center_window(self, window):
+        window.move(
+            self.frameGeometry().topLeft()
+            + self.rect().center()
+            - window.rect().center()
+        )
