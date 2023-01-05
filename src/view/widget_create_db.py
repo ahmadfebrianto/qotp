@@ -104,7 +104,7 @@ class CreateDBWidget(QWidget):
         # Create the database
         db.create(db_path, db_password)
         # Create config file after the database is created
-        config.set(String.CONFIG_SECTION_DB, String.CONFIG_KEY_DBPATH, db_password)
+        config.set(String.CONFIG_SECTION_DB, String.CONFIG_KEY_DBPATH, db_path)
         config.save()
         self.db_created.emit()
 
