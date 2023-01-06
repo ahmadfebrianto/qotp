@@ -6,16 +6,16 @@ Welcome to the QOTP repository! QOTP is a desktop application designed to help y
 
 ## Current Features
 
-- `Add entry`.  
-   Add a new account to QOTP by either `loading a QR code image` or `pasting the QR code image` after taking a `screenshot` of the QR code. I recommend using [Flameshot](https://github.com/flameshot-org/flameshot) for taking screenshots on Windows and Linux.
-- `Copy TOTP code`.  
-   Copy the current TOTP code for an entry by either `right-clicking on the entry and selecting "Copy TOTP code"` from the context menu, or by `double-pressing the ENTER key`. The app will `close automatically` 1 second after the TOTP code is copied.
-- `Edit entry`.  
-   Modify an entry display in QOTP, including the issuer name and username.
-- `Export entry`.  
-   Export an entry from QOTP as a QR code or secret key.
-- `Delete entry`.  
-   Remove an entry from QOTP.
+- **Add entry**  
+  Add a new account to QOTP by either `loading a QR code image` or `pasting the QR code image` after taking a `screenshot` of the QR code. I recommend using [Flameshot](https://github.com/flameshot-org/flameshot) for taking screenshots on Windows and Linux.
+- **Copy TOTP code**  
+  Copy the current TOTP code for an entry by either `right-clicking on the entry and selecting "Copy TOTP code"` from the context menu, or by `double-pressing the ENTER key`. The app will `close automatically` 1 second after the TOTP code is copied.
+- **Edit entry**  
+  Modify an entry display in QOTP, including the issuer name and username.
+- **Export entry**  
+  Export an entry from QOTP as a QR code or secret key.
+- **Delete entry**  
+  Remove an entry from QOTP.
 
 ## Installation
 
