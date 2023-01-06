@@ -19,8 +19,6 @@ class WelcomeWindow(QMainWindow):
         self.setMinimumSize(*Constants.WINDOW_WELCOME_SIZE)
         self.setup_ui()
         self.setStyleSheet(load_stylesheet())
-        self.show()
-        self.setFixedSize(self.size())
 
     def setup_ui(self):
         # Choose action widget
@@ -51,13 +49,14 @@ class WelcomeWindow(QMainWindow):
         else:
             self.show_open_db_widget()
 
+        super().show()
         screen = QApplication.primaryScreen().geometry()
         # Calculate the center point of the screen
         x = (screen.width() - self.width()) / 2
         y = (screen.height() - self.height()) / 2
         # Move the widget to the center of the screen
         self.move(x, y)
-        super().show()
+        self.setFixedSize(self.size())
 
     def show_choose_action_widget(self):
         self.stacked_widget.setCurrentIndex(0)
