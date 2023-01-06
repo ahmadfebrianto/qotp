@@ -15,12 +15,13 @@ class ExportEntryWidget(QWidget):
     def __init__(self, entry):
         super().__init__()
         self.entry = entry
-        self.setFixedSize(*Constants.WINDOW_EXPORT_ENRTY_SIZE)
         self.setWindowTitle(String.TITLE_EXPORT_ENTRY)
         self.setup_ui()
         self.setStyleSheet(load_stylesheet())
 
     def setup_ui(self):
+        # Set window frameless
+        self.setWindowFlags(Qt.FramelessWindowHint)
         # QR code label (image placeholder)
         self.label_qr = QLabel()
         self.label_qr.setAlignment(Qt.AlignCenter)
@@ -47,6 +48,10 @@ class ExportEntryWidget(QWidget):
         secret = db.get_secret(self.entry)
         QApplication.clipboard().setText(secret)
         self.close()
+
+    def show(self):
+        super().show()
+        self.setFixedSize(self.size())
 
     def keyPressEvent(self, event):
         super().keyPressEvent(event)

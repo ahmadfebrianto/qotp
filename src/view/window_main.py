@@ -53,6 +53,7 @@ class MainWindow(QMainWindow):
     def show_export_entry_widget(self, entry):
         self.export_entry_widget = ExportEntryWidget(entry)
         self.export_entry_widget.show()
+        self.center_window(self.export_entry_widget)
 
     def closeEvent(self, event):
         self.export_entry_widget = None
