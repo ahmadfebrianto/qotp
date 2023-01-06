@@ -76,7 +76,6 @@ class ListEntryWidget(QWidget):
         dialog.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         dialog.setDefaultButton(QMessageBox.No)
         dialog.setIcon(QMessageBox.Warning)
-        dialog.setStyleSheet(load_stylesheet())
 
         result = dialog.exec()
         if result == QMessageBox.Yes:
