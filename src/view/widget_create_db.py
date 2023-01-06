@@ -60,6 +60,7 @@ class CreateDBWidget(QWidget):
         self.label_db_password_confirm.setFixedWidth(Constants.LABEL_MAX_WIDTH)
         self.input_db_password_confirm = QLineEdit()
         self.input_db_password_confirm.setEchoMode(QLineEdit.Password)
+        self.input_db_password_confirm.returnPressed.connect(self.create_db)
         # Check if the passwords match
         self.input_db_password_confirm.textChanged.connect(self.check_passwords)
         self.hlayout_db_password_confirm = QHBoxLayout()
@@ -96,6 +97,8 @@ class CreateDBWidget(QWidget):
         self.input_db_location.setText(label_db_location)
 
     def create_db(self):
+        if not self.btn_create_db.isEnabled():
+            return
         # Get the database path
         db_path = get_db_path(
             self.input_db_location.text(), self.input_db_name.text(), String.APP_DB_EXT
