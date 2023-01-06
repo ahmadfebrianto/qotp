@@ -21,7 +21,8 @@ def unpack_entry(entry):
 
 
 def get_db_path(dir, name, ext):
-    return os.path.join(dir, name + ext)
+    joined_path = os.path.join(dir, name + ext)
+    return os.path.normpath(joined_path)
 
 
 def load_stylesheet():
