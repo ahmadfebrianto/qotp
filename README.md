@@ -13,17 +13,20 @@ Welcome to the QOTP repository! QOTP is a desktop application designed to help y
 
 ## Installation
 
-- Open a terminal window and navigate to the directory where you cloned the QOTP repository.
+- Open a terminal window and navigate to the directory where you cloned the repository.
+  ```bash
+  cd /path/to/qotp
+  ```
+- Once in the `qotp` directory, navigate to the `src` directory.
+  ```bash
+  cd src
+  ```
 - Install the dependencies by running the following command.
-  ```python3
+  ```bash
   pip install -r requirements.txt
   ```
-- Once the dependencies have been installed, navigate to the QOTP directory.
-  ```bash
-  cd qotp/src
-  ```
 - Run the app.
-  ```python3
+  ```bash
   python3 main.py
   ```
 
