@@ -1,5 +1,3 @@
-import re
-
 from PySide6.QtCore import QElapsedTimer, Qt, QTimer, Signal
 from PySide6.QtWidgets import (
     QApplication,

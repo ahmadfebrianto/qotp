@@ -1,4 +1,5 @@
 import os
+import re
 
 
 def get_config_path(app_name, app_config_name):
@@ -12,6 +13,11 @@ def get_config_path(app_name, app_config_name):
         return os.path.join(
             os.environ[LINUX_HOME], LINUX_DIR, app_name, app_config_name
         )
+
+
+def unpack_entry(entry):
+    issuer, username = re.search(r"(.*) \((.*)\)", entry).groups()
+    return issuer, username
 
 
 def get_db_path(dir, name, ext):

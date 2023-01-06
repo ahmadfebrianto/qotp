@@ -1,10 +1,8 @@
-import re
-
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QLineEdit, QPushButton, QVBoxLayout, QWidget
 
 from model.db import db
-from utils.common import load_stylesheet
+from utils.common import load_stylesheet, unpack_entry
 from utils.constants import Constants
 from utils.strings import String
 
@@ -16,7 +14,7 @@ class EditEntryWidget(QWidget):
     def __init__(self, entry):
         super().__init__()
         self.selected_entry = entry
-        issuer, username = re.search(r"(.*) \((.*)\)", self.selected_entry).groups()
+        issuer, username = unpack_entry(entry)
         self.old_issuer = issuer
         self.old_username = username
         self.setWindowTitle(String.TITLE_EDIT_ENTRY)

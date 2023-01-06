@@ -1,8 +1,9 @@
-import re
 from urllib.parse import unquote
 
 import pykeepass
 from pyotp import parse_uri
+
+from utils.common import unpack_entry
 
 
 class Database:
@@ -15,7 +16,7 @@ class Database:
         self._instance = pykeepass.PyKeePass(db_path, password=db_password)
 
     def get_entry(self, title_username):
-        title, username = re.search(r"(.*) \((.*)\)", title_username).groups()
+        title, username = unpack_entry(title_username)
         entry = self._instance.find_entries(title=title, username=username, first=True)
         return entry
 
