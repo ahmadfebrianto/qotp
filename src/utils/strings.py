@@ -1,7 +1,5 @@
 import os
 
-from .common import get_config_path
-
 
 class String:
     # APP
@@ -9,6 +7,7 @@ class String:
     APP_NAME_LOWER = APP_NAME.lower()
     APP_DB_EXT = ".qotp"
     APP_ICON = "assets/images/icon.png"
+    APP_STYLESHEET = "assets/css/styles.css"
 
     # File: view/window_welcome.py
     TITLE_CHOOSE_ACTION = "Choose an action"
@@ -71,10 +70,15 @@ class String:
 
     # File: utils/config.py
     CONFIG_FILENAME = APP_NAME_LOWER + ".ini"
-    CONFIG_PATH = get_config_path(APP_NAME_LOWER, CONFIG_FILENAME)
+    # CONFIG_PATH = get_config_path(APP_NAME_LOWER, CONFIG_FILENAME)
     CONFIG_SECTION_DB = "database"
     CONFIG_KEY_DBPATH = "database_path"
 
     # Etc
     UTF_8 = "utf-8"
     DIR_HOME = "HOME"
+
+    WINDOWS = "nt"
+    ENV_LOCALAPPDATA = "LOCALAPPDATA"
+    ENV_HOME = "HOME"
+    CONFIG_DIR_LINUX = ".config"

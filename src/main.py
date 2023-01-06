@@ -1,8 +1,10 @@
+import os
 import sys
 
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
+from utils.common import get_base_dir
 from utils.strings import String
 from view.window_main import MainWindow
 from view.window_welcome import WelcomeWindow
@@ -27,5 +29,5 @@ class App(QApplication):
 
 if __name__ == "__main__":
     app = App(sys.argv)
-    app.setWindowIcon(QIcon(String.APP_ICON))
+    app.setWindowIcon(QIcon(os.path.join(get_base_dir(), String.APP_ICON)))
     sys.exit(app.exec())

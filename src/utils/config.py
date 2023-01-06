@@ -1,17 +1,18 @@
-import json
 import os
 from configparser import ConfigParser
 
+from utils.common import get_config_path
 from utils.strings import String
 
 
 class Config(ConfigParser):
     def __init__(self) -> None:
+        self.config_path = get_config_path()
         super().__init__()
 
     @property
     def exists(self):
-        return os.path.exists(String.CONFIG_PATH)
+        return os.path.exists(self.config_path)
 
     @property
     def is_db_path_valid(self):
@@ -21,13 +22,13 @@ class Config(ConfigParser):
         )
 
     def read(self):
-        super().read(String.CONFIG_PATH)
+        super().read(self.config_path)
 
     def save(self):
-        parent = os.path.dirname(String.CONFIG_PATH)
+        parent = os.path.dirname(self.config_path)
         if not os.path.exists(parent):
             os.makedirs(parent)
-        with open(String.CONFIG_PATH, "w") as f:
+        with open(self.config_path, "w") as f:
             self.write(f)
 
     def set(self, section, key, value):
